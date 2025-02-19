@@ -38,13 +38,14 @@
             color: #fff;
             text-decoration: none;
             border-radius: 5px;
-            transition: background 0.3s;
+            transition: background 0.3s, transform 0.3s;
             cursor: pointer;
             border: none;
             font-size: 16px;
         }
         .btn:hover {
             background: #008ba3;
+            transform: scale(1.05);
         }
         .content {
             display: none;
@@ -55,11 +56,30 @@
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .btn:focus {
+            outline: none;
+            animation: pulse 0.5s ease-out;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
     </style>
     <script>
         function toggleContent(id) {
             var content = document.getElementById(id);
-            content.style.display = content.style.display === "block" ? "none" : "block";
+            // Toggle content visibility
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+
+            // Button animation - add/remove class to play animation
+            var btn = document.querySelector(`#${id}Button`);
+            btn.classList.add('clicked');
+            setTimeout(() => btn.classList.remove('clicked'), 300);
         }
     </script>
 </head>
@@ -68,7 +88,7 @@
         <h1>Welcome to Zipasaurus' Website</h1>
         
         <div class="panel">
-            <button class="btn" onclick="toggleContent('about')">About Me</button>
+            <button id="aboutButton" class="btn" onclick="toggleContent('about')">About Me</button>
             <div id="about" class="content">
                 <p>I'm from the United Kingdom, currently 18 years old, and I'm an aspiring game designer. I'm learning the basics of Unity and Blender.</p>
                 <p>I'm a huge fan of anything with wheels that go round N round, and I enjoy DJing, mostly spinning techno tracks.</p>
@@ -77,7 +97,7 @@
         </div>
 
         <div class="panel">
-            <button class="btn" onclick="toggleContent('specs')">Computer Specs</button>
+            <button id="specsButton" class="btn" onclick="toggleContent('specs')">Computer Specs</button>
             <div id="specs" class="content">
                 <h3>Gaming PC</h3>
                 <p><strong>GPU:</strong> GTX 1080</p>
@@ -102,7 +122,7 @@
         </div>
 
         <div class="panel">
-            <button class="btn" onclick="toggleContent('socials')">Socials and More</button>
+            <button id="socialsButton" class="btn" onclick="toggleContent('socials')">Socials and More</button>
             <div id="socials" class="content">
                 <p>All my socials are under the username <strong>Zipasaurus</strong>. Please check them out, it means a lot!</p>
                 <p><a href="#" class="btn">Instagram</a></p>
