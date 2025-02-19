@@ -14,10 +14,14 @@ jobs:
 
       - name: Get last commit date
         id: commit_date
-        run: echo "LAST_COMMIT_DATE=$(git log -1 --date=short --format=%cd)" >> $GITHUB_ENV
+        run: |
+          # Get the date in a clean format without extra spaces
+          LAST_COMMIT_DATE=$(git log -1 --date=short --format=%cd)
+          echo "LAST_COMMIT_DATE=${LAST_COMMIT_DATE}" >> $GITHUB_ENV
 
       - name: Replace placeholder with the last commit date
         run: |
+          # Use sed to replace the placeholder with the formatted date
           sed -i "s/<!-- LAST_UPDATED_PLACEHOLDER -->/${{ env.LAST_COMMIT_DATE }}/" index.html
 
       - name: Commit changes
