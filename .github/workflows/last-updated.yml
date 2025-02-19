@@ -1,6 +1,4 @@
 name: Update Last Updated Date
-permissions:
-  contents: write  # Allow write access to the repository contents (necessary for pushing changes
 
 on:
   push:
@@ -18,7 +16,7 @@ jobs:
         id: date_time
         run: |
           # Get current date and time in the format: "Month Day, Year HH:MM:SS"
-          CURRENT_DATE=$(date "+%B %d, %Y %H:%M:%S")
+          CURRENT_DATE=$(date "+%Y-%m-%d %H:%M:%S")  # Format to include the time (Hour:Minute:Second)
           echo "CURRENT_DATE=${CURRENT_DATE}" >> $GITHUB_ENV
           echo "Debug - Current Date and Time: $CURRENT_DATE"  # Debug step to confirm time format
 
@@ -27,7 +25,7 @@ jobs:
           # Check if the element with class "last-updated" exists
           if grep -q 'class="last-updated"' index.html; then
             # If the element exists, replace its content with the current date and time
-            sed -i 's/<span class="last-updated">.*<\/span>/<span class="last-updated">Last Updated: ${CURRENT_DATE}<\/span>/' index.html
+            sed -i 's|<div class="last-updated">.*</div>|<div class="last-updated">Last Updated: ${CURRENT_DATE}</div>|' index.html
           else
             # If the element doesn't exist, append the element to the body (or wherever you'd like it)
             echo "<div class='last-updated'>Last Updated: ${CURRENT_DATE}</div>" >> index.html
