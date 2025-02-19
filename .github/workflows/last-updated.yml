@@ -1,7 +1,6 @@
 name: Update Last Updated Date
 permissions:
-  contents: write  # Allow write access to the repository contents (necessary for pushing changes)
-
+  contents: write  # Allow write access to the repository contents (necessary for pushing changes
 
 on:
   push:
@@ -22,16 +21,21 @@ jobs:
           CURRENT_DATE=$(date "+%B %d, %Y %H:%M:%S")
           echo "CURRENT_DATE=${CURRENT_DATE}" >> $GITHUB_ENV
 
-      - name: Replace placeholder with the last commit date
+      - name: Check for last-updated element and update the time
         run: |
-          # Use sed to replace the placeholder with the formatted date
-          sed -i "s/<!-- LAST_UPDATED_PLACEHOLDER -->/${{ env.LAST_COMMIT_DATE }}/" index.html
+          # Check if the element with class "last-updated" exists
+          if grep -q 'class="last-updated"' index.html; then
+            # If the element exists, replace its content with the current date and time
+            sed -i 's/<span class="last-updated">.*<\/span>/<span class="last-updated">Last Updated: ${CURRENT_DATE}<\/span>/' index.html
+          else
+            # If the element doesn't exist, append the element to the body (or wherever you'd like it)
+            echo "<div class='last-updated'>Last Updated: ${CURRENT_DATE}</div>" >> index.html
+          fi
 
       - name: Commit changes
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add index.html
-          git commit -m "Update last updated date"
-          git push
+          git commit -m "Update last updated date and time"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:${{ github.ref }}
