@@ -1,4 +1,6 @@
 name: Update Last Updated Date
+permissions:
+  contents: write
 
 on:
   push:
