@@ -27,7 +27,8 @@ jobs:
           # Check if the element with class "last-updated" exists
           if grep -q 'class="last-updated"' index.html; then
             # If the element exists, replace its content with the current date and time
-            sed -i 's|<div class="last-updated">.*</div>|<div class="last-updated">Last Updated: ${CURRENT_DATE}</div>|' index.html
+            sed -i "s|<div class=\"last-updated\">.*</div>|<div class=\"last-updated\">Last Updated: ${CURRENT_DATE}</div>|" index.html
+
           else
             # If the element doesn't exist, append the element to the body (or wherever you'd like it)
             echo "<div class='last-updated'>Last Updated: ${CURRENT_DATE}</div>" >> index.html
