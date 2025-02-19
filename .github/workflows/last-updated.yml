@@ -1,4 +1,7 @@
 name: Update Last Updated Date
+permissions:
+  contents: write  # Allow write access to the repository contents (necessary for pushing changes)
+
 
 on:
   push:
