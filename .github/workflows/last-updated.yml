@@ -15,12 +15,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Get last commit date
-        id: commit_date
+      - name: Get current date and time
+        id: date_time
         run: |
-          # Get the date in a clean format without extra spaces
-          LAST_COMMIT_DATE=$(git log -1 --date=short --format=%cd)
-          echo "LAST_COMMIT_DATE=${LAST_COMMIT_DATE}" >> $GITHUB_ENV
+          # Get current date and time in the format: "Month Day, Year HH:MM:SS"
+          CURRENT_DATE=$(date "+%B %d, %Y %H:%M:%S")
+          echo "CURRENT_DATE=${CURRENT_DATE}" >> $GITHUB_ENV
 
       - name: Replace placeholder with the last commit date
         run: |
