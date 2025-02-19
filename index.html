@@ -133,11 +133,24 @@
             </div>
         </div>
    
-<!Line for showing since last update (Uses Javascript aswell :P>
+<!--Line for showing since last update (Uses Javascript aswell :P-->
 
 </div> class="last-updated" id="LastUpdated">
     last Updated: <span id="updateDate"></span>
 </div> 
+
+<script>
+// Welp. Here's some script for you, This updates the time of my website! Using JAVASCRIPT! Kaawwwh.
+function formatDate (date) {
+    const months  = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullyear();
+    return '${month} ${day}, ${year}';
+}
+//  Uhhh. I don't really know JS, But I believe.. the stuff below formats the date / displays it....
+document.getElementById("updateDate").innerText = formatDate(new Date());
+</script>
 
 </body>
 </html>
