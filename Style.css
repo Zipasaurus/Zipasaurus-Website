@@ -2,4 +2,20 @@ body {
     background: #121212;
     color: #ffffff;
     font-family: Arial, sans-serif;
+
+
+}
+.last-updated {
+    font-size: 14px;
+    color: #bbb;
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    background: #222;
+    border-radius: 5px;
+}
+
+.last-updated span {
+    font-weight: bold;
+    color: #00bcd4;
 }
