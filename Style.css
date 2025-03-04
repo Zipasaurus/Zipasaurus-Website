@@ -1,11 +1,12 @@
-body {
-    background: #121212;
-    color: #ffffff;
-    font-family: 'CustomFont';
+@font-face {
+    font-family: 'MyCustomFont';
     src: url('Fonts/SpaceGrotesk-Regular.ttf') format('truetype');
-    font-weight: Regular;
-    font-style: Regular;
+    font-weight: normal;
+    font-style: normal;
+}
 
+body {
+    font-family: 'MyCustomFont', sans-serif;
 
 }
 .last-updated {
