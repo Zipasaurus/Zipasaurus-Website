@@ -3,8 +3,8 @@ body {
     color: #ffffff;
     font-family: 'CustomFont';
     sr: url('Fonts/SpaceGrotesk-VariableFont_wght.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+    font-weight: Regular;
+    font-style: Regular;
 
 
 }
