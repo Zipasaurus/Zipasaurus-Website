@@ -1,7 +1,10 @@
 body {
     background: #121212;
     color: #ffffff;
-    font-family: Arial, Space Grotesk;
+    font-family: 'CustomFont';
+    sr: url('Fonts/SpaceGrotesk-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 
 
 }
