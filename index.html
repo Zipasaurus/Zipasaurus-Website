@@ -140,9 +140,8 @@
 
 
  <h2>Click on an image below to see more :P</h2> 
-<div class="MGZRBUTTON">   
-<img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" alt="MissingButton">
-    <button class="btn" onclick="handleClick()">Click fto see more of my car</button>
+<div class="MGZRBUTTON">
+    <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" alt="MissingButton" onclick="loadImages()">
 </div>
         <style> 
            .MGZRBUTTON {
@@ -200,32 +199,32 @@
     ];
 
     function loadImages() {
-        let container = document.getElementById("image-container");
+    let container = document.getElementById("image-container");
 
-        // Prevent duplicate images if clicked multiple times
-        if (container.children.length > 0) return;
+    // Prevent duplicate images if clicked multiple times
+    if (container.children.length > 0) return;
 
-        imagePaths.forEach((src, index) => {
-            let img = document.createElement("img");
-            img.src = src;
-            img.alt = "My Car at Garage";
-            img.style.position = "absolute";
-            img.style.width = "150px";
-            img.style.height = "150px";
-            img.style.objectFit = "cover";  
-            img.style.left = positions[index].left + "px";
-            img.style.top = positions[index].top + "px";
-            img.style.opacity = 0;
-            img.style.transition = "opacity 1s ease-in-out";  
+    imagePaths.forEach((src, index) => {
+        let img = document.createElement("img");
+        img.src = src;
+        img.alt = "My Car at Garage";
+        img.style.position = "absolute";
+        img.style.width = "150px";
+        img.style.height = "150px";
+        img.style.objectFit = "cover";  
+        img.style.left = positions[index].left + "px";
+        img.style.top = positions[index].top + "px";
+        img.style.opacity = 0;
+        img.style.transition = "opacity 1s ease-in-out";  
 
-            container.appendChild(img);
+        container.appendChild(img);
 
-            // Fade in effect
-            setTimeout(() => {
-                img.style.opacity = 1;
-            }, index * 500);
-        });
-    }
+        // Fade in effect
+        setTimeout(() => {
+            img.style.opacity = 1;
+        }, index * 500);
+    });
+}
 </script>
 
 <div class="last-updated">Last Updated: 2025-03-12 23:20:00</div>
