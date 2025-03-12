@@ -191,7 +191,7 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        align-content: center;
+        align-content: flex-start;
         position: relative;
     }
 
@@ -200,19 +200,20 @@
         width: 120px;
         height: auto;
         opacity: 0;
-        transform: scale(0.5);
+        transform: scale(0.5) translate(0, 0);
         transition: transform 0.5s, opacity 0.5s;
+        position: absolute;
     }
 
     /* Animations */
     .fly-out {
         opacity: 1;
-        transform: translate(var(--x), var(--y)) scale(1);
+        transform: scale(1) translate(var(--x), var(--y));
     }
 
     .fly-in {
         opacity: 0;
-        transform: translate(0, 0) scale(0.5);
+        transform: scale(0.5) translate(0, 0);
     }
 </style>
 
@@ -242,18 +243,30 @@
 
         const images = document.querySelectorAll(".spray-img");
 
- if (!imagesShown) {
+        const button = document.querySelector(".ZRbutton");
+        const buttonRect = button.getBoundingClientRect();
+        const buttonCenterX = buttonRect.left + buttonRect.width / 2;
+        const buttonCenterY = buttonRect.top + buttonRect.height / 2;
+
+        if (!imagesShown) {
             container.style.opacity = "1"; // Show container
             images.forEach((img, index) => {
-                let angle = (index / images.length) * 360; // Evenly spaced angles
-                let radius = 150; // Distance from center
-                let x = Math.cos(angle * (Math.PI / 180)) * radius;
-                let y = Math.sin(angle * (Math.PI / 180)) * radius;
+                // Calculate random position for each image
+                const row = Math.floor(index / 4);  // Determine row (4 images per row)
+                const col = index % 4;  // Determine column (0 to 3)
 
-                img.style.setProperty("--x", `${x}px`);
-                img.style.setProperty("--y", `${y}px`);
+                // Set custom properties for position
+                const x = (col * 130) - (4 * 130 / 2); // Spread out images evenly
+                const y = (row * 150) - (2 * 150 / 2); // Spread vertically
 
+                // Initial position is set to the button's center
+                img.style.left = `${buttonCenterX - img.width / 2}px`;
+                img.style.top = `${buttonCenterY - img.height / 2}px`;
+
+                // Animate images flying outwards
                 setTimeout(() => {
+                    img.style.setProperty("--x", `${x}px`);
+                    img.style.setProperty("--y", `${y}px`);
                     img.classList.add("fly-out");
                     img.classList.remove("fly-in");
                 }, index * 100); // Staggered effect
@@ -270,6 +283,7 @@
         imagesShown = !imagesShown;
     }
 </script>
+
 
 
 <!-- Line for showing since last update (Uses JavaScript as well :P) -->
