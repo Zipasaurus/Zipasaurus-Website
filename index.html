@@ -179,11 +179,15 @@
             }
         </style>
 
+        <img id="MGZR105IMAGES" src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" alt="MissingButton">
         <script>
             function handleClick() {
-                alert("Button clicked!");
-            }
-        </script>
+                let img = document.getElementById("MGZR105IMAGES");
+               img.style.position = "absolute";
+                img.style.left = "50%";
+                img.style.top = "50%";
+                img.style.transform = "translate(-25%, -50%)"; // Center image
+                </script>
 
 
 
