@@ -140,44 +140,29 @@
 
 
  <h2>Click on an image below to see more :P</h2> 
-<div class="MGZRBUTTON">
+<div class="MGZRBUTTON" onclick="loadImages()">
     <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" 
-         alt="MissingButton" 
-         onclick="loadImages()" 
-        style="cursor: pointer;">
-        <div class="overlay-text">Click to See More</div>        
-        
+         alt="Click to see more" 
+         class="button-image">
+    <div class="overlay-text">Click to See More</div>
 </div>
-        <style> 
-           .MGZRBUTTON {
-               position: relative;
-               display: inline-block;
-               cursor: pointer;
-               overflow: hidden; /* Prevent overflow issues */
-}
 
-.MGZRBUTTON img {
-    display: block; 
-    width: 200px;
-    transition: opacity 0.3s ease-in-out;
-    height: auto;
-}
+<style>
+    .MGZRBUTTON {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        overflow: hidden; /* Prevent overflow issues */
+    }
 
-.MGZRBUTTON .btn {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%; 
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); 
-    color: white;
-    border: none;
-    opacity: 0; 
-    transition: opacity 0.3s;
-    font-size: 16px;
-    cursor: pointer;
-}
-.overlay-text {
+    .button-image {
+        display: block;
+        width: 200px;
+        height: auto;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .overlay-text {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -191,10 +176,16 @@
         opacity: 0; /* Initially hidden */
         transition: opacity 0.3s ease-in-out;
     }
-.MGZRBUTTON:hover .btn {
-    opacity: 1; 
-}
-        </style>
+
+    /* Fade effect on hover */
+    .MGZRBUTTON:hover .button-image {
+        opacity: 0.7;
+    }
+
+    .MGZRBUTTON:hover .overlay-text {
+        opacity: 1;
+    }
+</style>
 
 <div id="image-container" style="position: relative; margin-top: 20px;"></div>
 
