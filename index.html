@@ -139,19 +139,16 @@
 </div>    
 
 <div class="images">
-    <button class="ZRbutton" onclick="sprayImages()">
+    <button class="ZRbutton" onclick="toggleImages()">
         <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" alt="MyCarAtGarage">
         <span class="button-text">Click For More</span>
     </button>
 </div>
 
-<div id="image-container" class="hidden">
-    <img src="images/MG ZR 105 Images/image1.jpeg" class="spray-img">
-    <img src="images/MG ZR 105 Images/image2.jpeg" class="spray-img">
-    <img src="images/MG ZR 105 Images/image3.jpeg" class="spray-img">
-</div>
+<div id="image-container"></div>
 
 <style>
+    /* Center button */
     .images {
         display: flex;
         justify-content: center;
@@ -182,53 +179,86 @@
         border-radius: 5px;
     }
 
-    /* Hidden images before animation */
+    /* Image container (for spray effect) */
     #image-container {
         position: relative;
-        width: 100%;
-        height: 300px;
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Auto-adjust layout */
+        gap: 10px;
         justify-content: center;
-        align-items: center;
         margin-top: 20px;
+        opacity: 0;
+        transition: opacity 0.5s;
     }
 
     .spray-img {
-        position: absolute;
-        width: 100px;
+        width: 120px;
         height: auto;
         opacity: 0;
         transform: scale(0.5);
-        transition: opacity 0.3s, transform 0.5s;
+        transition: transform 0.5s, opacity 0.5s;
+        position: relative;
     }
 
-    /* Keyframe animation for spraying */
-    @keyframes sprayOut {
-        0% {
-            opacity: 0;
-            transform: scale(0.5) translate(0, 0);
-        }
-        100% {
-            opacity: 1;
-            transform: scale(1) translate(var(--x), var(--y));
-        }
+    /* Animation to spray images out */
+    .spray-out {
+        opacity: 1;
+        transform: scale(1) translate(var(--x), var(--y));
+    }
+
+    /* Animation to fly images back */
+    .fly-back {
+        opacity: 0;
+        transform: scale(0.5) translate(0, 0);
     }
 </style>
 
 <script>
-    function sprayImages() {
-        const images = document.querySelectorAll(".spray-img");
-        images.forEach((img, index) => {
-            // Generate random positions
-            let x = (Math.random() * 400 - 200) + "px"; // Random between -200px to +200px
-            let y = (Math.random() * 200 - 100) + "px"; // Random between -100px to +100px
+    let imagesShown = false;
 
-            img.style.setProperty("--x", x);
-            img.style.setProperty("--y", y);
-            img.style.animation = "sprayOut 0.7s forwards";
-        });
+    function toggleImages() {
+        const container = document.getElementById("image-container");
+
+        // If images are not yet generated, create them dynamically
+        if (!container.hasChildNodes()) {
+            const totalImages = 9; // Change this to however many images you have
+            for (let i = 1; i <= totalImages; i++) {
+                let img = document.createElement("img");
+                img.src = `images/MG ZR 105 Images/MyCarAtGarage2.jpeg${i}.jpeg`;
+                img.classList.add("spray-img");
+                container.appendChild(img);
+            }
+        }
+
+        const images = document.querySelectorAll(".spray-img");
+
+        if (!imagesShown) {
+            container.style.opacity = "1"; // Show container
+            images.forEach((img, index) => {
+                let x = (index % 3) * 150 - 150 + "px"; // Spaces images in rows
+                let y = Math.floor(index / 3) * 120 + "px"; // Moves images down per row
+
+                setTimeout(() => {
+                    img.style.setProperty("--x", x);
+                    img.style.setProperty("--y", y);
+                    img.classList.add("spray-out");
+                    img.classList.remove("fly-back");
+                }, index * 150); // Delay for smooth row animation
+            });
+        } else {
+            images.forEach((img, index) => {
+                setTimeout(() => {
+                    img.classList.add("fly-back");
+                    img.classList.remove("spray-out");
+                }, (images.length - index - 1) * 100); // Reverse animation order
+            });
+            setTimeout(() => (container.style.opacity = "0"), images.length * 100);
+        }
+
+        imagesShown = !imagesShown;
     }
 </script>
+
 
 <!-- Line for showing since last update (Uses JavaScript as well :P) -->
 <div class="last-updated">Last Updated: 2025-03-12 20:27:25</div>
