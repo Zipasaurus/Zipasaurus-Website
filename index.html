@@ -138,17 +138,36 @@
     </div> 
 </div>    
 
-</div>
 <div class="MGZRBUTTON">
-  <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" alt="MissingButton">
-  <button class="btn">MGZR105Images</button>
-    <style>    
-        position: center;
-        width: 120px;
-        height: 120px;
-        text-align: center;
-    </style>
+    <button class="btn" onclick="handleClick()">
+        <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" alt="MissingButton">
+    </button>
 </div>
+
+<style> 
+    .MGZRBUTTON {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .btn {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .btn img {
+        width: 120px; /* Adjust size */
+        height: auto;
+        transition: transform 0.2s ease;
+    }
+
+    .btn:hover img {
+        transform: scale(1.1); /* Slight zoom effect on hover */
+    }
+</style>
 
 
 
