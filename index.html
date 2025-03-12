@@ -145,10 +145,11 @@
     </button>
 </div>
 
+<!-- Image container for sprayed images -->
 <div id="image-container"></div>
 
 <style>
-    /* Center button */
+    /* Center the button */
     .images {
         display: flex;
         justify-content: center;
@@ -179,55 +180,67 @@
         border-radius: 5px;
     }
 
-    /* Image container (for spray effect) */
+    /* Fixed border area for images */
     #image-container {
-        position: relative;
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Auto-adjust layout */
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Responsive layout */
         gap: 10px;
         justify-content: center;
-        margin-top: 20px;
+        align-content: center;
+        width: 80%;
+        max-width: 800px;
+        height: 400px; /* Adjust for spacing */
+        margin: 20px auto;
+        border: 2px solid white;
+        padding: 10px;
         opacity: 0;
         transition: opacity 0.5s;
+        overflow: hidden; /* Keeps images inside */
     }
 
+    /* Hidden images before animation */
     .spray-img {
         width: 120px;
         height: auto;
         opacity: 0;
         transform: scale(0.5);
         transition: transform 0.5s, opacity 0.5s;
-        position: relative;
     }
 
-    /* Animation to spray images out */
+    /* Animations */
     .spray-out {
         opacity: 1;
-        transform: scale(1) translate(var(--x), var(--y));
+        transform: scale(1);
     }
 
-    /* Animation to fly images back */
     .fly-back {
         opacity: 0;
-        transform: scale(0.5) translate(0, 0);
+        transform: scale(0.5);
     }
 </style>
 
 <script>
     let imagesShown = false;
+    const imagePaths = [
+        "images/MG ZR 105 Images/image1.jpeg",
+        "images/MG ZR 105 Images/image2.jpeg",
+        "images/MG ZR 105 Images/image3.jpeg",
+        "images/MG ZR 105 Images/image4.jpeg",
+        "images/MG ZR 105 Images/image5.jpeg",
+        "images/MG ZR 105 Images/image6.jpeg"
+    ]; // ADD YOUR IMAGES HERE
 
     function toggleImages() {
         const container = document.getElementById("image-container");
 
-        // If images are not yet generated, create them dynamically
+        // If images are not created yet, generate them
         if (!container.hasChildNodes()) {
-            const totalImages = 9; // Change this to however many images you have
-            for (let i = 1; i <= totalImages; i++) {
+            imagePaths.forEach((src) => {
                 let img = document.createElement("img");
-                img.src = `images/MG ZR 105 Images/MyCarAtGarage2.jpeg${i}.jpeg`;
+                img.src = src;
                 img.classList.add("spray-img");
                 container.appendChild(img);
-            }
+            });
         }
 
         const images = document.querySelectorAll(".spray-img");
@@ -235,22 +248,17 @@
         if (!imagesShown) {
             container.style.opacity = "1"; // Show container
             images.forEach((img, index) => {
-                let x = (index % 3) * 150 - 150 + "px"; // Spaces images in rows
-                let y = Math.floor(index / 3) * 120 + "px"; // Moves images down per row
-
                 setTimeout(() => {
-                    img.style.setProperty("--x", x);
-                    img.style.setProperty("--y", y);
                     img.classList.add("spray-out");
                     img.classList.remove("fly-back");
-                }, index * 150); // Delay for smooth row animation
+                }, index * 150); // Staggered effect
             });
         } else {
             images.forEach((img, index) => {
                 setTimeout(() => {
                     img.classList.add("fly-back");
                     img.classList.remove("spray-out");
-                }, (images.length - index - 1) * 100); // Reverse animation order
+                }, (images.length - index - 1) * 100);
             });
             setTimeout(() => (container.style.opacity = "0"), images.length * 100);
         }
