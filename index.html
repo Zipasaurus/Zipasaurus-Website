@@ -179,51 +179,53 @@
             }
         </style>
 
-  <div id="image-container">
-            <!-- The images will be inserted here dynamically -->
-        </div>
+  <div id="image-container" style="position: relative; margin-top: 20px;"></div>
 
-        <script>
-            let positions = [
-                {left: -300, top: 100},  // 1st image position
-                {left: -200, top: 100},  // 2nd image position
-                {left: -100, top: 100},  // 3rd image position
-                {left: -300, top: 200},  // 4th image position
-                {left: -200, top: 200},  // 5th image position
-                {left: -100, top: 200},  // 6th image position
-                {left: -300, top: 300},  // 7th image position
-                {left: -200, top: 300},  // 8th image position
-                {left: -100, top: 300}   // 9th image position
-            ];
+<script>
+    let positions = [
+        {left: -300, top: 100}, {left: -200, top: 100}, {left: -100, top: 100},
+        {left: -300, top: 200}, {left: -200, top: 200}, {left: -100, top: 200},
+        {left: -300, top: 300}, {left: -200, top: 300}, {left: -100, top: 300}
+    ];
 
-            let imagePaths = [
-                "images/MG ZR 105 Images/MyCarAtGarage2.jpeg",
-                "images/MG ZR 105 Images/MyCarAtGarage3.jpeg",
-                "images/MG ZR 105 Images/MyCarAtGarage4.jpeg",
-                "images/MG ZR 105 Images/MyCarAtGarage5.jpeg",
-                "images/MG ZR 105 Images/MyCarAtGarage6.jpeg",
-                "images/MG ZR 105 Images/MyCarAtGarage7.jpeg",
-                "images/MG ZR 105 Images/MyCarAtGarage8.jpeg",
-                "images/MG ZR 105 Images/MyCarAtGarage9.jpeg",
-                "images/MG ZR 105 Images/MyCarAtGarage10.jpeg"
-            ];
+    let imagePaths = [
+        "images/MG ZR 105 Images/MyCarAtGarage2.jpeg",
+        "images/MG ZR 105 Images/MyCarAtGarage3.jpeg",
+        "images/MG ZR 105 Images/MyCarAtGarage4.jpeg",
+        "images/MG ZR 105 Images/MyCarAtGarage5.jpeg",
+        "images/MG ZR 105 Images/MyCarAtGarage6.jpeg",
+        "images/MG ZR 105 Images/MyCarAtGarage7.jpeg",
+        "images/MG ZR 105 Images/MyCarAtGarage8.jpeg",
+        "images/MG ZR 105 Images/MyCarAtGarage9.jpeg",
+        "images/MG ZR 105 Images/MyCarAtGarage10.jpeg"
+    ];
 
-            let imgIndex = 0;
+    function loadImages() {
+        let container = document.getElementById("image-container");
 
-            function handleClick() {
-                if (imgIndex >= positions.length) return;
+        imagePaths.forEach((src, index) => {
+            let img = document.createElement("img");
+            img.src = src;
+            img.alt = "My Car at Garage";
+            img.style.position = "absolute";
+            img.style.width = "150px";
+            img.style.height = "150px";
+            img.style.objectFit = "cover";  // Ensures the image fills 150x150 properly
+            img.style.left = positions[index].left + "px";
+            img.style.top = positions[index].top + "px";
+            img.style.opacity = 0;
+            img.style.transition = "opacity 1s ease-in-out";  // Fade-in effect
 
-                let img = document.createElement("img");
-                img.src = imagePaths[imgIndex];
-                img.alt = "My Car at Garage";
-                img.classList.add('fade-in');
-                img.style.left = positions[imgIndex].left + "px";
-                img.style.top = positions[imgIndex].top + "px";
+            container.appendChild(img);
 
-                document.getElementById("image-container").appendChild(img);
+            // Fade in images one by one
+            setTimeout(() => {
+                img.style.opacity = 1;
+            }, index * 500);  // Each image fades in with a delay
+        });
+    }
 
-                imgIndex++;
-            }
-        </script>
+    window.onload = loadImages; // Load images when the page loads
+</script>
 
 <div class="last-updated">Last Updated: 2025-03-12 23:01:30</div>
