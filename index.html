@@ -144,17 +144,22 @@
     <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" 
          alt="MissingButton" 
          onclick="loadImages()" 
-         style="cursor: pointer;">
+        style="cursor: pointer;">
+        <div class="overlay-text">Click to See More</div>        
+        
 </div>
         <style> 
            .MGZRBUTTON {
-    display: inline-block; 
-    position: relative; 
+               position: relative;
+               display: inline-block;
+               cursor: pointer;
+               overflow: hidden; /* Prevent overflow issues */
 }
 
 .MGZRBUTTON img {
     display: block; 
     width: 200px;
+    transition: opacity 0.3s ease-in-out;
     height: auto;
 }
 
@@ -172,7 +177,20 @@
     font-size: 16px;
     cursor: pointer;
 }
-
+.overlay-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        background: rgba(0, 0, 0, 0.6); /* Dark transparent background */
+        padding: 8px 12px;
+        border-radius: 5px;
+        opacity: 0; /* Initially hidden */
+        transition: opacity 0.3s ease-in-out;
+    }
 .MGZRBUTTON:hover .btn {
     opacity: 1; 
 }
