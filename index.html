@@ -179,60 +179,51 @@
             }
         </style>
 
-     <div id="image-container">
-        <!-- The images will be inserted here dynamically -->
-    </div>
+  <div id="image-container">
+            <!-- The images will be inserted here dynamically -->
+        </div>
 
-    <script>
-        let positions = [
-            {left: -300, top: 100},  // 1st image position
-            {left: -200, top: 100},  // 2nd image position
-            {left: -100, top: 100},  // 3rd image position
-            {left: -300, top: 200},  // 4th image position
-            {left: -200, top: 200},  // 5th image position
-            {left: -100, top: 200},  // 6th image position
-            {left: -300, top: 300},  // 7th image position
-            {left: -200, top: 300},  // 8th image position
-            {left: -100, top: 300}   // 9th image position
-        ];
+        <script>
+            let positions = [
+                {left: -300, top: 100},  // 1st image position
+                {left: -200, top: 100},  // 2nd image position
+                {left: -100, top: 100},  // 3rd image position
+                {left: -300, top: 200},  // 4th image position
+                {left: -200, top: 200},  // 5th image position
+                {left: -100, top: 200},  // 6th image position
+                {left: -300, top: 300},  // 7th image position
+                {left: -200, top: 300},  // 8th image position
+                {left: -100, top: 300}   // 9th image position
+            ];
 
-        // Array of 9 different image paths
-        let imagePaths = [
-            "images/MG ZR 105 Images/MyCarAtGarage2.jpeg", // 1st image
-            "images/MG ZR 105 Images/MyCarAtGarage3.jpeg", // 2nd image
-            "images/MG ZR 105 Images/MyCarAtGarage4.jpeg", // 3rd image
-            "images/MG ZR 105 Images/MyCarAtGarage5.jpeg", // 4th image
-            "images/MG ZR 105 Images/MyCarAtGarage6.jpeg", // 5th image
-            "images/MG ZR 105 Images/MyCarAtGarage7.jpeg", // 6th image
-            "images/MG ZR 105 Images/MyCarAtGarage8.jpeg", // 7th image
-            "images/MG ZR 105 Images/MyCarAtGarage9.jpeg", // 8th image
-            "images/MG ZR 105 Images/MyCarAtGarage10.jpeg" // 9th image
-        ];
+            let imagePaths = [
+                "images/MG ZR 105 Images/MyCarAtGarage2.jpeg",
+                "images/MG ZR 105 Images/MyCarAtGarage3.jpeg",
+                "images/MG ZR 105 Images/MyCarAtGarage4.jpeg",
+                "images/MG ZR 105 Images/MyCarAtGarage5.jpeg",
+                "images/MG ZR 105 Images/MyCarAtGarage6.jpeg",
+                "images/MG ZR 105 Images/MyCarAtGarage7.jpeg",
+                "images/MG ZR 105 Images/MyCarAtGarage8.jpeg",
+                "images/MG ZR 105 Images/MyCarAtGarage9.jpeg",
+                "images/MG ZR 105 Images/MyCarAtGarage10.jpeg"
+            ];
 
-        let imgIndex = 0;
+            let imgIndex = 0;
 
-        function handleClick() {
-            if (imgIndex >= positions.length) return;  // Prevent adding more than 9 images
+            function handleClick() {
+                if (imgIndex >= positions.length) return;
 
-            // Create a new <img> element
-            let img = document.createElement("img");
+                let img = document.createElement("img");
+                img.src = imagePaths[imgIndex];
+                img.alt = "My Car at Garage";
+                img.classList.add('fade-in');
+                img.style.left = positions[imgIndex].left + "px";
+                img.style.top = positions[imgIndex].top + "px";
 
-            // Set the source and alt attributes for the image
-            img.src = imagePaths[imgIndex];  // Get the image path from the array
-            img.alt = "My Car at Garage";
+                document.getElementById("image-container").appendChild(img);
 
-            // Apply fade-in animation
-            img.classList.add('fade-in');
+                imgIndex++;
+            }
+        </script>
 
-            // Style the image with absolute positioning based on the `positions` array
-            img.style.left = positions[imgIndex].left + "px";
-            img.style.top = positions[imgIndex].top + "px";
-
-            // Append the image to the container
-            document.getElementById("image-container").appendChild(img);
-
-            // Move to the next image position in the array
-            imgIndex++;
-        }
-    </script>
 <div class="last-updated">Last Updated: 2025-03-12 22:55:33</div>
