@@ -138,15 +138,11 @@
     </div> 
 </div>    
 
-<div class="MGZRBUTTON">
-    <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" alt="MissingButton">
-    <button class="mgzrbtn" onclick="handleClick()">Click to See More of My Car</button>
-</div>
 
  <h2>Click on an image below to see more :P</h2> 
 <div class="MGZRBUTTON">   
 <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" alt="MissingButton">
-    <button class="mgzrbtn" onclick="handleClick()">Click fto see more of my car</button>
+    <button class="btn" onclick="handleClick()">Click fto see more of my car</button>
 </div>
         <style> 
            .MGZRBUTTON {
@@ -160,7 +156,7 @@
     height: auto;
 }
 
-.MGZRBUTTON .mgzrbtn {
+.MGZRBUTTON .btn {
     position: absolute;
     top: 0;
     left: 0;
@@ -175,12 +171,12 @@
     cursor: pointer;
 }
 
-.MGZRBUTTON:hover .mgzrbtn {
+.MGZRBUTTON:hover .btn {
     opacity: 1; 
 }
         </style>
 
-<button class="mgzrbtn" onclick="loadImages()">Click to See More of My Car</button>
+<button class="btn" onclick="loadImages()">Click to See More of My Car</button>
 
 <div id="image-container" style="position: relative; margin-top: 20px;"></div>
 
