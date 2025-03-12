@@ -140,19 +140,22 @@
 
 
  <h2>Click on an image below to see more :P</h2> 
-<div class="MGZRBUTTON" onclick="loadImages()">
+<div class="MGZRBUTTON" onclick="toggleImages()">
     <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" 
          alt="Click to see more" 
          class="button-image">
     <div class="overlay-text">Click to See More</div>
 </div>
 
+<div id="image-container"></div>
+
 <style>
     .MGZRBUTTON {
         position: relative;
         display: inline-block;
         cursor: pointer;
-        overflow: hidden; /* Prevent overflow issues */
+        overflow: hidden;
+        transition: box-shadow 0.3s ease-in-out;
     }
 
     .button-image {
@@ -170,14 +173,14 @@
         color: white;
         font-size: 18px;
         font-weight: bold;
-        background: rgba(0, 0, 0, 0.6); /* Dark transparent background */
+        background: rgba(0, 0, 0, 0.6);
         padding: 8px 12px;
         border-radius: 5px;
-        opacity: 0; /* Initially hidden */
+        opacity: 0;
         transition: opacity 0.3s ease-in-out;
     }
 
-    /* Fade effect on hover */
+    /* Hover Effects */
     .MGZRBUTTON:hover .button-image {
         opacity: 0.7;
     }
@@ -185,56 +188,61 @@
     .MGZRBUTTON:hover .overlay-text {
         opacity: 1;
     }
+
+    /* Highlight Effect When Clicked */
+    .MGZRBUTTON.active {
+        box-shadow: 0 0 15px 5px rgb(0, 205, 0);
+        border-radius: 10px;
+    }
 </style>
 
 <div id="image-container" style="position: relative; margin-top: 20px;"></div>
 
 <script>
-    let positions = [
-        {left: -300, top: 100}, {left: -200, top: 100}, {left: -100, top: 100},
-        {left: -300, top: 200}, {left: -200, top: 200}, {left: -100, top: 200},
-        {left: -300, top: 300}, {left: -200, top: 300}, {left: -100, top: 300}
-    ];
+    let imagesVisible = false;
 
-    let imagePaths = [
-        "images/MG ZR 105 Images/MyCarAtGarage2.jpeg",
-        "images/MG ZR 105 Images/MyCarAtGarage3.jpeg",
-        "images/MG ZR 105 Images/MyCarAtGarage4.jpeg",
-        "images/MG ZR 105 Images/MyCarAtGarage5.jpeg",
-        "images/MG ZR 105 Images/MyCarAtGarage6.jpeg",
-        "images/MG ZR 105 Images/MyCarAtGarage7.jpeg",
-        "images/MG ZR 105 Images/MyCarAtGarage8.jpeg",
-        "images/MG ZR 105 Images/MyCarAtGarage9.jpeg",
-        "images/MG ZR 105 Images/MyCarAtGarage10.jpeg"
-    ];
+    function toggleImages() {
+        let container = document.getElementById("image-container");
+        let button = document.querySelector(".MGZRBUTTON");
+
+        if (imagesVisible) {
+            // Remove all images if they are already visible
+            container.innerHTML = "";
+            button.classList.remove("active"); // Remove highlight
+        } else {
+            // Show images
+            loadImages();
+            button.classList.add("active"); // Add highlight
+        }
+
+        imagesVisible = !imagesVisible; // Toggle state
+    }
 
     function loadImages() {
-    let container = document.getElementById("image-container");
+        let container = document.getElementById("image-container");
+        let imagePaths = [
+            "images/MG ZR 105 Images/MyCarAtGarage2.jpeg",
+            "images/MG ZR 105 Images/MyCarAtGarage3.jpeg",
+            "images/MG ZR 105 Images/MyCarAtGarage4.jpeg",
+            "images/MG ZR 105 Images/MyCarAtGarage5.jpeg",
+            "images/MG ZR 105 Images/MyCarAtGarage6.jpeg"
+        ];
 
-    // Prevent duplicate images if clicked multiple times
-    if (container.children.length > 0) return;
+        imagePaths.forEach(src => {
+            let img = document.createElement("img");
+            img.src = src;
+            img.alt = "My Car at Garage";
+            img.style.width = "150px";
+            img.style.height = "150px";
+            img.style.margin = "10px";
+            img.style.borderRadius = "8px";
+            img.style.transition = "opacity 0.5s ease-in-out";
+            img.style.opacity = 0;
 
-    imagePaths.forEach((src, index) => {
-        let img = document.createElement("img");
-        img.src = src;
-        img.alt = "My Car at Garage";
-        img.style.position = "absolute";
-        img.style.width = "150px";
-        img.style.height = "150px";
-        img.style.objectFit = "cover";  
-        img.style.left = positions[index].left + "px";
-        img.style.top = positions[index].top + "px";
-        img.style.opacity = 0;
-        img.style.transition = "opacity 1s ease-in-out";  
-
-        container.appendChild(img);
-
-        // Fade in effect
-        setTimeout(() => {
-            img.style.opacity = 1;
-        }, index * 500);
-    });
-}
+            container.appendChild(img);
+            setTimeout(() => img.style.opacity = 1, 100);
+        });
+    }
 </script>
 
 <div class="last-updated">Last Updated: 2025-03-12 23:37:01</div>
