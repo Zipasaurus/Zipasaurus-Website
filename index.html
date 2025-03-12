@@ -179,8 +179,8 @@
             }
         </style>
 
-  <div id="image-container" style="position: relative; margin-top: 20px;">
-        <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" alt="MissingButton">
+     <div id="image-container">
+        <!-- The images will be inserted here dynamically -->
     </div>
 
     <script>
@@ -196,6 +196,19 @@
             {left: -100, top: 300}   // 9th image position
         ];
 
+        // Array of 9 different image paths
+        let imagePaths = [
+            "images/MG ZR 105 Images/MyCarAtGarage2.jpeg", // 1st image
+            "images/MG ZR 105 Images/MyCarAtGarage3.jpeg", // 2nd image
+            "images/MG ZR 105 Images/MyCarAtGarage4.jpeg", // 3rd image
+            "images/MG ZR 105 Images/MyCarAtGarage5.jpeg", // 4th image
+            "images/MG ZR 105 Images/MyCarAtGarage6.jpeg", // 5th image
+            "images/MG ZR 105 Images/MyCarAtGarage7.jpeg", // 6th image
+            "images/MG ZR 105 Images/MyCarAtGarage8.jpeg", // 7th image
+            "images/MG ZR 105 Images/MyCarAtGarage9.jpeg", // 8th image
+            "images/MG ZR 105 Images/MyCarAtGarage10.jpeg" // 9th image
+        ];
+
         let imgIndex = 0;
 
         function handleClick() {
@@ -205,12 +218,13 @@
             let img = document.createElement("img");
 
             // Set the source and alt attributes for the image
+            img.src = imagePaths[imgIndex];  // Get the image path from the array
             img.alt = "My Car at Garage";
 
+            // Apply fade-in animation
+            img.classList.add('fade-in');
+
             // Style the image with absolute positioning based on the `positions` array
-            img.style.position = "absolute";
-            img.style.width = "100px";  // Set width of the image
-            img.style.height = "auto";  // Maintain aspect ratio
             img.style.left = positions[imgIndex].left + "px";
             img.style.top = positions[imgIndex].top + "px";
 
@@ -221,8 +235,4 @@
             imgIndex++;
         }
     </script>
-
-
-
-<!-- Line for showing since last update (Uses JavaScript as well :P) -->
 <div class="last-updated">Last Updated: 2025-03-12 22:52:10</div>
