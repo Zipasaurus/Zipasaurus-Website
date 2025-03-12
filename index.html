@@ -139,9 +139,8 @@
 </div>    
 
 <div class="MGZRBUTTON">
-    <button class="btn" onclick="handleClick()">
-        <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" alt="MissingButton">
-    </button>
+    <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" alt="MissingButton">
+    <button class="mgzrbtn" onclick="handleClick()">Click to See More of My Car</button>
 </div>
 
  <h2>Click on an image below to see more :P</h2> 
@@ -150,33 +149,35 @@
     <button class="mgzrbtn" onclick="handleClick()">Click fto see more of my car</button>
 </div>
         <style> 
-            .MGZRBUTTON {
-                display: inline-block; 
-                position: relative; 
-            }
-            .MGZRBUTTON img {
-                display: block; 
-                width: 200px;
-                height: auto;
-            }
-            .MGZRBUTTON .mgzrbtn {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%; 
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5); 
-                color: white;
-                border: none;
-                opacity: 0; 
-                transition: opacity 0.3s;
-                font-size: 16px;
-                cursor: pointer;
-            }
+           .MGZRBUTTON {
+    display: inline-block; 
+    position: relative; 
+}
 
-            .MGZRBUTTON:hover .mgzrbtn {
-                opacity: 1; 
-            }
+.MGZRBUTTON img {
+    display: block; 
+    width: 200px;
+    height: auto;
+}
+
+.MGZRBUTTON .mgzrbtn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); 
+    color: white;
+    border: none;
+    opacity: 0; 
+    transition: opacity 0.3s;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.MGZRBUTTON:hover .mgzrbtn {
+    opacity: 1; 
+}
         </style>
 
 <button class="mgzrbtn" onclick="loadImages()">Click to See More of My Car</button>
