@@ -145,24 +145,33 @@
 </div>
 
 <style> 
-    .MGZRBUTTON {
-    }
+.MGZRBUTTON {
+    display: inline-block; /* Prevents flexbox issues */
+    position: relative; /* Ensures elements stay inside */
+}
 
-    .btn {
-        background: none;
-        border: none;
-        padding: 0;
-        margin: 0;
-        cursor: pointer;
-        display: inline-block;
-        outline: none; /* Removes focus outline */
-    }
+.MGZRBUTTON img {
+    display: block; /* Ensures no extra spacing */
+    width: 120px; /* Adjust to desired size */
+    height: auto;
+}
 
-    .btn img {
-        width: 120px; /* Adjust size as needed */
-        height: auto;
-        display: block; /* Removes extra space below image */
-    }
+.MGZRBUTTON .btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* Make button match image size */
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    color: white;
+    border: none;
+    opacity: 0; /* Hide button until hover */
+    transition: opacity 0.3s;
+}
+
+.MGZRBUTTON:hover .btn {
+    opacity: 1; /* Show button on hover */
+}
 </style>
 
 
