@@ -182,14 +182,17 @@
 
     /* Fixed border area for images */
     #image-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Responsive layout */
-        gap: 10px;
+        position: relative;
+        width: 900px;
+        height: auto;
+        margin: 20px auto;
+        border: 2px solid black;
+        overflow: hidden;
+        display: flex;
+        flex-wrap: wrap;
         justify-content: center;
         align-content: center;
-        opacity: 0;
-        transition: opacity 0.5s;
-        overflow: hidden; /* Keeps images inside */
+        position: relative;
     }
 
     /* Hidden images before animation */
