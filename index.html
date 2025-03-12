@@ -179,41 +179,46 @@
             }
         </style>
 
-         <script>
-        let rowCount = 0; // Keeps track of the number of rows
-        let columnCount = 0; // Keeps track of images per row
-        
+  <div id="image-container" style="position: relative; margin-top: 20px;">
+        <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" alt="MissingButton">
+    </div>
+
+    <script>
+        let positions = [
+            {left: -300, top: 100},  // 1st image position
+            {left: -200, top: 100},  // 2nd image position
+            {left: -100, top: 100},  // 3rd image position
+            {left: -300, top: 200},  // 4th image position
+            {left: -200, top: 200},  // 5th image position
+            {left: -100, top: 200},  // 6th image position
+            {left: -300, top: 300},  // 7th image position
+            {left: -200, top: 300},  // 8th image position
+            {left: -100, top: 300}   // 9th image position
+        ];
+
+        let imgIndex = 0;
+
         function handleClick() {
+            if (imgIndex >= positions.length) return;  // Prevent adding more than 9 images
+
             // Create a new <img> element
             let img = document.createElement("img");
-            
+
             // Set the source and alt attributes for the image
-            img.src = "images/MG ZR 105 Images/MyCarAtGarage2.jpeg"; // Change this to your image path
             img.alt = "My Car at Garage";
-            
-            // Add a class to the image for styling
-            img.classList.add("image-item");
 
-            // Get the container for images
-            let container = document.getElementById("image-container");
-
-            // Calculate offsets
-            let offsetX = columnCount * 33.33; // 33.33% per image to make 3 images per row
-            let offsetY = rowCount * 200; // 200px space between rows (adjustable)
-
-            // Apply styles to position the image
-            img.style.left = offsetX + "%";
-            img.style.top = offsetY + "px";
+            // Style the image with absolute positioning based on the `positions` array
+            img.style.position = "absolute";
+            img.style.width = "100px";  // Set width of the image
+            img.style.height = "auto";  // Maintain aspect ratio
+            img.style.left = positions[imgIndex].left + "px";
+            img.style.top = positions[imgIndex].top + "px";
 
             // Append the image to the container
-            container.appendChild(img);
+            document.getElementById("image-container").appendChild(img);
 
-            // Update column count and row count
-            columnCount++;
-            if (columnCount > 2) { // If 3 images in the row
-                columnCount = 0;
-                rowCount++; // Move to the next row
-            }
+            // Move to the next image position in the array
+            imgIndex++;
         }
     </script>
 
