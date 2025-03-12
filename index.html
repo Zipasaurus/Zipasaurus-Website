@@ -179,7 +179,9 @@
             }
         </style>
 
-  <div id="image-container" style="position: relative; margin-top: 20px;"></div>
+<button class="MGZRBUTTON" onclick="loadImages()">Click to See More of My Car</button>
+
+<div id="image-container" style="position: relative; margin-top: 20px;"></div>
 
 <script>
     let positions = [
@@ -203,6 +205,9 @@
     function loadImages() {
         let container = document.getElementById("image-container");
 
+        // Prevent duplicate images if clicked multiple times
+        if (container.children.length > 0) return;
+
         imagePaths.forEach((src, index) => {
             let img = document.createElement("img");
             img.src = src;
@@ -210,22 +215,20 @@
             img.style.position = "absolute";
             img.style.width = "150px";
             img.style.height = "150px";
-            img.style.objectFit = "cover";  // Ensures the image fills 150x150 properly
+            img.style.objectFit = "cover";  
             img.style.left = positions[index].left + "px";
             img.style.top = positions[index].top + "px";
             img.style.opacity = 0;
-            img.style.transition = "opacity 1s ease-in-out";  // Fade-in effect
+            img.style.transition = "opacity 1s ease-in-out";  
 
             container.appendChild(img);
 
-            // Fade in images one by one
+            // Fade in effect
             setTimeout(() => {
                 img.style.opacity = 1;
-            }, index * 500);  // Each image fades in with a delay
+            }, index * 500);
         });
     }
-
-    window.onload = loadImages; // Load images when the page loads
 </script>
 
 <div class="last-updated">Last Updated: 2025-03-12 23:04:43</div>
