@@ -144,49 +144,46 @@
     </button>
 </div>
 
- <p>Click on an image below to see more :P</p> 
+ <h2>Click on an image below to see more :P</h2> 
 <div class="MGZRBUTTON">   
 <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" alt="MissingButton">
     <button class="btn" onclick="handleClick()">Click fto see more of my car</button>
 </div>
+        <style> 
+            .MGZRBUTTON {
+                display: inline-block; 
+                position: relative; 
+            }
+            .MGZRBUTTON img {
+                display: block; 
+                width: 200px;
+                height: auto;
+            }
+            .MGZRBUTTON .btn {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%; 
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5); 
+                color: white;
+                border: none;
+                opacity: 0.1; 
+                transition: opacity 0.3s;
+                font-size: 16px;
+                cursor: pointer;
+            }
 
-<style> 
-.MGZRBUTTON {
-    display: inline-block; 
-    position: relative; 
-}
+            .MGZRBUTTON:hover .btn {
+                opacity: 1; 
+            }
+        </style>
 
-.MGZRBUTTON img {
-    display: block; 
-    width: 200px; 
-    height: auto;
-}
-
-.MGZRBUTTON .btn {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%; 
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); 
-    color: white;
-    border: none;
-    opacity: 0.1; 
-    transition: opacity 0.3s;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.MGZRBUTTON:hover .btn {
-    opacity: 1; 
-}
-</style>
-
-<script>
-function handleClick() {
-    alert("Button clicked!");
-}
-</script>
+        <script>
+            function handleClick() {
+                alert("Button clicked!");
+            }
+        </script>
 
 
 
