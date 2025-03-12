@@ -179,23 +179,41 @@
             }
         </style>
 
-          <script>
+         <script>
+        let rowCount = 0; // Keeps track of the number of rows
+        let columnCount = 0; // Keeps track of images per row
+        
         function handleClick() {
-          
+            // Create a new <img> element
             let img = document.createElement("img");
             
-        
-            img.src = "images/MG ZR 105 Images/MyCarAtGarage2.jpeg";
+            // Set the source and alt attributes for the image
+            img.src = "images/MG ZR 105 Images/MyCarAtGarage2.jpeg"; // Change this to your image path
             img.alt = "My Car at Garage";
             
-           
-            img.style.position = "absolute";
-            img.style.left = "50%";
-            img.style.top = "50%";
-            img.style.transform = "translate(-50%, -50%)"; // Center image
+            // Add a class to the image for styling
+            img.classList.add("image-item");
 
-         
-            document.body.appendChild(img);
+            // Get the container for images
+            let container = document.getElementById("image-container");
+
+            // Calculate offsets
+            let offsetX = columnCount * 33.33; // 33.33% per image to make 3 images per row
+            let offsetY = rowCount * 200; // 200px space between rows (adjustable)
+
+            // Apply styles to position the image
+            img.style.left = offsetX + "%";
+            img.style.top = offsetY + "px";
+
+            // Append the image to the container
+            container.appendChild(img);
+
+            // Update column count and row count
+            columnCount++;
+            if (columnCount > 2) { // If 3 images in the row
+                columnCount = 0;
+                rowCount++; // Move to the next row
+            }
         }
     </script>
 
