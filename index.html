@@ -144,6 +144,11 @@
     </button>
 </div>
 
+<div class="MGZRBUTTON">
+    <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" alt="MissingButton">
+    <button class="btn" onclick="handleClick()">Click Me</button>
+</div>
+
 <style> 
 .MGZRBUTTON {
     display: inline-block; /* Prevents flexbox issues */
@@ -167,12 +172,20 @@
     border: none;
     opacity: 0; /* Hide button until hover */
     transition: opacity 0.3s;
+    font-size: 16px;
+    cursor: pointer;
 }
 
 .MGZRBUTTON:hover .btn {
     opacity: 1; /* Show button on hover */
 }
 </style>
+
+<script>
+function handleClick() {
+    alert("Button clicked!");
+}
+</script>
 
 
 
