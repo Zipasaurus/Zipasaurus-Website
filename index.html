@@ -195,28 +195,40 @@
         border-radius: 10px;
     }
 </style>
-
+ 
+<style>
+ #image-container img {
+        transition: opacity 0.5s ease-in-out;
+        }
+<style>
 <div id="image-container" style="position: relative; margin-top: 20px;"></div>
 
 <script>
-    let imagesVisible = false;
+function toggleImages() {
+    let container = document.getElementById("image-container");
+    let button = document.querySelector(".MGZRBUTTON");
 
-    function toggleImages() {
-        let container = document.getElementById("image-container");
-        let button = document.querySelector(".MGZRBUTTON");
+    if (imagesVisible) {
+        // Fade out images before removing them
+        let images = container.querySelectorAll("img");
+        images.forEach(img => {
+            img.style.opacity = "0";
+        });
 
-        if (imagesVisible) {
-            // Remove all images if they are already visible
-            container.innerHTML = "";
+        // Wait for animation to complete before removing
+        setTimeout(() => {
+            container.innerHTML = ""; 
             button.classList.remove("active"); // Remove highlight
-        } else {
-            // Show images
-            loadImages();
-            button.classList.add("active"); // Add highlight
-        }
+        }, 500); // Match the CSS transition time
 
-        imagesVisible = !imagesVisible; // Toggle state
+    } else {
+        // Show images
+        loadImages();
+        button.classList.add("active"); // Add highlight
     }
+
+    imagesVisible = !imagesVisible; // Toggle state
+}
 
     function loadImages() {
         let container = document.getElementById("image-container");
