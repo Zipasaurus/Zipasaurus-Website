@@ -138,8 +138,7 @@
     </div> 
 </div>    
 
-
- <h2>Click on an image below to see more :P</h2> 
+<h2>Click on an image below to see more :P</h2> 
 <div class="MGZRBUTTON" onclick="toggleImages()">
     <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" 
          alt="Click to see more" 
@@ -194,41 +193,41 @@
         box-shadow: 0 0 15px 5px rgb(0, 205, 0);
         border-radius: 10px;
     }
-</style>
- 
-<style>
- #image-container img {
+
+    /* Smooth fade-in and fade-out for images */
+    #image-container img {
         transition: opacity 0.5s ease-in-out;
-        }
-<style>
-<div id="image-container" style="position: relative; margin-top: 20px;"></div>
+    }
+</style>
 
 <script>
-function toggleImages() {
-    let container = document.getElementById("image-container");
-    let button = document.querySelector(".MGZRBUTTON");
+    let imagesVisible = false; // Global variable to track state
 
-    if (imagesVisible) {
-        // Fade out images before removing them
-        let images = container.querySelectorAll("img");
-        images.forEach(img => {
-            img.style.opacity = "0";
-        });
+    function toggleImages() {
+        let container = document.getElementById("image-container");
+        let button = document.querySelector(".MGZRBUTTON");
 
-        // Wait for animation to complete before removing
-        setTimeout(() => {
-            container.innerHTML = ""; 
-            button.classList.remove("active"); // Remove highlight
-        }, 500); // Match the CSS transition time
+        if (imagesVisible) {
+            // Fade out images before removing them
+            let images = container.querySelectorAll("img");
+            images.forEach(img => {
+                img.style.opacity = "0";
+            });
 
-    } else {
-        // Show images
-        loadImages();
-        button.classList.add("active"); // Add highlight
+            // Wait for animation to complete before removing
+            setTimeout(() => {
+                container.innerHTML = ""; 
+                button.classList.remove("active"); // Remove highlight
+            }, 500); // Match the CSS transition time
+
+        } else {
+            // Show images
+            loadImages();
+            button.classList.add("active"); // Add highlight
+        }
+
+        imagesVisible = !imagesVisible; // Toggle state
     }
-
-    imagesVisible = !imagesVisible; // Toggle state
-}
 
     function loadImages() {
         let container = document.getElementById("image-container");
@@ -251,12 +250,23 @@ function toggleImages() {
             img.style.margin = "10px";
             img.style.borderRadius = "8px";
             img.style.transition = "opacity 0.5s ease-in-out";
-            img.style.opacity = 0;
+            img.style.opacity = "0"; // Start with opacity 0
 
             container.appendChild(img);
-            setTimeout(() => img.style.opacity = 1, 100);
+            setTimeout(() => img.style.opacity = "1", 100); // Fade-in effect
         });
+    }
+
+    // Fix for the socials button (if not defined elsewhere)
+    function toggleContent(id) {
+        let content = document.getElementById(id);
+        if (content.style.display === "none" || content.style.display === "") {
+            content.style.display = "block";
+        } else {
+            content.style.display = "none";
+        }
     }
 </script>
 
-<div class="last-updated">Last Updated: 2025-03-13 00:57:51</div>
+<div class="last-updated">Last Updated: 2025-03-13 00:43:29</div>
+
