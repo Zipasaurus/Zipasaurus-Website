@@ -7,6 +7,24 @@
     <title>Zipasaurus - Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --page-background: rgba(244, 244, 244, 0.2); /* Background for the entire page */
+            --header-background: rgba(30, 30, 30, 0.4); /* Header background */
+            --text-primary: rgba(51, 51, 51, 1); /* Primary text color */
+            --text-secondary: rgba(68, 68, 68, 1); /* Secondary text color (e.g., headings) */
+            --text-light: rgba(255, 255, 255, 1); /* Light text for header and buttons */
+            --text-muted: rgba(102, 102, 102, 1); /* Muted text for last-updated */
+            --accent: rgba(0, 205, 0, 1); /* Green accent color */
+            --accent-hover: rgba(30, 252, 30, 1); /* Lighter green for hover states */
+            --container-background: rgba(255, 255, 255, 1); /* Main container background */
+            --section-background: rgba(249, 249, 249, 1); /* Section background */
+            --skills-background: rgba(224, 224, 224, 1); /* Skills list background */
+            --shadow: rgba(0, 0, 0, 0.1); /* Shadow color */
+            --shadow-accent: rgba(0, 205, 0, 0.5); /* Accent shadow for gallery button */
+            --overlay-background: rgba(0, 0, 0, 0.6); /* Overlay for image button */
+            --focus-ring: rgba(0, 205, 0, 0.4); /* Focus ring for accessibility */
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -15,8 +33,8 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #f4f4f4;
-            color: #333;
+            background: var(--page-background);
+            color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
             display: flex;
@@ -24,13 +42,13 @@
         }
 
         header {
-            background: #1e1e1e;
-            color: #fff;
+            background: var(--header-background);
+            color: var(--text-light);
             padding: 15px 0;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px var(--shadow);
         }
 
         .nav-container {
@@ -45,7 +63,7 @@
         .logo {
             font-size: 1.8em;
             font-weight: 700;
-            color: #00cd00;
+            color: var(--accent);
         }
 
         nav ul {
@@ -55,7 +73,7 @@
         }
 
         nav ul li a {
-            color: #fff;
+            color: var(--text-light);
             text-decoration: none;
             font-weight: 500;
             padding: 10px;
@@ -64,7 +82,7 @@
 
         nav ul li a:hover,
         nav ul li a.active {
-            color: #00cd00;
+            color: var(--accent);
         }
 
         .hamburger {
@@ -72,7 +90,7 @@
             font-size: 1.5em;
             background: none;
             border: none;
-            color: #fff;
+            color: var(--text-light);
             cursor: pointer;
         }
 
@@ -80,10 +98,10 @@
             max-width: 1000px;
             width: 90%;
             margin: 40px auto;
-            background: #fff;
+            background: var(--container-background);
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px var(--shadow);
         }
 
         .page {
@@ -103,7 +121,7 @@
         h1 {
             font-size: 2.5em;
             font-weight: 700;
-            color: #00cd00;
+            color: var(--accent);
             margin-bottom: 20px;
             text-align: center;
         }
@@ -111,36 +129,36 @@
         h2 {
             font-size: 1.8em;
             font-weight: 600;
-            color: #333;
+            color: var(--text-primary);
             margin: 30px 0 15px;
-            border-bottom: 2px solid #00cd00;
+            border-bottom: 2px solid var(--accent);
             padding-bottom: 5px;
         }
 
         h3 {
             font-size: 1.4em;
             font-weight: 600;
-            color: #444;
+            color: var(--text-secondary);
             margin-bottom: 10px;
         }
 
         .section {
             margin: 20px 0;
             padding: 20px;
-            background: #f9f9f9;
+            background: var(--section-background);
             border-radius: 8px;
             transition: box-shadow 0.3s ease;
         }
 
         .section:hover {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px var(--shadow);
         }
 
         .btn {
             display: inline-block;
             padding: 10px 20px;
-            background: #00cd00;
-            color: #fff;
+            background: var(--accent);
+            color: var(--text-light);
             font-size: 1em;
             font-weight: 500;
             text-decoration: none;
@@ -152,13 +170,13 @@
         }
 
         .btn:hover {
-            background: #1efc1e;
+            background: var(--accent-hover);
             transform: scale(1.05);
         }
 
         .btn:focus {
             outline: none;
-            box-shadow: 0 0 0 3px rgba(0, 205, 0, 0.4);
+            box-shadow: 0 0 0 3px var(--focus-ring);
         }
 
         .skills-list {
@@ -169,7 +187,7 @@
         }
 
         .skills-list li {
-            background: #e0e0e0;
+            background: var(--skills-background);
             padding: 10px;
             border-radius: 6px;
             text-align: center;
@@ -212,10 +230,10 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: #fff;
+            color: var(--text-light);
             font-size: 1.2em;
             font-weight: 600;
-            background: rgba(0, 0, 0, 0.6);
+            background: var(--overlay-background);
             padding: 10px 20px;
             border-radius: 6px;
             opacity: 0;
@@ -231,12 +249,12 @@
         }
 
         .image-button.active {
-            box-shadow: 0 0 15px rgba(0, 205, 0, 0.5);
+            box-shadow: 0 0 15px var(--shadow-accent);
         }
 
         .last-updated {
             text-align: center;
-            color: #666;
+            color: var(--text-muted);
             font-size: 0.9em;
             margin-top: 30px;
         }
@@ -401,7 +419,7 @@
             </div>
         </div>
 
-        <div class="last-updated">Last Updated: 2025-08-06 20:46:51</div>
+        <div class="last-updated">Last Updated: 2025-08-06 20:40:20</div>
     </div>
 
     <script>
