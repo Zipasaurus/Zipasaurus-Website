@@ -208,41 +208,30 @@
             gap: 10px;
             margin-top: 15px;
             padding: 10px;
-            background: var(--section-background);
-            /* rgba(249, 249, 249, 0.6) */
+            background: var(--section-background); 
             border-top: 2px solid var(--accent);
-            /* rgba(0, 205, 0, 1) */
             list-style: none;
-            /* Remove default bullets */
             padding-left: 10px;
-            /* Corrected from 10 to 10px */
             margin-left: 50px;
-            /* Move the whole row of boxes right by 50px */
         }
 
         .skills-list li {
             background: var(--container-background);
-            /* rgba(0, 0, 0, 0.4) */
             padding: 15px 15px;
             border-radius: 4px;
             font-size: 0.9em;
             position: relative;
             box-shadow: 0 2px 4px var(--shadow);
-            /* rgba(0, 40, 0, 1) */
             color: var(--text-light);
-            /* rgba(255, 255, 255, 1) for text inside boxes */
         }
 
         #.skills-list li:not(:last-child)::after {
             #content: '•';
-           # /* Green dot separator */
            # position: absolute;
            # right: -10px;
-           # /* Move dot to the right side between boxes */
            # top: 50%;
            # transform: translateY(-50%);
           #  color: var(--accent);
-          #  /* rgba(0, 205, 0, 1) */
            # font-size: 1.2em;
         }
 
@@ -314,7 +303,6 @@
             margin-top: 30px;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .nav-container {
                 flex-direction: column;
@@ -559,3 +547,4 @@
 </body>
 
 </html>
+
