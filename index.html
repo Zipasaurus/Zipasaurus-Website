@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,21 +9,36 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --page-background: rgba(44, 44, 44, 0.2); /* Background for the entire page */
-            --header-background: rgba(30, 30, 30, 0.4); /* Header background */
-            --text-primary: rgba(51, 51, 51, 1); /* Primary text color */
-            --text-secondary: rgba(68, 68, 68, 1); /* Secondary text color (e.g., headings) */
-            --text-light: rgba(255, 255, 255, 1); /* Light text for header and buttons */
-            --text-muted: rgba(102, 102, 102, 1); /* Muted text for last-updated */
-            --accent: rgba(0, 205, 0, 1); /* Green accent color */
-            --accent-hover: rgba(30, 252, 30, 1); /* Lighter green for hover states */
-            --container-background: rgba(255, 255, 255, 1); /* Main container background */
-            --section-background: rgba(249, 249, 249, 1); /* Section background */
-            --skills-background: rgba(224, 224, 224, 1); /* Skills list background */
-            --shadow: rgba(0, 40, 0, 0.1); /* Shadow color */
-            --shadow-accent: rgba(0, 205, 0, 0.5); /* Accent shadow for gallery button */
-            --overlay-background: rgba(0, 0, 0, 0.6); /* Overlay for image button */
-            --focus-ring: rgba(0, 205, 0, 0.4); /* Focus ring for accessibility */
+            --page-background: rgba(44, 84, 1, 0.4);
+            /* Background for the entire page */
+            --header-background: rgba(30, 30, 30, 0.7);
+            /* Header background */
+            --text-primary: rgba(51, 80, 51, 4);
+            /* Primary text color */
+            --text-secondary: rgba(68, 68, 68, 1);
+            /* Secondary text color (e.g., headings) */
+            --text-light: rgba(255, 255, 255, 1);
+            /* Light text for header and buttons */
+            --text-muted: rgba(102, 102, 102, 1);
+            /* Muted text for last-updated */
+            --accent: rgba(0, 205, 0, 1);
+            /* Green accent color */
+            --accent-hover: rgba(30, 252, 30, 1);
+            /* Lighter green for hover states */
+            --container-background: rgba(0, 0, 0, 0.4);
+            /* Main container background */
+            --section-background: rgba(249, 249, 249, 0.6);
+            /* Section background */
+            --skills-background: rgba(224, 224, 224, 1);
+            /* Skills list background */
+            --shadow: rgba(0, 40, 0, 1);
+            /* Shadow color */
+            --shadow-accent: rgba(0, 205, 0, 1);
+            /* Accent shadow for gallery button */
+            --overlay-background: rgba(0, 0, 0, 0.6);
+            /* Overlay for image button */
+            --focus-ring: rgba(0, 205, 0, 0.4);
+            /* Focus ring for accessibility */
         }
 
         * {
@@ -69,7 +85,7 @@
         nav ul {
             list-style: none;
             display: flex;
-            gap: 20px;
+            gap: 0px;
         }
 
         nav ul li a {
@@ -114,8 +130,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h1 {
@@ -180,17 +203,49 @@
         }
 
         .skills-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
             margin-top: 15px;
+            padding: 10px;
+            background: var(--section-background);
+            /* rgba(249, 249, 249, 0.6) */
+            border-top: 2px solid var(--accent);
+            /* rgba(0, 205, 0, 1) */
+            list-style: none;
+            /* Remove default bullets */
+            padding-left: 10px;
+            /* Corrected from 10 to 10px */
+            margin-left: 50px;
+            /* Move the whole row of boxes right by 50px */
         }
 
         .skills-list li {
-            background: var(--skills-background);
-            padding: 10px;
-            border-radius: 6px;
-            text-align: center;
+            background: var(--container-background);
+            /* rgba(0, 0, 0, 0.4) */
+            padding: 15px 15px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            position: relative;
+            box-shadow: 0 2px 4px var(--shadow);
+            /* rgba(0, 40, 0, 1) */
+            color: var(--text-light);
+            /* rgba(255, 255, 255, 1) for text inside boxes */
+        }
+
+        #.skills-list li:not(:last-child)::after {
+            #content: '•';
+           # /* Green dot separator */
+           # position: absolute;
+           # right: -10px;
+           # /* Move dot to the right side between boxes */
+           # top: 50%;
+           # transform: translateY(-50%);
+          #  color: var(--accent);
+          #  /* rgba(0, 205, 0, 1) */
+           # font-size: 1.2em;
+        }
+
         }
 
         .image-gallery {
@@ -315,6 +370,7 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="nav-container">
@@ -337,8 +393,11 @@
             <h1>About Me</h1>
             <div class="section">
                 <h2>Profile</h2>
-                <p>I'm an 18-year-old aspiring game designer from the United Kingdom, passionate about creating immersive digital experiences. I am currently learning Unity and Blender to develop my skills in game design and 3D modeling.</p>
+                <p>I'm an 19-year-old aspiring game designer from the United Kingdom, passionate about creating immersive digital experiences. I am currently Uing unity and blender for  game design and 3D modeling.</p>
+                <p><<><><><><><><><><><<><><><><><><><><><><>></p>
                 <p>Beyond tech, I have a love for cars and enjoy DJing music from the 80s to the 2000s. Fun fact: When boredom strikes, I want to do everything and nothing at the same time!</p>
+                <p><<><><><><><><><><><<><><><><><><><><><><>></p>
+                <p>You can find more information about me using the 3 lines in the top left<p>
             </div>
         </div>
 
@@ -347,11 +406,11 @@
             <div class="section">
                 <h2>Technical Skills</h2>
                 <ul class="skills-list">
-                    <li>Unity (Beginner)</li>
-                    <li>Blender (Beginner)</li>
-                    <li>HTML/CSS</li>
-                    <li>JavaScript</li>
-                    <li>DJing Software</li>
+                    <li>Unity ~ 3Years</li>
+                    <li>Blender ~ 3Years</li>
+                    <li>HTML/CSS Basic </li>
+                    <li>C# ~ 1Years</li>
+                    <li>Video editing ~ adequate</li>
                 </ul>
             </div>
             <div class="section">
@@ -419,7 +478,7 @@
             </div>
         </div>
 
-        <div class="last-updated">Last Updated: 2025-08-06 20:53:15</div>
+        <div class="last-updated">Last Updated: 2025-08-06 20:51:07</div>
     </div>
 
     <script>
@@ -498,5 +557,5 @@
         showPage('about');
     </script>
 </body>
-</html>
 
+</html>
