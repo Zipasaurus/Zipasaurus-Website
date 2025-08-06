@@ -33,23 +33,22 @@
             border-radius: 8px;
         }
         .btn {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            background-color:rgb(0, 205, 0);
-            color:rgb(255, 255 ,255);
-            text-decoration: none;
-            border-radius: 4px;
-            transition: background 0.3s, transform 0.3s;
-            cursor: pointer;
-            border: none;
-            font-size: 16px;
-        }
+  margin-top: 10px;
+  background: #00cd00;
+  box-shadow: 0 4px 10px rgba(0, 255, 0, 0.2);
+}
         .btn:hover {
-            background-color:rgb(111, 205, 100);
-            color:rgb(0, 255 ,0);
-            transform: scale(1.02);
-        }
+    background: #1efc1e;
+    color: #000;
+    transform: scale(1.05);
+}
+        .panel {
+    border-left: 4px solid #00cd00;
+    transition: box-shadow 0.3s ease-in-out;
+}
+        .panel:hover {
+    box-shadow: 0 0 10px rgba(0, 205, 0, 0.4);
+}
         .content {
             display: none;
             padding: 10px;
@@ -274,5 +273,6 @@
 </script>
 
 <div class="last-updated">Last Updated: 2025-08-06 20:37:30</div>
+
 
 
