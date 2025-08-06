@@ -6,8 +6,12 @@
 }
 
 body {
-    font-family: 'MyCustomFont';
-
+  font-family: 'MyCustomFont', sans-serif;
+  line-height: 1.6;
+  font-size: 16px;
+  color: #fff;
+  background: #121212;
+}
 }
 .last-updated {
     font-size: 14px;
@@ -25,3 +29,4 @@ body {
 }
 (
 )
+
