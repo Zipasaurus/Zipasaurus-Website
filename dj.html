@@ -159,6 +159,13 @@
             z-index: 10;
         }
 
+        #webamp-container iframe {
+            width: 100%;
+            height: 300px;
+            border: none;
+            border-radius: 8px;
+        }
+
         .music-gallery {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -255,7 +262,7 @@
             <button class="hamburger" aria-label="Toggle navigation">☰</button>
             <nav>
                 <ul>
-                    <li><a href="index.html">Back to Portfolio</a></li>
+                    <li><a href="/index.html">Back to Portfolio</a></li>
                     <li><a href="https://open.spotify.com/user/zipasaurus" target="_blank" rel="noopener">Spotify</a></li>
                     <li><a href="https://soundcloud.com/zipasaurus" target="_blank" rel="noopener">SoundCloud</a></li>
                     <li><a href="https://www.youtube.com/@zipasaurus" target="_blank" rel="noopener">YouTube</a></li>
@@ -269,14 +276,13 @@
         <div class="section">
             <h2>My Music Player</h2>
             <div id="webamp-container">
-                <div id="webamp"></div>
+                <iframe src="/webamp-player.html" frameborder="0"></iframe>
             </div>
         </div>
 
         <div class="section">
             <h2>Music Uploads</h2>
             <div class="music-gallery">
-                <!-- Example music items -->
                 <a href="https://www.youtube.com/watch?v=example1" class="music-item" target="_blank" rel="noopener">
                     <img src="/images/music-thumb1.jpg" alt="Mix 1 Thumbnail">
                     <div class="overlay-text">Listen to Mix 1</div>
@@ -285,7 +291,6 @@
                     <img src="/images/music-thumb2.jpg" alt="Mix 2 Thumbnail">
                     <div class="overlay-text">Listen to Mix 2</div>
                 </a>
-                <!-- Add more music items as needed -->
             </div>
         </div>
 
@@ -302,33 +307,7 @@
         <div class="last-updated">Last Updated: 2025-08-23 21:30:00</div>
     </div>
 
-    <script src="https://unpkg.com/webamp@1.4.2/built/webamp.bundle.min.js"></script>
     <script>
-        // Initialize Webamp
-        const webamp = new Webamp({
-            initialTracks: [
-                {
-                    metaData: {
-                        artist: "DJ Zipasaurus",
-                        title: "Retro Mix 1"
-                    },
-                    url: "/audio/retro-mix1.mp3",
-                    duration: 180
-                },
-                {
-                    metaData: {
-                        artist: "DJ Zipasaurus",
-                        title: "80s Vibe"
-                    },
-                    url: "/audio/80s-vibe.mp3",
-                    duration: 240
-                }
-                // Add more tracks as needed
-            ]
-        });
-
-        webamp.renderWhenReady(document.getElementById('webamp'));
-
         // Hamburger menu
         const hamburger = document.querySelector('.hamburger');
         const navMenu = document.querySelector('nav ul');
