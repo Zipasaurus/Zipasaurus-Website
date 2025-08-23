@@ -69,7 +69,7 @@
             gap: 20px;
         }
 
-        nav ul li a {
+        nav ul li a.nav-link {
             color: var(--text-light);
             text-decoration: none;
             font-weight: 500;
@@ -77,7 +77,7 @@
             transition: color 0.3s ease;
         }
 
-        nav ul li a:hover {
+        nav ul li a.nav-link:hover {
             color: var(--accent);
         }
 
@@ -176,13 +176,6 @@
             cursor: pointer;
         }
 
-        .music-item img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            transition: opacity 0.3s ease;
-        }
-
         .music-item .overlay-text {
             position: absolute;
             top: 50%;
@@ -196,10 +189,6 @@
             border-radius: 6px;
             opacity: 0;
             transition: opacity 0.3s ease;
-        }
-
-        .music-item:hover img {
-            opacity: 0.7;
         }
 
         .music-item:hover .overlay-text {
@@ -246,10 +235,6 @@
             h1 {
                 font-size: 2em;
             }
-
-            .music-item img {
-                width: 150px;
-            }
         }
     </style>
 </head>
@@ -260,10 +245,10 @@
             <button class="hamburger" aria-label="Toggle navigation">☰</button>
             <nav>
                 <ul>
-                    <li><a href="/index.html">Back to Portfolio</a></li>
-                    <li><a href="https://open.spotify.com/user/zipasaurus" target="_blank" rel="noopener">Spotify</a></li>
-                    <li><a href="https://soundcloud.com/zipasaurus" target="_blank" rel="noopener">SoundCloud</a></li>
-                    <li><a href="https://www.youtube.com/@zipasaurus" target="_blank" rel="noopener">YouTube</a></li>
+                    <li><a href="/index.html" class="nav-link">Back to Portfolio</a></li>
+                    <li><a href="https://open.spotify.com/user/zipasaurus" class="nav-link" target="_blank" rel="noopener">Spotify</a></li>
+                    <li><a href="https://soundcloud.com/zipasaurus" class="nav-link" target="_blank" rel="noopener">SoundCloud</a></li>
+                    <li><a href="https://www.youtube.com/@zipasaurus" class="nav-link" target="_blank" rel="noopener">YouTube</a></li>
                 </ul>
             </nav>
         </div>
