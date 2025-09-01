@@ -86,18 +86,27 @@
             display: flex;
             gap: 20px;
         }
+nav ul li a {
+    padding: 8px 12px;
+    white-space: nowrap;
+    color: var(--accent);
+    background: rgb(100, 100, 100); /* fixed syntax */
+    border-radius: 12px;
+    box-shadow: 0 4px 20px var(--shadow);
+    text-decoration: none;
+    transition: transform 0.2s ease, background 0.3s ease, color 0.3s ease;
+}
 
-        nav ul li a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-weight: 500;
-            padding: 10px;
-            transition: color 0.3s ease, transform 0.2s;
-        }
+nav ul li a:hover {
+    transform: scale(1.1);
+    background: var(--accent);
+    color: var(--accent); /* make sure --text-dark exists, else use #000 */
+}
+
 
         nav ul li a:hover,
         nav ul li a.active {
-            color: var(--accent);
+            color: var(--shadow);
             transform: scale(1.1);
         }
 
@@ -672,4 +681,5 @@
 </body>
 
 </html>
+
 
