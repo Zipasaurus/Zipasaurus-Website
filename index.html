@@ -4,41 +4,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Zipasaurus: Aspiring UK game designer, car enthusiast, and DJ. Explore my games, cars, and beats!">
+    <meta name="keywords" content="game design, Unity, Blender, cars, DJ, anime, VRChat, portfolio">
     <link rel="icon" type="image/x-icon" href="/images/PageIcon.ico">
     <title>Zipasaurus - Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <style>
         :root {
-            --page-background: rgba(44, 84, 1, 0.4);
-            /* Background for the entire page */
-            --header-background: rgba(30, 30, 30, 0.7);
-            /* Header background */
-            --text-primary: rgba(51, 80, 51, 4);
-            /* Primary text color */
-            --text-secondary: rgba(68, 68, 68, 1);
-            /* Secondary text color (e.g., headings) */
-            --text-light: rgba(255, 255, 255, 1);
-            /* Light text for header and buttons */
-            --text-muted: rgba(102, 102, 102, 1);
-            /* Muted text for last-updated */
-            --accent: rgba(0, 205, 0, 1);
-            /* Green accent color */
-            --accent-hover: rgba(30, 252, 30, 1);
-            /* Lighter green for hover states */
+            --page-background: linear-gradient(to bottom, rgba(44, 84, 1, 0.4), rgba(0, 205, 0, 0.2));
+            --header-background: rgba(30, 30, 30, 0.8);
+            --text-primary: #335033; /* Solid color for readability */
+            --text-secondary: #444444;
+            --text-light: #ffffff;
+            --text-muted: #666666;
+            --accent: #00cd00;
+            --accent-hover: #1eff1e;
             --container-background: rgba(0, 0, 0, 0.4);
-            /* Main container background */
-            --section-background: rgba(249, 249, 249, 0.6);
-            /* Section background */
-            --skills-background: rgba(224, 224, 224, 1);
-            /* Skills list background */
-            --shadow: rgba(0, 40, 0, 1);
-            /* Shadow color */
-            --shadow-accent: rgba(0, 205, 0, 1);
-            /* Accent shadow for gallery button */
+            --section-background: rgba(249, 249, 249, 0.7);
+            --skills-background: #e0e0e0;
+            --shadow: rgba(0, 40, 0, 0.5);
+            --shadow-accent: #00cd00;
             --overlay-background: rgba(0, 0, 0, 0.6);
-            /* Overlay for image button */
             --focus-ring: rgba(0, 205, 0, 0.4);
-            /* Focus ring for accessibility */
+            --dark-mode-bg: #121212;
+            --dark-mode-text: #e0e0e0;
+        }
+
+        [data-theme="dark"] {
+            --page-background: linear-gradient(to bottom, #0a1a0a, #003300);
+            --text-primary: var(--dark-mode-text);
+            --section-background: rgba(30, 30, 30, 0.8);
+            --container-background: rgba(20, 20, 20, 0.7);
         }
 
         * {
@@ -55,6 +52,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2z" fill="%2300cd00"/></svg>'), auto;
         }
 
         header {
@@ -80,12 +78,13 @@
             font-size: 1.8em;
             font-weight: 700;
             color: var(--accent);
+            cursor: pointer;
         }
 
         nav ul {
             list-style: none;
             display: flex;
-            gap: 0px;
+            gap: 20px;
         }
 
         nav ul li a {
@@ -93,12 +92,13 @@
             text-decoration: none;
             font-weight: 500;
             padding: 10px;
-            transition: color 0.3s ease;
+            transition: color 0.3s ease, transform 0.2s;
         }
 
         nav ul li a:hover,
         nav ul li a.active {
             color: var(--accent);
+            transform: scale(1.1);
         }
 
         .hamburger {
@@ -110,8 +110,18 @@
             cursor: pointer;
         }
 
+        .dark-mode-toggle {
+            background: var(--accent);
+            color: var(--text-light);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             width: 90%;
             margin: 40px auto;
             background: var(--container-background);
@@ -122,23 +132,13 @@
 
         .page {
             display: none;
+            opacity: 0; /* Ensure hidden pages start invisible */
         }
 
         .page.active {
             display: block;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            opacity: 1; /* Ensure active page is fully visible */
+            animation: none; /* Remove CSS animation to rely on GSAP */
         }
 
         h1 {
@@ -147,6 +147,22 @@
             color: var(--accent);
             margin-bottom: 20px;
             text-align: center;
+            position: relative;
+        }
+
+        h1::after {
+            content: '🦕';
+            font-size: 0.8em;
+            position: absolute;
+            top: -10px;
+            right: -20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
         }
 
         h2 {
@@ -170,11 +186,12 @@
             padding: 20px;
             background: var(--section-background);
             border-radius: 8px;
-            transition: box-shadow 0.3s ease;
+            transition: box-shadow 0.3s ease, transform 0.3s;
         }
 
         .section:hover {
             box-shadow: 0 4px 15px var(--shadow);
+            transform: translateY(-5px);
         }
 
         .btn {
@@ -194,7 +211,7 @@
 
         .btn:hover {
             background: var(--accent-hover);
-            transform: scale(1.05);
+            transform: scale(1.05) rotate(2deg);
         }
 
         .btn:focus {
@@ -208,33 +225,34 @@
             gap: 10px;
             margin-top: 15px;
             padding: 10px;
-            background: var(--section-background); 
+            background: var(--section-background);
             border-top: 2px solid var(--accent);
             list-style: none;
             padding-left: 10px;
-            margin-left: 50px;
         }
 
         .skills-list li {
             background: var(--container-background);
-            padding: 15px 15px;
+            padding: 15px;
             border-radius: 4px;
             font-size: 0.9em;
-            position: relative;
             box-shadow: 0 2px 4px var(--shadow);
             color: var(--text-light);
+            transition: transform 0.3s;
         }
 
-        #.skills-list li:not(:last-child)::after {
-            #content: '•';
-           # position: absolute;
-           # right: -10px;
-           # top: 50%;
-           # transform: translateY(-50%);
-          #  color: var(--accent);
-           # font-size: 1.2em;
+        .skills-list li:hover {
+            transform: scale(1.1);
         }
 
+        .skills-list li:not(:last-child)::after {
+            content: '•';
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+            font-size: 1.2em;
         }
 
         .image-gallery {
@@ -242,17 +260,18 @@
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
             margin-top: 20px;
+            perspective: 1000px;
         }
 
         .image-gallery img {
             width: 100%;
             height: auto;
             border-radius: 8px;
-            transition: transform 0.3s ease;
+            transition: transform 0.5s ease;
         }
 
         .image-gallery img:hover {
-            transform: scale(1.05);
+            transform: rotateY(10deg) scale(1.05);
         }
 
         .image-button {
@@ -294,6 +313,18 @@
 
         .image-button.active {
             box-shadow: 0 0 15px var(--shadow-accent);
+        }
+
+        .project-embed {
+            margin-top: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .music-player {
+            margin-top: 20px;
+            text-align: center;
         }
 
         .last-updated {
@@ -362,19 +393,21 @@
 <body>
     <header>
         <div class="nav-container">
-            <div class="logo">Zipasaurus</div>
+            <div class="logo" onclick="playDinoRoar()">Zipasaurus 🦖</div>
             <button class="hamburger" aria-label="Toggle navigation">☰</button>
             <nav>
                 <ul>
                     <li><a href="#about" class="nav-link active" data-page="about">About</a></li>
                     <li><a href="#skills" class="nav-link" data-page="skills">Skills & Experience</a></li>
+                    <li><a href="#projects" class="nav-link" data-page="projects">Projects</a></li>
                     <li><a href="#specs" class="nav-link" data-page="specs">Setup</a></li>
                     <li><a href="#socials" class="nav-link" data-page="socials">Socials</a></li>
                     <li><a href="#gallery" class="nav-link" data-page="gallery">Gallery</a></li>
-                    <li><a href="dj.html">DJ Zone - WIP</a></li>
-
+                    <li><a href="#adventures" class="nav-link" data-page="adventures">Adventures</a></li>
+                    <li><a href="dj.html">DJ Zone</a></li>
                 </ul>
             </nav>
+            <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
         </div>
     </header>
 
@@ -383,13 +416,10 @@
             <h1>About Me</h1>
             <div class="section">
                 <h2>Profile</h2>
-                <p>I'm an 19-year-old aspiring game designer from the United Kingdom, passionate about creating immersive digital experiences. I am currently Using unity and blender for  game design and 3D modeling.</p>
-                <br>
-                <p>I'm also trying to learn how to create the OldSkool sounds that everyone loved
-                <br>
-                <p>Beyond tech, I have a love for cars and enjoy DJing music from the 80s to the 2000s. </p>
-                 <br>
-                <p>Fun fact: When boredom strikes, I want to do everything and nothing at the same time!<p>
+                <p>I'm a 19-year-old aspiring game designer from the United Kingdom, passionate about crafting digital worlds and experiences using Unity and blender</p>
+                <p>I love recreating the nostalgic OldSkool sounds that get everyone moving, inspired by 80s–2000s music. Catch me DJing techno, DnB, or house at VRChat raves!</p>
+                <p>I'm a car enthusiast—my yellow MG ZR 105 is my pride and joy. Anime watcher カジュアル, and I'm a super friendly Brit who loves connecting with people.</p>
+                <p>Fun fact: I once had a hamster named Devil.... Also, when boredom hits, I want to do everything and nothing at once!</p>
             </div>
         </div>
 
@@ -398,19 +428,33 @@
             <div class="section">
                 <h2>Technical Skills</h2>
                 <ul class="skills-list">
-                    <li>Unity ~ 3Years</li>
-                    <li>Blender ~ 3Years</li>
-                    <li>HTML/CSS ~ Basic </li>
-                    <li>C# ~ 1Years</li>
-                    <li>Video editing ~ adequate</li>
+                    <li>Unity ~ 3 Years</li>
+                    <li>Blender ~ 3 Years</li>
+                    <li>HTML/CSS ~ Basic</li>
+                    <li>C# ~ 1 Year</li>
+                    <li>Video Editing ~ Adequate</li>
                 </ul>
             </div>
             <div class="section">
                 <h2>Experience</h2>
-                <p><strong>Self-Taught Game Developer</strong> (2020 ~ Present)</p>
-                <p>Learning and experimenting with Unity and Blender to create small game prototypes and 3D models.</p>
-                <p><strong>Content Creator</strong> (2018 - Present)</p>
-                <p>Building an online presence through streaming and social media sharing my journey in game development and car enthusiasm.</p>
+                <p><strong>Self-Taught Game Developer</strong> (2020–Present)</p>
+                <p>Building small game prototypes and 3D models with Unity and Blender, inspired by anime and fantasy.</p>
+                <p><strong>Content Creator</strong> (2018–Present)</p>
+                <p>Streaming and sharing my journey in game dev, car modding, anime, and DJing on Twitch, YouTube, and X.</p>
+            </div>
+        </div>
+
+        <div id="projects" class="page">
+            <h1>Projects</h1>
+            <div class="section">
+                <h2>Game Dev Highlights</h2>
+                <p>Explore my creations on itch.io—fantasy and action-packed experiences!</p>
+                <h3>Dungeons with a Pinch of Magic</h3>
+                <p>A shooter where you battle ghosts in a magical dungeon. Try it below!</p>
+                <div class="project-embed">
+                    <iframe src="https://zipasaurus.itch.io/dungeons-with-a-pinch-of-magic" width="100%" height="400" frameborder="0"></iframe>
+                </div>
+                <p>More to come!</p>
             </div>
         </div>
 
@@ -426,16 +470,16 @@
             <div class="section">
                 <h2>Peripherals</h2>
                 <p><strong>Monitor:</strong> 165Hz 2560x1440 AOC</p>
-                <p><strong>Monitor 2:</strong> 60Hz 1920x1080 SAMSUNG</p>
+                <p><strong>Monitor 2:</strong> 60Hz 1920x1080 Samsung</p>
                 <p><strong>Keyboard:</strong> KeyChron C3 Pro</p>
                 <p><strong>Mouse:</strong> Logitech G502 Hero</p>
-                <p><strong>Headphones:</strong> HyperX Cloud 3 / Skull Candy Crusher Evo 2</p>
+                <p><strong>Headphones:</strong> HyperX Cloud 3 / Skullcandy Crusher Evo 2</p>
                 <p><strong>Microphone:</strong> Neewer NW-700</p>
                 <p><strong>Speakers:</strong> Logitech Z4</p>
             </div>
             <div class="section">
                 <h2>Streaming PC</h2>
-                <p><strong>GPU:</strong>Intugrated</p>
+                <p><strong>GPU:</strong> Integrated</p>
                 <p><strong>CPU:</strong> Ryzen 5 3200G</p>
                 <p><strong>RAM:</strong> 16GB DDR3 2600 MHz</p>
                 <p><strong>Storage:</strong> 256GB NVMe SSD</p>
@@ -446,34 +490,51 @@
             <h1>Socials & More</h1>
             <div class="section">
                 <h2>Connect With Me</h2>
-                <p>Find me online under the username <strong>Zipasaurus</strong>. Your support means a lot!</p>
+                <p>Find me as <strong>Zipasaurus</strong> across platforms. Your support fuels my creativity!</p>
                 <p>
                     <a href="https://www.instagram.com/zipasaurus" class="btn" target="_blank" rel="noopener">Instagram</a>
-                    <a href="https://x.com/Zipasaurus" class="btn" target="_blank" rel="noopener">X(Twitter)</a>
+                    <a href="https://x.com/Zipasaurus" class="btn" target="_blank" rel="noopener">X</a>
                     <a href="https://www.youtube.com/@zipasaurus" class="btn" target="_blank" rel="noopener">YouTube</a>
                     <a href="https://www.twitch.tv/zipasaurus" class="btn" target="_blank" rel="noopener">Twitch</a>
                     <a href="https://throne.com/zipasaurus" class="btn" target="_blank" rel="noopener">Throne</a>
                     <a href="https://zipasaurus.itch.io/" class="btn" target="_blank" rel="noopener">Itch.io</a>
                     <a href="https://soundcloud.com/zipasaurus/tracks" class="btn" target="_blank" rel="noopener">SoundCloud</a>
-                    
                 </p>
-                <p>Fun fact: Purchases via my Throne grant credits on my website!</p>
+                <p>Fun fact: Purchases via Throne grant credits for exclusive content on my site!</p>
             </div>
         </div>
 
         <div id="gallery" class="page">
             <h1>Car Gallery</h1>
             <div class="section">
-                <h2>MG ZR 105 - Click the image to view more</h2>
+                <h2>MG ZR 105 - Click to Explore</h2>
                 <div class="image-button" onclick="toggleImages()" role="button" aria-expanded="false" aria-controls="image-container">
-                    <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" alt="Click to view car gallery">
+                    <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" alt="Click to view MG ZR 105 car gallery">
                     <div class="overlay-text">View Gallery</div>
                 </div>
                 <div id="image-container" class="image-gallery"></div>
+                <p>Planning to add anime-style car art soon—think Initial D vibes!</p>
             </div>
         </div>
 
-        <div class="last-updated">Last Updated: 2025-09-01 18:07:31</div>
+        <div id="adventures" class="page">
+            <h1>Recent Adventures</h1>
+            <div class="section">
+                <h2>From My World</h2>
+                <p>Snippets from my life</p>
+                <ul>
+                    <li>MG ZR 105 shining with new Accelera tires. (July 2024)</li>                
+                </ul>
+                <p>Follow me on <a href="https://x.com/Zipasaurus" target="_blank" rel="noopener">X</a> for live updates!</p>
+            </div>
+            <div class="music-player">
+                <h3>DJ Teaser</h3>
+                <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://soundcloud.com/zipasaurus/happy-hardcore-mix-50minutes-by-yours-truly-zipasaurus&color=%2300cd00"></iframe>
+                <!-- Replace with your SoundCloud track/playlist URL -->
+            </div>
+        </div>
+
+        <div class="last-updated">Last Updated: 2025-09-01</div>
     </div>
 
     <script>
@@ -497,9 +558,29 @@
         });
 
         function showPage(pageId) {
-            pages.forEach(page => page.classList.remove('active'));
+            // Reset all pages
+            pages.forEach(page => {
+                page.classList.remove('active');
+                page.style.display = 'none';
+                page.style.opacity = '0';
+            });
             navLinks.forEach(link => link.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
+
+            // Activate target page
+            const targetPage = document.getElementById(pageId);
+            targetPage.classList.add('active');
+            targetPage.style.display = 'block';
+            
+            // GSAP animation for smooth fade-in
+            gsap.to(targetPage, { 
+                opacity: 1, 
+                y: 0, 
+                duration: 0.5,
+                onStart: () => {
+                    targetPage.style.display = 'block'; // Ensure display persists
+                }
+            });
+
             document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
             navMenu.classList.remove('active');
             hamburger.setAttribute('aria-expanded', 'false');
@@ -513,13 +594,16 @@
             const button = document.querySelector('.image-button');
 
             if (imagesVisible) {
-                const images = container.querySelectorAll('img');
-                images.forEach(img => img.style.opacity = '0');
-                setTimeout(() => {
-                    container.innerHTML = '';
-                    button.classList.remove('active');
-                    button.setAttribute('aria-expanded', 'false');
-                }, 300);
+                gsap.to(container.querySelectorAll('img'), { 
+                    opacity: 0, 
+                    stagger: 0.1, 
+                    duration: 0.3,
+                    onComplete: () => {
+                        container.innerHTML = '';
+                        button.classList.remove('active');
+                        button.setAttribute('aria-expanded', 'false');
+                    }
+                });
             } else {
                 loadImages();
                 button.classList.add('active');
@@ -543,10 +627,47 @@
                 const img = document.createElement('img');
                 img.src = src;
                 img.alt = 'MG ZR 105 Car Image';
-                img.style.opacity = '1';
+                img.style.opacity = '0'; // Start invisible for GSAP
                 container.appendChild(img);
             });
+
+            gsap.to(container.querySelectorAll('img'), { 
+                opacity: 1, 
+                y: 0, 
+                stagger: 0.1, 
+                duration: 0.5 
+            });
         }
+
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.body.dataset.theme = document.body.dataset.theme === 'dark' ? '' : 'dark';
+        }
+
+        // Dino Roar Easter Egg
+        function playDinoRoar() {
+            const audio = new Audio('path/to/dino-roar.mp3'); // Add your audio file
+            audio.play().catch(() => {
+                alert('Rawr! 🦖'); // Fallback
+            });
+        }
+
+        // Scroll-Triggered Animations
+        gsap.utils.toArray('.section').forEach(section => {
+            gsap.fromTo(section, 
+                { opacity: 0, y: 50 },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 1,
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'top 80%',
+                        toggleActions: 'play none none reverse'
+                    }
+                }
+            );
+        });
 
         // Initialize
         showPage('about');
@@ -554,15 +675,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
