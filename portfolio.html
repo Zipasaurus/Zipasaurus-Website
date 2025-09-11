@@ -5,32 +5,44 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Shaun Dowling | Game Design Portfolio</title>
   <style>
-    :root{
-      --bg:#f9f9fb;
+    :root {
       --muted:#555;
-      --text:#222;
-      --card:#ffffff;
-      --accent: #222;
-      --soft-shadow: 0 6px 20px rgba(0,0,0,0.08);
-      --wire: rgba(34,34,34,0.08);
-      --wire-strong: rgba(34,34,34,0.14);
+      --text:#fff;
+      --card:#111827;
+      --accent:#2563eb;
+      --soft-shadow:0 6px 20px rgba(0,0,0,0.3);
+      --wire:rgba(255,255,255,0.05);
+      --wire-strong:rgba(255,255,255,0.1);
     }
 
     /* Reset */
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
     body{
-      font-family: "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
-      background:var(--bg);
+      font-family:"Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
+      background:transparent; /* let starfield show through */
       color:var(--text);
       line-height:1.6;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
       scroll-behavior:smooth;
+      position:relative;
+      z-index:0;
     }
     a{color:inherit;text-decoration:none}
     img{display:block;max-width:100%;height:auto;border-radius:10px;transition:transform .3s ease}
     img:hover{transform:scale(1.03)}
+
+    /* Canvas starfield */
+    #space-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      background: radial-gradient(ellipse at bottom, #0d1d31, #000);
+    }
 
     /* Header / Hero */
     header{
@@ -40,11 +52,10 @@
       justify-content:center;
       text-align:center;
       padding:3rem 1.5rem;
-      background: linear-gradient(135deg,#ece9f1,#d9e4f5);
+      background:rgba(0,0,0,0.3);
+      backdrop-filter:blur(2px);
     }
-    header .hero{
-      max-width:900px;
-    }
+    header .hero{max-width:900px}
     header h1{font-size:2.6rem;margin-bottom:.25rem}
     header p{color:var(--muted);font-size:1.05rem}
     .btn{
@@ -57,7 +68,7 @@
       font-weight:600;
       transition:transform .22s ease,background .22s ease;
     }
-    .btn:hover{transform:translateY(-3px);background:#444}
+    .btn:hover{transform:translateY(-3px);background:#1d4ed8}
 
     /* Section container */
     section{
@@ -78,7 +89,7 @@
     }
 
     /* About */
-    .about p{max-width:760px;color:#444}
+    .about p{max-width:760px;color:#ddd}
 
     /* Projects grid */
     .projects-grid{
@@ -88,7 +99,6 @@
       margin-top:1rem;
     }
 
-    /* Project Card (single consolidated rule) */
     .project-card{
       position:relative;
       overflow:hidden;
@@ -97,12 +107,11 @@
       padding:1rem;
       box-shadow:var(--soft-shadow);
       transition:transform .28s ease,box-shadow .28s ease;
-      isolation:isolate; /* let pseudo-elements behave */
+      isolation:isolate;
     }
-    .project-card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.09)}
-    .project-card *{position:relative;z-index:1} /* keep content above animated shapes */
+    .project-card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.5)}
+    .project-card *{position:relative;z-index:1}
 
-    /* thumbnail area */
     .thumb{
       width:100%;
       height:180px;
@@ -112,21 +121,19 @@
       background:linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.02));
     }
     .thumb img{width:100%;height:100%;object-fit:cover;border-radius:10px;display:block}
-
-    /* subtle overlay (improves text contrast when captions overlap the image) */
     .thumb::after{
       content:"";
       position:absolute;
       inset:0;
-      background:linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.06));
+      background:linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.3));
       pointer-events:none;
       z-index:1;
     }
 
     .project-card h3{margin-top:1rem;margin-bottom:.4rem;font-size:1.05rem}
-    .project-card p{color:var(--muted);font-size:.95rem}
+    .project-card p{color:#bbb;font-size:.95rem}
 
-    /* Wireframe octagons behind cards using pseudo-elements */
+    /* Wireframe octagons */
     .project-card::before,
     .project-card::after{
       content:"";
@@ -143,10 +150,10 @@
       z-index:0;
       pointer-events:none;
       opacity:0.9;
-      mix-blend-mode: multiply;
-      filter: blur(.2px);
+      mix-blend-mode:screen;
+      filter:blur(.2px);
       transform-origin:center;
-      animation: drift 18s linear infinite;
+      animation:drift 18s linear infinite;
     }
     .project-card::before{
       top:-48px;
@@ -162,7 +169,6 @@
       opacity:.5;
       animation-duration:26s;
     }
-
     @keyframes drift{
       0%{transform:rotate(0deg) translateY(0px) scale(1);opacity:.55}
       50%{transform:rotate(180deg) translateY(14px) scale(1.02);opacity:.9}
@@ -183,10 +189,10 @@
       border-radius:10px;
       padding:.8rem;
       text-align:center;
-      box-shadow:0 4px 14px rgba(0,0,0,0.04);
+      box-shadow:0 4px 14px rgba(0,0,0,0.5);
       transition:transform .18s ease;
       font-weight:600;
-      color:var(--muted);
+      color:#ccc;
     }
     .skills-list li:hover{transform:translateY(-4px)}
 
@@ -200,10 +206,10 @@
       transition:transform .18s ease, background .18s ease;
       font-weight:600;
     }
-    .contact-links a:hover{transform:translateY(-3px);background:#444}
+    .contact-links a:hover{transform:translateY(-3px);background:#1d4ed8}
 
     /* Footer */
-    footer{text-align:center;padding:2rem 1rem;color:#666;font-size:.92rem}
+    footer{text-align:center;padding:2rem 1rem;color:#aaa;font-size:.92rem}
 
     /* Responsive tweaks */
     @media (max-width:600px){
@@ -212,11 +218,13 @@
       .thumb{height:160px}
     }
 
-    /* Accessibility focus outlines */
-    a:focus{outline:3px solid rgba(34,34,34,0.12);outline-offset:3px;border-radius:8px}
+    a:focus{outline:3px solid rgba(255,255,255,0.4);outline-offset:3px;border-radius:8px}
   </style>
 </head>
 <body>
+
+  <!-- Starfield canvas -->
+  <canvas id="space-bg"></canvas>
 
   <!-- Hero -->
   <header>
@@ -240,11 +248,9 @@
   <!-- Projects -->
   <section id="projects" class="projects">
     <h2>Projects</h2>
-
     <div class="projects-grid">
       <article class="project-card" aria-labelledby="p1">
-        <div class="thumb" aria-hidden="true">
-          <!-- Replace with your real screenshot; keep same filename/folder -->
+        <div class="thumb">
           <img src="PortfolioFolder/Game1.png" alt="Screenshot of Project One">
         </div>
         <h3 id="p1">Project One</h3>
@@ -252,7 +258,7 @@
       </article>
 
       <article class="project-card" aria-labelledby="p2">
-        <div class="thumb" aria-hidden="true">
+        <div class="thumb">
           <img src="PortfolioFolder/Game2.png" alt="Screenshot of Project Two">
         </div>
         <h3 id="p2">Project Two</h3>
@@ -260,7 +266,7 @@
       </article>
 
       <article class="project-card" aria-labelledby="p3">
-        <div class="thumb" aria-hidden="true">
+        <div class="thumb">
           <img src="PortfolioFolder/Game3.png" alt="Screenshot of Project Three">
         </div>
         <h3 id="p3">Project Three</h3>
@@ -272,7 +278,7 @@
   <!-- Skills -->
   <section id="skills" class="skills">
     <h2>Skills</h2>
-    <ul class="skills-list" aria-label="Skills list">
+    <ul class="skills-list">
       <li>Unity</li>
       <li>Python</li>
       <li>C#</li>
@@ -286,10 +292,10 @@
   <section id="contact" class="contact">
     <h2>Contact</h2>
     <div class="contact-links">
-      <a href="mailto:shaundowling1606@gmail.com" aria-label="Email Shaun">Email</a>
-      <a href="https://github.com/Zipasaurus" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a href="https://zipasaurus.itch.io/" target="_blank" rel="noopener noreferrer">Itch.io</a>
-      <a href="https://zipasaurus.me/" target="_blank" rel="noopener noreferrer">Old Website</a>
+      <a href="mailto:shaundowling1606@gmail.com">Email</a>
+      <a href="https://github.com/Zipasaurus" target="_blank">GitHub</a>
+      <a href="https://zipasaurus.itch.io/" target="_blank">Itch.io</a>
+      <a href="https://zipasaurus.me/" target="_blank">Old Website</a>
     </div>
   </section>
 
@@ -297,6 +303,57 @@
   <footer>
     <p>© 2025 Shaun Dowling. All rights reserved.</p>
   </footer>
+
+  <!-- Starfield Script -->
+  <script>
+    const canvas = document.getElementById("space-bg");
+    const ctx = canvas.getContext("2d");
+    function resizeCanvas(){
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    let stars = [];
+    for (let i = 0; i < 140; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2 + 1,
+        dx: (Math.random() - 0.5) * 0.5,
+        dy: (Math.random() - 0.5) * 0.5
+      });
+    }
+
+    let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+    window.addEventListener("mousemove", e => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "white";
+      for (let s of stars) {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        s.x += s.dx;
+        s.y += s.dy;
+        s.x += (mouse.x - s.x) * 0.0005;
+        s.y += (mouse.y - s.y) * 0.0005;
+
+        if (s.x < 0) s.x = canvas.width;
+        if (s.x > canvas.width) s.x = 0;
+        if (s.y < 0) s.y = canvas.height;
+        if (s.y > canvas.height) s.y = 0;
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
 
 </body>
 </html>
