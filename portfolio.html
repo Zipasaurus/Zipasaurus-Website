@@ -1,228 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Shaun Dowling | Game Design Portfolio</title>
   <style>
-    /* Reset & Base */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: "Segoe UI", Roboto, sans-serif;
-      background: #f9f9fb;
-      color: #222;
-      line-height: 1.6;
-    }
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-    img {
-      max-width: 100%;https://github.com/Zipasaurus
-      border-radius: 10px;
-      transition: transform 0.3s ease;
-    }
-    img:hover {
-      transform: scale(1.03);
+    :root{
+      --bg:#f9f9fb;
+      --muted:#555;
+      --text:#222;
+      --card:#ffffff;
+      --accent: #222;
+      --soft-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      --wire: rgba(34,34,34,0.08);
+      --wire-strong: rgba(34,34,34,0.14);
     }
 
-    /* Layout */
-    header {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #ece9f1, #d9e4f5);
-      text-align: center;
-      padding: 2rem;
+    /* Reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family: "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      scroll-behavior:smooth;
     }
-    header h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
-    }
-    header p {
-      font-size: 1.2rem;
-      color: #555;
-    }
-    header .btn {
-      margin-top: 1.5rem;
-      padding: 0.8rem 1.5rem;
-      border-radius: 30px;
-      background: #222;
-      color: #fff;
-      font-weight: bold;
-      transition: background 0.3s ease, transform 0.3s ease;
-    }
-    header .btn:hover {
-      background: #444;
-      transform: translateY(-3px);
-    }
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%;height:auto;border-radius:10px;transition:transform .3s ease}
+    img:hover{transform:scale(1.03)}
 
-    section {
-      max-width: 1000px;
-      margin: auto;
-      padding: 4rem 2rem;
+    /* Header / Hero */
+    header{
+      min-height:70vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:3rem 1.5rem;
+      background: linear-gradient(135deg,#ece9f1,#d9e4f5);
     }
-    section h2 {
-      font-size: 2rem;
-      margin-bottom: 1.5rem;
-      position: relative;
+    header .hero{
+      max-width:900px;
     }
-    section h2::after {
-      content: "";
-      position: absolute;
-      bottom: -8px;
-      left: 0;
-      width: 50px;
-      height: 3px;
-      background: #222;
-      border-radius: 3px;
+    header h1{font-size:2.6rem;margin-bottom:.25rem}
+    header p{color:var(--muted);font-size:1.05rem}
+    .btn{
+      display:inline-block;
+      margin-top:1.25rem;
+      padding:.8rem 1.4rem;
+      border-radius:30px;
+      background:var(--accent);
+      color:#fff;
+      font-weight:600;
+      transition:transform .22s ease,background .22s ease;
+    }
+    .btn:hover{transform:translateY(-3px);background:#444}
+
+    /* Section container */
+    section{
+      max-width:1000px;
+      margin:2.5rem auto;
+      padding:0 1.25rem;
+    }
+    h2{font-size:1.6rem;margin-bottom:1rem;position:relative}
+    h2::after{
+      content:"";
+      position:absolute;
+      bottom:-8px;
+      left:0;
+      width:56px;
+      height:3px;
+      background:var(--accent);
+      border-radius:3px;
     }
 
     /* About */
-    .about p {
-      max-width: 700px;
-      color: #444;
+    .about p{max-width:760px;color:#444}
+
+    /* Projects grid */
+    .projects-grid{
+      display:grid;
+      gap:1.6rem;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      margin-top:1rem;
     }
 
-    /* Projects */
-    .projects-grid {
-      display: grid;
-      gap: 2rem;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    /* Project Card (single consolidated rule) */
+    .project-card{
+      position:relative;
+      overflow:hidden;
+      background:var(--card);
+      border-radius:14px;
+      padding:1rem;
+      box-shadow:var(--soft-shadow);
+      transition:transform .28s ease,box-shadow .28s ease;
+      isolation:isolate; /* let pseudo-elements behave */
     }
-    .project-card {
-      background: #fff;
-      border-radius: 15px;
-      padding: 1rem;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-      transition: transform 0.3s ease;
+    .project-card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.09)}
+    .project-card *{position:relative;z-index:1} /* keep content above animated shapes */
+
+    /* thumbnail area */
+    .thumb{
+      width:100%;
+      height:180px;
+      border-radius:10px;
+      overflow:hidden;
+      position:relative;
+      background:linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.02));
     }
-    .project-card:hover {
-      transform: translateY(-5px);
+    .thumb img{width:100%;height:100%;object-fit:cover;border-radius:10px;display:block}
+
+    /* subtle overlay (improves text contrast when captions overlap the image) */
+    .thumb::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.06));
+      pointer-events:none;
+      z-index:1;
     }
-    .project-card h3 {
-      margin-top: 1rem;
-      margin-bottom: 0.5rem;
+
+    .project-card h3{margin-top:1rem;margin-bottom:.4rem;font-size:1.05rem}
+    .project-card p{color:var(--muted);font-size:.95rem}
+
+    /* Wireframe octagons behind cards using pseudo-elements */
+    .project-card::before,
+    .project-card::after{
+      content:"";
+      position:absolute;
+      width:220px;
+      height:220px;
+      border:2px solid var(--wire);
+      clip-path:polygon(
+        30% 0%,70% 0%,
+        100% 30%,100% 70%,
+        70% 100%,30% 100%,
+        0% 70%,0% 30%
+      );
+      z-index:0;
+      pointer-events:none;
+      opacity:0.9;
+      mix-blend-mode: multiply;
+      filter: blur(.2px);
+      transform-origin:center;
+      animation: drift 18s linear infinite;
     }
-    .project-card p {
-      color: #555;
-      font-size: 0.95rem;
+    .project-card::before{
+      top:-48px;
+      left:-48px;
+      border-color:var(--wire);
+      opacity:.65;
+      animation-duration:18s;
+    }
+    .project-card::after{
+      bottom:-48px;
+      right:-48px;
+      border-color:var(--wire-strong);
+      opacity:.5;
+      animation-duration:26s;
+    }
+
+    @keyframes drift{
+      0%{transform:rotate(0deg) translateY(0px) scale(1);opacity:.55}
+      50%{transform:rotate(180deg) translateY(14px) scale(1.02);opacity:.9}
+      100%{transform:rotate(360deg) translateY(0px) scale(1);opacity:.55}
     }
 
     /* Skills */
-    .skills-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 1rem;
-      list-style: none;
+    .skills-list{
+      display:grid;
+      gap:1rem;
+      grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+      list-style:none;
+      padding:0;
+      margin-top:1rem;
     }
-    .skills-list li {
-      background: #fff;
-      border-radius: 12px;
-      padding: 0.8rem;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      transition: transform 0.2s ease;
+    .skills-list li{
+      background:var(--card);
+      border-radius:10px;
+      padding:.8rem;
+      text-align:center;
+      box-shadow:0 4px 14px rgba(0,0,0,0.04);
+      transition:transform .18s ease;
+      font-weight:600;
+      color:var(--muted);
     }
-    .skills-list li:hover {
-      transform: translateY(-3px);
-    }
+    .skills-list li:hover{transform:translateY(-4px)}
 
     /* Contact */
-    .contact-links {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
+    .contact-links{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.5rem}
+    .contact-links a{
+      background:var(--accent);
+      color:#fff;
+      padding:.7rem 1rem;
+      border-radius:30px;
+      transition:transform .18s ease, background .18s ease;
+      font-weight:600;
     }
-    .contact-links a {
-      background: #222;
-      color: #fff;
-      padding: 0.8rem 1.2rem;
-      border-radius: 30px;
-      transition: background 0.3s ease;
-    }
-    .contact-links a:hover {
-      background: #444;
-    }
+    .contact-links a:hover{transform:translateY(-3px);background:#444}
 
     /* Footer */
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.9rem;
-      color: #666;
+    footer{text-align:center;padding:2rem 1rem;color:#666;font-size:.92rem}
+
+    /* Responsive tweaks */
+    @media (max-width:600px){
+      header{padding:2rem 1rem;min-height:56vh}
+      header h1{font-size:1.9rem}
+      .thumb{height:160px}
     }
+
+    /* Accessibility focus outlines */
+    a:focus{outline:3px solid rgba(34,34,34,0.12);outline-offset:3px;border-radius:8px}
   </style>
 </head>
 <body>
 
   <!-- Hero -->
   <header>
-    <h1>Shaun Dowling</h1>
-    <p>Game Designer • Programmer • Creative Thinker</p>
-    <a href="#projects" class="btn">See My Work</a>
+    <div class="hero">
+      <h1>Shaun Dowling</h1>
+      <p>Game Designer • Programmer • Creative Thinker</p>
+      <a class="btn" href="#projects">See my work</a>
+    </div>
   </header>
 
   <!-- About -->
-  <section class="about" id="about">
+  <section id="about" class="about">
     <h2>About Me</h2>
     <p>
-      I’m a game designer with a passion for crafting unique interactive
-      experiences. My work balances creativity, technical skill, and player-focused design.
-      I thrive on bringing mechanics, stories, and visuals together into
-      cohesive, engaging worlds.
+      I'm a game designer focused on crafting interactive systems that feel
+      deliberate and fun. I combine mechanics, prototyping, and player-focused design to
+      build experiences that stick. I enjoy quick jams as much as larger prototypes.
     </p>
   </section>
 
   <!-- Projects -->
-  <section class="projects" id="projects">
+  <section id="projects" class="projects">
     <h2>Projects</h2>
+
     <div class="projects-grid">
-      <div class="project-card">
-        <img src="PortfolioFolder/Game1.png" alt="Project 1">
-        <h3>Project One</h3>
-        <p>3 Day Game Jam where you kill ghosts</p>
-      </div>
-      <div class="project-card">
-        <img src="PortfolioFolder/Game2.png" alt="Project 2">
-        <h3>Project Two</h3>
-        <p>Mini games insie of a game based around having fun</p>
-      </div>
-      <div class="project-card">
-        <img src="PortfolioFolder/Game3.png" alt="Project 3">
-        <h3>Project Three</h3>
-        <p>A multi day/week Game Jam project</p>
-      </div>
+      <article class="project-card" aria-labelledby="p1">
+        <div class="thumb" aria-hidden="true">
+          <!-- Replace with your real screenshot; keep same filename/folder -->
+          <img src="PortfolioFolder/Game1.png" alt="Screenshot of Project One">
+        </div>
+        <h3 id="p1">Project One</h3>
+        <p>3 day game jam prototype where you hunt and eliminate ghosts — tight controls and emergent enemy behaviour.</p>
+      </article>
+
+      <article class="project-card" aria-labelledby="p2">
+        <div class="thumb" aria-hidden="true">
+          <img src="PortfolioFolder/Game2.png" alt="Screenshot of Project Two">
+        </div>
+        <h3 id="p2">Project Two</h3>
+        <p>Collection of minigames inside a larger shell — focus on accessibility and fast, repeatable fun.</p>
+      </article>
+
+      <article class="project-card" aria-labelledby="p3">
+        <div class="thumb" aria-hidden="true">
+          <img src="PortfolioFolder/Game3.png" alt="Screenshot of Project Three">
+        </div>
+        <h3 id="p3">Project Three</h3>
+        <p>Multi-day/week jam project exploring layered progression and cooperative mechanics.</p>
+      </article>
     </div>
   </section>
 
   <!-- Skills -->
-  <section class="skills" id="skills">
+  <section id="skills" class="skills">
     <h2>Skills</h2>
-    <ul class="skills-list">
+    <ul class="skills-list" aria-label="Skills list">
       <li>Unity</li>
       <li>Python</li>
       <li>C#</li>
-      <li>html</li>
+      <li>HTML/CSS</li>
       <li>Blender</li>
       <li>GIMP</li>
     </ul>
   </section>
 
   <!-- Contact -->
-  <section class="contact" id="contact">
+  <section id="contact" class="contact">
     <h2>Contact</h2>
     <div class="contact-links">
-      <a href="mailto:shaundowling1606@gmail.com">Email</a>
-      <a href="https://github.com/Zipasaurus" target="_blank">GitHub</a>
-      <a href="https://zipasaurus.itch.io/" target="_blank">Itch.io</a>
-      <a href="https://zipasaurus.me/" target="_blank">OldWebsite</a>
+      <a href="mailto:shaundowling1606@gmail.com" aria-label="Email Shaun">Email</a>
+      <a href="https://github.com/Zipasaurus" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://zipasaurus.itch.io/" target="_blank" rel="noopener noreferrer">Itch.io</a>
+      <a href="https://zipasaurus.me/" target="_blank" rel="noopener noreferrer">Old Website</a>
     </div>
   </section>
 
