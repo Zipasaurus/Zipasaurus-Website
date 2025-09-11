@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Zipasaurus: Aspiring UK game designer, car enthusiast, and DJ. Explore my games, cars, and beats!">
+    <meta name="keywords" content="game design, Unity, Blender, cars, DJ, anime, VRChat, portfolio">
+    <link rel="icon" type="image/x-icon" href="/images/PageIcon.ico">
+    <title>Zipasaurus - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <style>
+        :root {
+            --page-background: linear-gradient(to bottom, rgba(44, 84, 1, 0.4), rgba(0, 205, 0, 0.2));
+            --header-background: rgba(30, 30, 30, 0.8);
+            --text-primary: #335033; /* Solid color for readability */
+            --text-secondary: #444444;
+            --text-light: #ffffff;
+            --text-muted: #666666;
+            --accent: #00cd00;
+            --accent-hover: #1eff1e;
+            --container-background: rgba(0, 0, 0, 0.4);
+            --section-background: rgba(249, 249, 249, 0.7);
+            --skills-background: #e0e0e0;
+            --shadow: rgba(0, 40, 0, 0.5);
+            --shadow-accent: #00cd00;
+            --overlay-background: rgba(0, 0, 0, 0.6);
+            --focus-ring: rgba(0, 205, 0, 0.4);
+            --dark-mode-bg: #121212;
+            --dark-mode-text: #e0e0e0;
+        }
+
+        [data-theme="dark"] {
+            --page-background: linear-gradient(to bottom, #0a1a0a, #003300);
+            --text-primary: var(--dark-mode-text);
+            --section-background: rgba(30, 30, 30, 0.8);
+            --container-background: rgba(20, 20, 20, 0.7);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--page-background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2z" fill="%2300cd00"/></svg>'), auto;
+        }
+
+        header {
+            background: var(--header-background);
+            color: var(--text-light);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px var(--shadow);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--accent);
+            cursor: pointer;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+nav ul li a {
+    padding: 8px 12px;
+    white-space: nowrap;
+    color: var(--accent);
+    background: rgb(100, 100, 100); /* fixed syntax */
+    border-radius: 12px;
+    box-shadow: 0 4px 20px var(--shadow);
+    text-decoration: none;
+    transition: transform 0.2s ease, background 0.3s ease, color 0.3s ease;
+}
+
+nav ul li a:hover {
+    transform: scale(1.1);
+    background: var(--accent);
+    color: var(--accent); /* make sure --text-dark exists, else use #000 */
+}
+
+
+        nav ul li a:hover,
+        nav ul li a.active {
+            color: var(--shadow);
+            transform: scale(1.1);
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 1.5em;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+        }
+
+        .dark-mode-toggle {
+            background: var(--accent);
+            color: var(--text-light);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 40px auto;
+            background: var(--container-background);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .page {
+            display: none;
+            opacity: 0; /* Ensure hidden pages start invisible */
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1; /* Ensure active page is fully visible */
+            animation: none; /* Remove CSS animation to rely on GSAP */
+        }
+
+        h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        h1::after {
+            content: '🦕';
+            font-size: 0.8em;
+            position: absolute;
+            top: -10px;
+            right: -20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        h2 {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 30px 0 15px;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 5px;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--section-background);
+            border-radius: 8px;
+            transition: box-shadow 0.3s ease, transform 0.3s;
+        }
+
+        .section:hover {
+            box-shadow: 0 4px 15px var(--shadow);
+            transform: translateY(-5px);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--accent);
+            color: var(--text-light);
+            font-size: 1em;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--focus-ring);
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 10px;
+            background: var(--section-background);
+            border-top: 2px solid var(--accent);
+            list-style: none;
+            padding-left: 10px;
+        }
+
+        .skills-list li {
+            background: var(--container-background);
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            box-shadow: 0 2px 4px var(--shadow);
+            color: var(--text-light);
+            transition: transform 0.3s;
+        }
+
+        .skills-list li:hover {
+            transform: scale(1.1);
+        }
+
+        .skills-list li:not(:last-child)::after {
+            content: '•';
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+            font-size: 1.2em;
+        }
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            perspective: 1000px;
+        }
+
+        .image-gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            transition: transform 0.5s ease;
+        }
+
+        .image-gallery img:hover {
+            transform: rotateY(10deg) scale(1.05);
+        }
+
+        .image-button {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+
+        .image-button img {
+            width: 250px;
+            height: auto;
+            border-radius: 8px;
+            transition: opacity 0.3s ease;
+        }
+
+        .image-button .overlay-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--text-light);
+            font-size: 1.2em;
+            font-weight: 600;
+            background: var(--overlay-background);
+            padding: 10px 20px;
+            border-radius: 6px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .image-button:hover img {
+            opacity: 0.7;
+        }
+
+        .image-button:hover .overlay-text {
+            opacity: 1;
+        }
+
+        .image-button.active {
+            box-shadow: 0 0 15px var(--shadow-accent);
+        }
+
+        .project-embed {
+            margin-top: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .music-player {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9em;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                padding: 10px 0;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            nav ul li {
+                width: 100%;
+                text-align: center;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            .image-button img {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .btn {
+                padding: 8px 14px;
+                font-size: 0.9em;
+            }
+
+            .image-gallery {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="nav-container">
+            <div class="logo" onclick="playDinoRoar()">Zipasaurus 🦖</div>
+            <button class="hamburger" aria-label="Toggle navigation">☰</button>
+            <nav>
+                <ul>
+                    <li><a href="#about" class="nav-link active" data-page="about">About</a></li>
+                    <li><a href="#skills" class="nav-link" data-page="skills">Skills & Experience</a></li>
+                    <li><a href="#projects" class="nav-link" data-page="projects">Projects</a></li>
+                    <li><a href="#specs" class="nav-link" data-page="specs">Setup</a></li>
+                    <li><a href="#socials" class="nav-link" data-page="socials">Socials</a></li>
+                    <li><a href="#gallery" class="nav-link" data-page="gallery">Gallery</a></li>
+                    <li><a href="#adventures" class="nav-link" data-page="adventures">Adventures</a></li>
+                    <li><a href="dj.html">DJ Zone</a></li>
+                </ul>
+            </nav>
+            <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="about" class="page active">
+            <h1>About Me</h1>
+            <div class="section">
+                <h2>Profile</h2>
+                <p>I'm a 19-year-old aspiring game designer from the United Kingdom, passionate about crafting digital worlds and experiences using Unity and blender</p>
+                <p>I love recreating the nostalgic OldSkool sounds that get everyone moving, inspired by 80s–2000s music. Catch me DJing techno, DnB, or house at VRChat raves!</p>
+                <p>I'm a car enthusiast—my yellow MG ZR 105 is my pride and joy. Anime watcher カジュアル, and I'm a super friendly Brit who loves connecting with people.</p>
+                <p>Fun fact: I once had a hamster named Devil.... Also, when boredom hits, I want to do everything and nothing at once!</p>
+            </div>
+        </div>
+
+        <div id="skills" class="page">
+            <h1>Skills & Experience</h1>
+            <div class="section">
+                <h2>Technical Skills</h2>
+                <ul class="skills-list">
+                    <li>Unity ~ 3 Years</li>
+                    <li>Blender ~ 3 Years</li>
+                    <li>HTML/CSS ~ Basic</li>
+                    <li>C# ~ 1 Year</li>
+                    <li>Video Editing ~ Adequate</li>
+                </ul>
+            </div>
+            <div class="section">
+                <h2>Experience</h2>
+                <p><strong>Self-Taught Game Developer</strong> (2020–Present)</p>
+                <p>Building small game prototypes and 3D models with Unity and Blender, inspired by anime and fantasy.</p>
+                <p><strong>Content Creator</strong> (2018–Present)</p>
+                <p>Streaming and sharing my journey in game dev, car modding, anime, and DJing on Twitch, YouTube, and X.</p>
+            </div>
+        </div>
+        
+        <div id="projects" class="page">
+            <h1>Projects</h1>
+            <div class="section">
+                <h2>Game Dev Highlights</h2>
+                <p>Explore my creations on itch.io—fantasy and action-packed experiences!</p>
+                
+                <h3>Dungeons with a Pinch of Magic</h3>
+                <p>A shooter where you battle ghosts in a magical dungeon. Try it below!</p>
+                <a href="https://zipasaurus.itch.io/dungeons-with-a-pinch-of-magic" target="_blank" rel="noopener" class="image-button">
+                    <img src="images/game1.png" alt="Click to play my game">
+                    <div class="overlay-text">Click to play (Redirects to Itch.io)</div>
+                </a>
+                <p>More to come!</p>
+            </div>
+        </div>
+
+        <div id="specs" class="page">
+            <h1>My Setup</h1>
+            <div class="section">
+                <h2>Gaming PC</h2>
+                <p><strong>GPU:</strong> Radeon 7800 XT</p>
+                <p><strong>CPU:</strong> Ryzen 7 5800</p>
+                <p><strong>RAM:</strong> 64GB 3200 MHz</p>
+                <p><strong>Storage:</strong> 1x 500GB NVMe, 1x 256GB SSD, 1x 500GB SSD, 1x 1TB HDD</p>
+            </div>
+            <div class="section">
+                <h2>Peripherals</h2>
+                <p><strong>Monitor:</strong> 165Hz 2560x1440 AOC</p>
+                <p><strong>Monitor 2:</strong> 60Hz 1920x1080 Samsung</p>
+                <p><strong>Keyboard:</strong> KeyChron C3 Pro</p>
+                <p><strong>Mouse:</strong> Logitech G502 Hero</p>
+                <p><strong>Headphones:</strong> HyperX Cloud 3 / Skullcandy Crusher Evo 2</p>
+                <p><strong>Microphone:</strong> Neewer NW-700</p>
+                <p><strong>Speakers:</strong> Logitech Z4</p>
+            </div>
+            <div class="section">
+                <h2>Streaming PC</h2>
+                <p><strong>GPU:</strong> Integrated</p>
+                <p><strong>CPU:</strong> Ryzen 5 3200G</p>
+                <p><strong>RAM:</strong> 16GB DDR3 2600 MHz</p>
+                <p><strong>Storage:</strong> 256GB NVMe SSD</p>
+            </div>
+        </div>
+
+        <div id="socials" class="page">
+            <h1>Socials & More</h1>
+            <div class="section">
+                <h2>Connect With Me</h2>
+                <p>Find me as <strong>Zipasaurus</strong> across platforms. Your support fuels my creativity!</p>
+                <p>
+                    <a href="https://www.instagram.com/zipasaurus" class="btn" target="_blank" rel="noopener">Instagram</a>
+                    <a href="https://x.com/Zipasaurus" class="btn" target="_blank" rel="noopener">X</a>
+                    <a href="https://www.youtube.com/@zipasaurus" class="btn" target="_blank" rel="noopener">YouTube</a>
+                    <a href="https://www.twitch.tv/zipasaurus" class="btn" target="_blank" rel="noopener">Twitch</a>
+                    <a href="https://throne.com/zipasaurus" class="btn" target="_blank" rel="noopener">Throne</a>
+                    <a href="https://zipasaurus.itch.io/" class="btn" target="_blank" rel="noopener">Itch.io</a>
+                    <a href="https://soundcloud.com/zipasaurus/tracks" class="btn" target="_blank" rel="noopener">SoundCloud</a>
+                </p>
+                <p>Fun fact: Purchases via Throne grant credits for exclusive content on my site!</p>
+            </div>
+        </div>
+
+        <div id="gallery" class="page">
+            <h1>Car Gallery</h1>
+            <div class="section">
+                <h2>MG ZR 105 - Click to Explore</h2>
+                <div class="image-button" onclick="toggleImages()" role="button" aria-expanded="false" aria-controls="image-container">
+                    <img src="images/MG ZR 105 Images/MyCarAtGarage2.jpeg" alt="Click to view MG ZR 105 car gallery">
+                    <div class="overlay-text">View Gallery</div>
+                </div>
+                <div id="image-container" class="image-gallery"></div>
+                <p>Planning to add anime-style car art soon—think Initial D vibes!</p>
+            </div>
+        </div>
+
+        <div id="adventures" class="page">
+            <h1>Recent Adventures</h1>
+            <div class="section">
+                <h2>From My World</h2>
+                <p>Snippets from my life</p>
+                <ul>
+                    <li>MG ZR 105 shining with new Accelera tires. (July 2024)</li>                
+                </ul>
+                <p>Follow me on <a href="https://x.com/Zipasaurus" target="_blank" rel="noopener">X</a> for live updates!</p>
+            </div>
+        </div>
+
+        <div class="last-updated">Last Updated: 2025-09-11 14:01:43</div>
+    </div>
+
+    <script>
+        // Navigation
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pages = document.querySelectorAll('.page');
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('nav ul');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = link.getAttribute('data-page');
+                showPage(pageId);
+            });
+        });
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', navMenu.classList.contains('active'));
+        });
+
+        function showPage(pageId) {
+            // Reset all pages
+            pages.forEach(page => {
+                page.classList.remove('active');
+                page.style.display = 'none';
+                page.style.opacity = '0';
+            });
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            // Activate target page
+            const targetPage = document.getElementById(pageId);
+            targetPage.classList.add('active');
+            targetPage.style.display = 'block';
+            
+            // GSAP animation for smooth fade-in
+            gsap.to(targetPage, { 
+                opacity: 1, 
+                y: 0, 
+                duration: 0.5,
+                onStart: () => {
+                    targetPage.style.display = 'block'; // Ensure display persists
+                }
+            });
+
+            document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
+            navMenu.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false');
+        }
+
+        // Gallery
+        let imagesVisible = false;
+
+        function toggleImages() {
+            const container = document.getElementById('image-container');
+            const button = document.querySelector('.image-button');
+
+            if (imagesVisible) {
+                gsap.to(container.querySelectorAll('img'), { 
+                    opacity: 0, 
+                    stagger: 0.1, 
+                    duration: 0.3,
+                    onComplete: () => {
+                        container.innerHTML = '';
+                        button.classList.remove('active');
+                        button.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            } else {
+                loadImages();
+                button.classList.add('active');
+                button.setAttribute('aria-expanded', 'true');
+            }
+
+            imagesVisible = !imagesVisible;
+        }
+
+        function loadImages() {
+            const container = document.getElementById('image-container');
+            const imagePaths = [
+                "images/MG ZR 105 Images/GasStationBehind2.png",
+                "images/MG ZR 105 Images/BonnetOpenView.jpg",
+                "images/MG ZR 105 Images/OpenBonnetDriveWay2.jpg",
+                "images/MG ZR 105 Images/EmptyBonnetView2.jpg",
+                "images/MG ZR 105 Images/MyCarAtGarage2.jpeg",
+                "images/MG ZR 105 Images/Subwoofer.jpg",
+                "images/MG ZR 105 Images/my roof.png"
+            ];
+
+            imagePaths.forEach(src => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = 'MG ZR 105 Car Image';
+                img.style.opacity = '0'; // Start invisible for GSAP
+                container.appendChild(img);
+            });
+
+            gsap.to(container.querySelectorAll('img'), { 
+                opacity: 1, 
+                y: 0, 
+                stagger: 0.1, 
+                duration: 0.5 
+            });
+        }
+
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.body.dataset.theme = document.body.dataset.theme === 'dark' ? '' : 'dark';
+        }
+
+        // Dino Roar Easter Egg
+        function playDinoRoar() {
+            const audio = new Audio('path/to/dino-roar.mp3'); // Add your audio file
+            audio.play().catch(() => {
+                alert('Rawr! 🦖'); // Fallback
+            });
+        }
+
+        // Scroll-Triggered Animations
+        gsap.utils.toArray('.section').forEach(section => {
+            gsap.fromTo(section, 
+                { opacity: 0, y: 50 },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 1,
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'top 80%',
+                        toggleActions: 'play none none reverse'
+                    }
+                }
+            );
+        });
+
+        // Initialize
+        showPage('about');
+    </script>
+</body>
+
+</html>
+
+
+
+
