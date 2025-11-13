@@ -4,210 +4,246 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Shaun Dowling | Game Design Portfolio</title>
+  <link rel="preload" href="Shaun_Dowling_Resume.pdf" as="document">
   <style>
     :root {
-      --muted:#555;
-      --text:#fff;
-      --card:#111827;
-      --accent:#2563eb;
-      --soft-shadow:0 6px 20px rgba(0,0,0,0.3);
-      --wire:rgba(255,255,255,0.05);
-      --wire-strong:rgba(255,255,255,0.1);
+      --muted: #555;
+      --text: #fff;
+      --card: #111827;
+      --accent: #2563eb;
+      --soft-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      --social-instagram: #E4405F;
+      --social-linkedin: #0077B5;
+      --social-discord: #5865F2;
+      --social-gmail: #D14836;
+      --social-itch: #FA5C5C;
     }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
-    body{
-      font-family:"Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
-      background:transparent;
-      color:var(--text);
-      line-height:1.6;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      scroll-behavior:smooth;
-      position:relative;
-      z-index:0;
+    body {
+      font-family: "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
+      background: transparent;
+      color: var(--text);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+      position: relative;
+      min-height: 100vh;
+      z-index: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      transition: background 0.15s, color 0.15s;
     }
-    a{color:inherit;text-decoration:none}
-    img{display:block;max-width:100%;height:auto;border-radius:10px;transition:transform .3s ease}
-    img:hover{transform:scale(1.03)}
+    a { color: inherit; text-decoration: none }
+    img { display: block; max-width: 100%; border-radius: 10px; transition: transform .3s }
+    img:hover { transform: scale(1.045) }
     #space-bg {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
+      top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
       background: radial-gradient(ellipse at bottom, #0d1d31, #000);
     }
-    header{
-      min-height:70vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:3rem 1.5rem;
-      background:rgba(0,0,0,0.3);
-      backdrop-filter:blur(2px);
-    }
-    header .hero{max-width:900px}
-    header h1{font-size:2.6rem;margin-bottom:.25rem}
-    header p{color:var(--muted);font-size:1.05rem}
-    .btn{
-      display:inline-block;
-      margin-top:1.25rem;
-      padding:.8rem 1.4rem;
-      border-radius:30px;
-      background:var(--accent);
-      color:#fff;
-      font-weight:600;
-      transition:transform .22s ease,background .22s ease;
-    }
-    .btn:hover{transform:translateY(-3px);background:#1d4ed8}
-    nav {
-      margin: 0 auto 0.5rem auto;
+    header {
+      min-height: 60vh;
+      display: flex; align-items: center; justify-content: center;
       text-align: center;
+      padding: 2.8rem 1.2rem 2rem 1.2rem;
+      background: rgba(0,0,0,0.33);
+      backdrop-filter: blur(2.5px);
     }
-    nav ul {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      list-style: none;
-      padding-left: 0;
-      margin-bottom: 0;
-    }
-    nav a {
-      color: #fff;
-      font-weight: 500;
-      font-size: 1.03rem;
-      background: var(--card);
-      border-radius: 6px;
-      padding: 0.5em 1em;
-      transition: background .15s;
-    }
-    nav a:hover {
+    header .hero { max-width: 900px }
+    header h1 { font-size: 2.6rem; margin-bottom: .21rem }
+    header p { color: var(--muted); font-size: 1.09rem }
+    .btn {
+      display: inline-block;
+      margin-top: 1.3rem;
+      padding: .8rem 1.4rem;
+      border-radius: 30px;
       background: var(--accent);
       color: #fff;
+      font-weight: 600;
+      border: none;
+      font-size: 1rem;
+      letter-spacing: .5px;
+      transition: transform .19s, background .19s;
+      cursor: pointer;
     }
-    section{
-      max-width:1000px;
-      margin:2.5rem auto;
-      padding:0 1.25rem;
+    .btn:hover { transform: translateY(-3px) scale(1.04); background: #174bb6 }
+    section {
+      max-width: 1000px;
+      margin: 2.2rem auto;
+      padding: 0 1.25rem;
     }
-    h2{font-size:1.6rem;margin-bottom:1rem;position:relative}
-    h2::after{
-      content:"";
-      position:absolute;
-      bottom:-8px;
-      left:0;
-      width:56px;
-      height:3px;
-      background:var(--accent);
-      border-radius:3px;
+    h2 {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      position: relative;
+      color: #fff;
+      letter-spacing: 0.5px;
+      font-weight: 700;
     }
-    .about p{max-width:760px;color:#ddd}
-    /* Portfolio (projects grid) */
-    .portfolio-categories {
-      display: grid;
-      gap: 2rem;
+    h2::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 56px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 3px;
     }
+    .about p {
+      max-width: 760px;
+      color: #ddd;
+      margin-bottom: 1.3rem;
+    }
+    /* Portfolio Section */
+    .portfolio-categories { display: grid; gap: 2.05rem; }
     .portfolio-section {
       background: var(--card);
-      border-radius: 12px;
+      border-radius: 14px;
       box-shadow: var(--soft-shadow);
-      padding: 2rem;
+      padding: 2rem 1rem 1.7rem 1rem;
       margin-bottom: 1rem;
     }
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 1.3rem;
-      margin-top: 1rem;
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      align-items: stretch;
     }
     figure {
-      background: #1e293b;
+      background: #172239;
       border-radius: 8px;
       overflow: hidden;
       margin: 0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-      transition: transform .22s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+      transition: transform .21s;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
     }
-    figure:hover {
-      transform: scale(1.04);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-    }
+    figure:hover { transform: scale(1.045); box-shadow: 0 6px 18px rgba(0,0,0,0.18);}
     figure img {
       width: 100%;
       aspect-ratio: 4/3;
       object-fit: cover;
       border-bottom: 2px solid #2563eb33;
-      display: block;
       background: #151a22;
     }
     figcaption {
-      padding: 10px 7px 12px 7px;
+      padding: .7em 1em 1em 1em;
       text-align: center;
-      color: #ddd;
-      font-size: .97rem;
+      color: #e8eaf0;
+      font-size: .99rem;
+      min-height: 2em;
     }
-    .portfolio-section h2 {
+    /* Socials Area */
+    .socials-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 1rem;
+      margin-bottom: 1.7rem;
+    }
+    .social-btn {
+      display: flex;
+      align-items: center;
+      gap: .45em;
+      font-size: 1.09rem;
+      background: var(--card);
       color: #fff;
+      border-radius: 28px;
+      padding: .68em 1.2em;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 2px 13px rgba(0,0,0,0.03);
+      transition: background .18s, transform .18s;
+      border: none;
+      cursor: pointer;
+      letter-spacing: .2px;
     }
-    /* Skills */
-    .skills-list{
-      display:grid;
-      gap:1rem;
-      grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-      list-style:none;
-      padding:0;
-      margin-top:1rem;
+    .social-btn:hover { transform: translateY(-2px) scale(1.04); }
+    .social-instagram:hover { background: var(--social-instagram);}
+    .social-linkedin:hover { background: var(--social-linkedin);}
+    .social-discord:hover { background: var(--social-discord);}
+    .social-gmail:hover { background: var(--social-gmail);}
+    .social-itch:hover { background: var(--social-itch);}
+    .social-icon {
+      width: 1.15em;
+      height: 1.15em;
+      margin-right: .13em;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
     }
-    .skills-list li{
-      background:var(--card);
-      border-radius:10px;
-      padding:.8rem;
-      text-align:center;
-      box-shadow:0 4px 14px rgba(0,0,0,0.5);
-      transition:transform .18s ease;
-      font-weight:600;
-      color:#ccc;
+    /* Skills Chart */
+    .skills-list { list-style:none; margin-top:1.4rem; }
+    .skills-bar { padding:.8em 0 .7em 0; }
+    .skills-label { display:inline-block; min-width:120px; }
+    .skills-meter-wrapper { display:inline-block; width:60%; vertical-align:middle; }
+    .skills-meter {
+      background: #333;
+      height: 10px;
+      display: inline-block;
+      width: 100%;
+      border-radius: 6px;
+      overflow: hidden;
+      vertical-align: middle;
+      margin-right: 0.5em;
     }
-    .skills-list li:hover{transform:translateY(-4px)}
-    /* Contact */
-    .contact-links{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.5rem}
-    .contact-links a{
-      background:var(--accent);
-      color:#fff;
-      padding:.7rem 1rem;
-      border-radius:30px;
-      transition:transform .18s ease, background .18s ease;
-      font-weight:600;
+    .skills-meter-fill {
+      background: linear-gradient(90deg, var(--accent), #3a74ee 85%);
+      min-width: 8px;
+      width: 0%;
+      height: 100%;
+      border-radius: 6px;
+      transition: width 1.4s cubic-bezier(.52,.57,.39,1);
     }
-    .contact-links a:hover{transform:translateY(-3px);background:#1d4ed8}
-    footer{text-align:center;padding:2rem 1rem;color:#aaa;font-size:.92rem}
+    .skills-level { display:inline-block; margin-left:.2em; color:#bbb; vertical-align:middle; font-size:.97em;}
+    /* Modal/Lightbox */
+    #modal-bg {
+      display: none; position: fixed; top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.85);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    #modal-card {
+      background: #222;
+      padding: 1.7rem;
+      max-width: 430px;
+      border-radius: 13px;
+      box-shadow: 0 4px 28px rgba(0,0,0,0.7);
+      color: #fff;
+      position: relative;
+    }
+    #modal-close {
+      position: absolute;
+      top: 10px;
+      right: 16px;
+      color: #eee;
+      font-size: 1.4em;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    #modal-card img { max-width:100%; border-radius:9px; margin-bottom:.9em; }
+    /* Scroll Animations */
+    .fade-in { opacity:0; transform:translateY(30px); transition:opacity .7s,transform .7s; }
+    .fade-in.visible { opacity:1; transform:none; }
     @media (max-width:700px) {
-      section {
-        padding: 1.1rem;
-        max-width: 97vw;
-      }
-      header {
-        padding: 2rem 1rem;
-        min-height: 56vh;
-      }
-      header h1 {
-        font-size: 1.7rem;
-      }
-      nav ul {
-        gap: 1rem;
-        flex-direction: column;
-      }
-      .gallery {
-        grid-template-columns: 1fr;
-      }
-      .portfolio-section {
-        padding: 1.2rem;
-      }
+      section { padding: 1.1rem; max-width: 97vw; }
+      header { padding: 2rem 1rem; }
+      header h1 { font-size: 1.7rem; }
+      .gallery { grid-template-columns: 1fr; }
+      .portfolio-section { padding: 1.2rem; }
+      .socials-list { flex-direction: column; gap: 1rem; }
+      #modal-card { max-width: 96vw; }
     }
-    a:focus{outline:3px solid rgba(255,255,255,0.4);outline-offset:3px;border-radius:8px}
+    a:focus { outline:3px solid rgba(255,255,255,0.4); outline-offset:3px; border-radius:8px }
   </style>
 </head>
 <body>
@@ -215,140 +251,217 @@
   <header>
     <div class="hero">
       <h1>Shaun Dowling</h1>
-      <nav>
-        <ul>
-          <li><a href="#web-design">Web Design</a></li>
-          <li><a href="#art">Art</a></li>
-          <li><a href="#photography">Photography</a></li>
-        </ul>
-      </nav>
       <p>Game Designer • Programmer • Creative Thinker</p>
-      <a class="btn" href="#portfolio">See my work</a>
+      <a class="btn" href="#portfolio">See My Work</a>
     </div>
   </header>
-  <section id="about" class="about">
+  <section id="about" class="about fade-in">
     <h2>About Me</h2>
     <p>
       I'm a game designer focused on crafting interactive systems that feel deliberate and fun.
       I combine mechanics, prototyping, and player-focused design to build experiences that stick. I enjoy quick jams as much as larger prototypes.
     </p>
+    <a href="Shaun_Dowling_Resume.pdf" download class="btn">Download Resume (PDF)</a>
   </section>
-  <!-- Portfolio -->
-  <section id="portfolio" class="portfolio-categories">
-    <div id="web-design" class="portfolio-section">
-      <h2>Web Design</h2>
-      <div class="gallery">
-        <figure>
-          <img src="images/web1.jpg" alt="Web project 1">
-          <figcaption>Website Project 1</figcaption>
-        </figure>
-        <figure>
-          <img src="images/web2.jpg" alt="Web project 2">
-          <figcaption>Website Project 2</figcaption>
-        </figure>
-      </div>
+  <section id="socials" class="fade-in">
+    <h2>Contact & Socials</h2>
+    <div class="socials-list">
+      <a class="social-btn social-instagram" href="https://instagram.com/yourusername" target="_blank" title="Instagram">
+        <span class="social-icon">
+          <svg viewBox="0 0 32 32" fill="currentColor"><circle cx="16" cy="16" r="8"/><rect x="2" y="2" width="28" height="28" rx="8" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="24" cy="8" r="2.1"/></svg>
+        </span>Instagram
+      </a>
+      <a class="social-btn social-linkedin" href="https://linkedin.com/in/yourusername" target="_blank" title="LinkedIn">
+        <span class="social-icon">
+          <svg viewBox="0 0 32 32" fill="currentColor"><rect x="6" y="14" width="4" height="12"/><circle cx="8" cy="10" r="2.2"/><rect x="14" y="14" width="4" height="12"/><rect x="14" y="18" width="10" height="4"/><rect x="24" y="14" width="4" height="12"/></svg>
+        </span>LinkedIn
+      </a>
+      <a class="social-btn social-discord" href="https://discord.gg/yourserver" target="_blank" title="Discord">
+        <span class="social-icon">
+          <svg viewBox="0 0 32 32" fill="currentColor"><circle cx="12" cy="16" r="2"/><circle cx="20" cy="16" r="2"/><rect x="4" y="8" width="24" height="16" rx="7" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </span>Discord
+      </a>
+      <a class="social-btn social-gmail" href="mailto:shaundowling1606@gmail.com" title="Gmail">
+        <span class="social-icon">
+          <svg viewBox="0 0 32 32" fill="currentColor"><rect x="6" y="10" width="20" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><polyline points="6,10 16,18 26,10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </span>Gmail
+      </a>
+      <a class="social-btn social-itch" href="https://zipasaurus.itch.io/" target="_blank" title="Itch.io">
+        <span class="social-icon">
+          <svg viewBox="0 0 32 32" fill="currentColor"><rect x="6" y="10" width="20" height="12" rx="4" fill="currentColor"/><rect x="10" y="14" width="12" height="4" rx="2" fill="#fff"/></svg>
+        </span>Itch.io
+      </a>
     </div>
-    <div id="art" class="portfolio-section">
+  </section>
+  <section id="portfolio" class="portfolio-categories">
+    <div id="art" class="portfolio-section fade-in">
       <h2>Art</h2>
       <div class="gallery">
-        <figure>
-          <img src="images/art1.jpg" alt="Art piece 1">
+        <figure tabindex="0" aria-label="View Art Piece 1" onclick="openModal('images/art1.jpg','Art Piece 1','Artwork for a jam game. Created in GIMP/Blender.')">
+          <img src="images/art1.jpg" alt="Art Piece 1" loading="lazy">
           <figcaption>Art Piece 1</figcaption>
         </figure>
-        <figure>
-          <img src="images/art2.jpg" alt="Art piece 2">
+        <figure tabindex="0" aria-label="View Art Piece 2" onclick="openModal('images/art2.jpg','Art Piece 2','Experimental pixel art game assets.')">
+          <img src="images/art2.jpg" alt="Art Piece 2" loading="lazy">
           <figcaption>Art Piece 2</figcaption>
         </figure>
       </div>
     </div>
-    <div id="photography" class="portfolio-section">
-      <h2>Photography</h2>
+    <div id="itchio" class="portfolio-section fade-in">
+      <h2>Itch.io Projects</h2>
       <div class="gallery">
-        <figure>
-          <img src="images/photo1.jpg" alt="Photo 1">
-          <figcaption>Photo 1</figcaption>
+        <figure tabindex="0" aria-label="View Itch.io Project 1" onclick="openModal('images/itch1.jpg','Itch.io Project 1','Playable prototype for a jam. See it on Itch.io.')">
+          <img src="images/itch1.jpg" alt="Itch.io Project 1" loading="lazy">
+          <figcaption>Itch.io Project 1</figcaption>
         </figure>
-        <figure>
-          <img src="images/photo2.jpg" alt="Photo 2">
-          <figcaption>Photo 2</figcaption>
+        <figure tabindex="0" aria-label="View Itch.io Project 2" onclick="openModal('images/itch2.jpg','Itch.io Project 2','Narrative-driven game. See it on Itch.io.')">
+          <img src="images/itch2.jpg" alt="Itch.io Project 2" loading="lazy">
+          <figcaption>Itch.io Project 2</figcaption>
         </figure>
       </div>
+      <p style="margin-top:1rem;">
+        See more at <a href="https://zipasaurus.itch.io/" target="_blank" style="color: var(--accent); font-weight:600;">zipasaurus.itch.io</a>
+      </p>
     </div>
   </section>
-  <section id="skills" class="skills">
+  <section id="skills" class="skills fade-in">
     <h2>Skills</h2>
     <ul class="skills-list">
-      <li>Unity</li>
-      <li>Python</li>
-      <li>C#</li>
-      <li>HTML/CSS</li>
-      <li>Blender</li>
-      <li>GIMP</li>
+      <li class="skills-bar">
+        <span class="skills-label">Unity</span>
+        <span class="skills-meter-wrapper"><span class="skills-meter"><span class="skills-meter-fill" data-level="90"></span></span></span>
+        <span class="skills-level">Expert</span>
+      </li>
+      <li class="skills-bar">
+        <span class="skills-label">Python</span>
+        <span class="skills-meter-wrapper"><span class="skills-meter"><span class="skills-meter-fill" data-level="84"></span></span></span>
+        <span class="skills-level">Advanced</span>
+      </li>
+      <li class="skills-bar">
+        <span class="skills-label">C#</span>
+        <span class="skills-meter-wrapper"><span class="skills-meter"><span class="skills-meter-fill" data-level="79"></span></span></span>
+        <span class="skills-level">Proficient</span>
+      </li>
+      <li class="skills-bar">
+        <span class="skills-label">HTML/CSS</span>
+        <span class="skills-meter-wrapper"><span class="skills-meter"><span class="skills-meter-fill" data-level="70"></span></span></span>
+        <span class="skills-level">Proficient</span>
+      </li>
+      <li class="skills-bar">
+        <span class="skills-label">Blender</span>
+        <span class="skills-meter-wrapper"><span class="skills-meter"><span class="skills-meter-fill" data-level="66"></span></span></span>
+        <span class="skills-level">Intermediate</span>
+      </li>
+      <li class="skills-bar">
+        <span class="skills-label">GIMP</span>
+        <span class="skills-meter-wrapper"><span class="skills-meter"><span class="skills-meter-fill" data-level="72"></span></span></span>
+        <span class="skills-level">Intermediate</span>
+      </li>
     </ul>
   </section>
-  <section id="contact" class="contact">
-    <h2>Contact</h2>
-    <div class="contact-links">
-      <a href="mailto:shaundowling1606@gmail.com">Email</a>
-      <a href="https://github.com/Zipasaurus" target="_blank">GitHub</a>
-      <a href="https://zipasaurus.itch.io/" target="_blank">Itch.io</a>
-      <a href="https://zipasaurus.me/portfolio.html" target="_blank">Old Website</a>
-    </div>
-  </section>
-  <footer>
+  <footer class="fade-in">
     <p>© 2025 Shaun Dowling. All rights reserved.</p>
   </footer>
-  <!-- Starfield Script -->
+  <!-- Modal -->
+  <div id="modal-bg" onclick="closeModal(event)" aria-modal="true" role="dialog">
+    <div id="modal-card">
+      <button id="modal-close" onclick="closeModal(event)" title="Close">&times;</button>
+      <img id="modal-img" alt="">
+      <h3 id="modal-title"></h3>
+      <p id="modal-desc"></p>
+    </div>
+  </div>
   <script>
+    // Starfield bg
     const canvas = document.getElementById("space-bg");
     const ctx = canvas.getContext("2d");
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    function resizeCanvas() {canvas.width = window.innerWidth;canvas.height = window.innerHeight;}
+    resizeCanvas();window.addEventListener("resize", resizeCanvas);
+    let stars = [];for (let i = 0; i < 140; i++) {
+      stars.push({x: Math.random() * canvas.width,y: Math.random() * canvas.height,r: Math.random() * 2 + 1,dx: (Math.random() - 0.5) * 0.5,dy: (Math.random() - 0.5) * 0.5});
     }
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
-
-    let stars = [];
-    for (let i = 0; i < 140; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 2 + 1,
-        dx: (Math.random() - 0.5) * 0.5,
-        dy: (Math.random() - 0.5) * 0.5
-      });
-    }
-
     let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
-    window.addEventListener("mousemove", e => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    });
-
+    window.addEventListener("mousemove", e => {mouse.x = e.clientX;mouse.y = e.clientY;});
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = "white";
       for (let s of stars) {
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fill();
-
-        s.x += s.dx;
-        s.y += s.dy;
-        s.x += (mouse.x - s.x) * 0.0005;
-        s.y += (mouse.y - s.y) * 0.0005;
-
-        if (s.x < 0) s.x = canvas.width;
-        if (s.x > canvas.width) s.x = 0;
-        if (s.y < 0) s.y = canvas.height;
-        if (s.y > canvas.height) s.y = 0;
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill();
+        s.x += s.dx; s.y += s.dy; s.x += (mouse.x - s.x) * 0.0005; s.y += (mouse.y - s.y) * 0.0005;
+        if (s.x < 0) s.x = canvas.width;if (s.x > canvas.width) s.x = 0;
+        if (s.y < 0) s.y = canvas.height;if (s.y > canvas.height) s.y = 0;
       }
       requestAnimationFrame(draw);
     }
     draw();
+
+    // Modal/lightbox for portfolio
+    function openModal(img, title, desc) {
+      document.getElementById('modal-img').src = img;
+      document.getElementById('modal-img').alt = title;
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-desc').textContent = desc;
+      document.getElementById('modal-bg').style.display = "flex";
+      document.getElementById('modal-card').focus();
+    }
+    function closeModal(e) {
+      if (e.target.id === "modal-bg" || e.target.id === "modal-close") {
+        document.getElementById('modal-bg').style.display = "none";
+        document.getElementById('modal-img').src = "";
+      }
+    }
+    // Animated scroll fade-in & animated skill bars
+    function revealOnScroll() {
+      const els = document.querySelectorAll('.fade-in');
+      els.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        // Show fade-in when in view, remove when not
+        if (rect.top < window.innerHeight-40 && rect.bottom > 40) {
+          el.classList.add("visible");
+          // Skills section? Animate bars!
+          if (el.id === "skills") {
+            animateSkillBars(rect);
+          }
+        } else {
+          el.classList.remove("visible");
+          if (el.id === "skills") {
+            resetSkillBars();
+          }
+        }
+      });
+    }
+    window.addEventListener('scroll', revealOnScroll);
+    window.addEventListener('DOMContentLoaded', revealOnScroll);
+
+    // Animate skills bars when visible, reset if not
+    function animateSkillBars(rect) {
+      const bars = document.querySelectorAll('.skills-meter-fill');
+      bars.forEach((bar, i) => {
+        // Only animate if not already filled
+        if (!bar.classList.contains('filled')) {
+          const level = bar.dataset.level;
+          bar.style.transition = "none";
+          bar.style.width = "0%";
+          setTimeout(() => {
+            bar.style.transition = "width 1.4s cubic-bezier(.52,.57,.39,1)";
+            bar.style.width = level + "%";
+            bar.classList.add('filled');
+          }, 130 + i*140); // Stagger bars a bit
+        }
+      });
+    }
+    function resetSkillBars() {
+      const bars = document.querySelectorAll('.skills-meter-fill');
+      bars.forEach(bar => {
+        bar.style.transition = "none";
+        bar.style.width = "0%";
+        bar.classList.remove('filled');
+      });
+    }
+    // Keyboard modal close (Esc)
+    document.addEventListener('keydown', function(e) {
+      if (e.key === "Escape") closeModal({target:{id:"modal-bg"}});
+    });
   </script>
 </body>
 </html>
-<div class='last-updated'>Last Updated: 2025-11-13 13:56:06</div>
-<div class='last-updated'>Last Updated: 2025-11-13 13:56:33</div>
