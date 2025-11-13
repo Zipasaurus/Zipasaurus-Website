@@ -1,32 +1,129 @@
-@font-face {
-    font-family: 'MyCustomFont';
-    src: url('https://github.com/Zipasaurus/Zipasaurus-Website/raw/refs/heads/main/Fonts/SpaceGrotesk-VariableFont_wght.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
 body {
-  font-family: 'MyCustomFont', sans-serif;
-  line-height: 1.6;
-  font-size: 16px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  background: #f5f6fa;
+  color: #333;
+}
+
+header {
+  background: #005f73;
+  color: white;
+  padding: 1.2rem 0;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2.3rem;
+  letter-spacing: 2px;
+}
+
+nav ul {
+  display: flex;
+  justify-content: center;
+  gap: 2.2rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.08rem;
+  transition: color 0.18s;
+  padding: 0.3em 0.8em;
+  border-radius: 5px;
+}
+
+nav a:hover {
+  background: #0a9396;
   color: #fff;
-  background: #121212;
-}
-.last-updated {
-    font-size: 14px;
-    color: #bbb;
-    text-align: center;
-    margin-top: 20px;
-    padding: 10px;
-    background: #222;
-    border-radius: 5px;
 }
 
-.last-updated span {
-    font-weight: bold;
-    color: #00bcd4;
+main {
+  padding: 2rem 0.7rem 2.5rem 0.7rem;
 }
-(
-)
 
+.portfolio-section {
+  background: white;
+  max-width: 1050px;
+  margin: 2.1rem auto;
+  border-radius: 9px;
+  box-shadow: 0 2px 14px rgba(0,0,0,0.08);
+  padding: 2rem;
+}
 
+.portfolio-section h2 {
+  margin-top: 0;
+  font-size: 1.7rem;
+  color: #005f73;
+  letter-spacing: 1px;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.15rem;
+  margin-top: 1.2rem;
+}
+
+figure {
+  background: #e9ecef;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 0;
+  box-shadow: 0 2px 7px rgba(0,0,0,0.07);
+  transition: transform 0.22s;
+}
+
+figure:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.14);
+}
+
+figure img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 4/3;
+  border-bottom: 2px solid #94d2bd;
+}
+
+figcaption {
+  padding: 0.8rem 0.3rem;
+  font-size: 1.01rem;
+  color: #333;
+  word-break: break-word;
+}
+
+footer {
+  text-align: center;
+  background: #005f73;
+  color: #fff;
+  padding: 1.1rem 0;
+  font-size: 1.06rem;
+  position: relative;
+}
+
+@media (max-width: 700px) {
+  .portfolio-section {
+    padding: 1.2rem;
+    max-width: 97vw;
+  }
+  main {
+    padding: 1rem 0.1rem 1.5rem 0.1rem;
+  }
+  header h1 {
+    font-size: 1.45rem;
+  }
+  nav ul {
+    gap: 1.2rem;
+    flex-direction: column;
+  }
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+}
