@@ -19,10 +19,10 @@
   <section id="about" class="about fade-in">
     <h2>About Me</h2>
     <p>
-      I'm a game designer focused on crafting interactive systems that feel deliberate and fun.
-      I combine mechanics, prototyping, and player-focused design to build experiences that stick. I enjoy quick jams as much as larger prototypes.
+      I'm a soon to be Games Designer, hoping to work in the Art / 3D Asset creation area. 
+      I've been learning to make games over 4 years "Tracked" but I've been looking at game devs and learning tools such as Blender for longer.
     </p>
-    <a href="Shaun_Dowling_Resume.pdf" download class="btn">Download Resume (PDF)</a>
+    <a href="Shaun_Dowling_Resume.pdf" download class="btn">Download Resume (PDF)(Not Done yet)</a>
   </section>
   <section class="counters-section fade-in">
     <div class="counter-box">
@@ -35,100 +35,111 @@
     </div>
     <div class="counter-box">
       <div class="counter-value" data-counter="4">0</div>
-      <div class="counter-label">Years since first ever Game made</div>
+      <div class="counter-label">Years Since First Game</div>
     </div>
   </section>
+
   <section class="timeline-section fade-in">
     <h2>My Journey</h2>
     <ul class="timeline-list">
       <li class="timeline-event">
         <div class="timeline-dot"></div>
-        <span class="timeline-event-title">First ever Game made using Bolt and Unity Assets</span>
+        <span class="timeline-event-title">First Game - Unity & Bolt</span>
         <span class="timeline-event-date">2022</span>
-        <span class="timeline-event-desc">First ever Game made.</span>
+        <span class="timeline-event-desc">Discovered a love for prototyping and rapid iteration.</span>
       </li>
       <li class="timeline-event">
         <div class="timeline-dot"></div>
         <span class="timeline-event-title">First Game Jam (College)</span>
         <span class="timeline-event-date">2023</span>
-        <span class="timeline-event-desc">First ever college Game Jam which actually went "Well"</span>
+        <span class="timeline-event-desc">Team-based jam, learned the value of collaboration.</span>
       </li>
       <li class="timeline-event">
         <div class="timeline-dot"></div>
         <span class="timeline-event-title">Second Game Jam (College)</span>
         <span class="timeline-event-date">2024</span>
-        <span class="timeline-event-desc">Second ever College Game Jam participated in.</span>
+        <span class="timeline-event-desc">Shipped a jam entry with creative mechanics.</span>
       </li>
       <li class="timeline-event">
         <div class="timeline-dot"></div>
-        <span class="timeline-event-title">Partcipated in a 3 Day Game Jam</span>
+        <span class="timeline-event-title">First Community Game Jam</span>
         <span class="timeline-event-date">2025</span>
-        <span class="timeline-event-desc">Participated in my first ever game jam seperate from college.</span>
+        <span class="timeline-event-desc">Three-day jam, pushed unique ideas outside college.</span>
       </li>
     </ul>
   </section>
+
   <section id="portfolio" class="fade-in">
     <h2>Portfolio</h2>
+    <!-- Most recent/winning projects prominently -->
     <div class="featured-projects">
       <div class="featured-project-card">
-        <span class="project-badge"></span>
-        <h3>Dungeons with a pinch of magic</h3>
-        <p>3 Day Game Jam called "Dungeons with a pinch of magic"</p>
+        <span class="project-badge">JAM ENTRY</span>
+        <h3>Dungeons with a Pinch of Magic</h3>
+        <img src="images/itch1.jpg" alt="Dungeons Magic Screenshot" style="width:96%;margin-bottom:1em;">
+        <p>Created in a 3-day Jam. <br><a href="https://zipasaurus.itch.io/dungeons-with-a-pinch-of-magic" target="_blank" class="portfolio-card-link">Play on Itch.io</a></p>
       </div>
       <div class="featured-project-card">
-        <span class="project-badge"></span>
-        <h3>Pleasant present - Shaun - Shay - James - Jack -</h3>
-        <p>Placed 13th in the Game Jam<br>Minigame Madness not (TM)</p>
+        <span class="project-badge">COLLEGE JAM</span>
+        <h3>Pleasant Present</h3>
+        <img src="images/itch2.jpg" alt="Pleasant Present Screenshot" style="width:96%;margin-bottom:1em;">
+        <p>Placed 13th in College Jam.<br>
+          Shaun • Shay • James • Jack<br>
+          <a href="https://zipasaurus.itch.io/pleasant-present" target="_blank" class="portfolio-card-link">Play on Itch.io</a>
+        </p>
       </div>
     </div>
+    <!-- Art Section -->
     <div class="portfolio-section">
-      <h3>Art</h3>
+      <h3>Art & Visuals</h3>
       <div class="portfolio-cards">
-        <div class="portfolio-card">
-          <img src="images/art1.jpg" alt="Art Piece 1" loading="lazy">
-          <div class="portfolio-card-title">Art Piece 1</div>
-          <div style="color:#babacf; font-size:1em;margin-bottom:10px;">Logo created for my webiste / Portfolio (To Come)</div>
-        </d
-        <div class="portfolio-card">
+        <div class="portfolio-card" tabindex="0" onclick="openModal('images/art1.jpg', 'Portfolio Logo Design', 'Logo created for my website & portfolio.')">
+          <img src="images/art1.jpg" alt="Portfolio Logo" loading="lazy">
+          <div class="portfolio-card-title">Logo Design</div>
+          <div style="color:#babacf; font-size:1em;margin-bottom:10px;">Brand identity for my portfolio.</div>
+        </div>
+        <div class="portfolio-card" tabindex="0" onclick="openModal('images/art2.jpg', 'Original 3D Scene', 'A colorful 3D scene built with Blender.')">
           <img src="images/art2.jpg" alt="Art Piece 2" loading="lazy">
-          <div class="portfolio-card-title">Art Piece 2</div>
-          <div style="color:#babacf; font-size:1em;margin-bottom:10px;">Cool 3D Scne I made</div>
+          <div class="portfolio-card-title">Blender Scene</div>
+          <div style="color:#babacf; font-size:1em;margin-bottom:10px;">Personal 3D art practice.</div>
         </div>
       </div>
     </div>
+    <!-- Itch.io Section -->
     <div class="portfolio-section">
       <h3>Itch.io Projects</h3>
       <div class="portfolio-cards">
         <a class="portfolio-card" href="https://zipasaurus.itch.io/dungeons-with-a-pinch-of-magic" target="_blank">
-          <img src="images/itch1.jpg" alt="Itch.io Project 1" loading="lazy">
-          <div class="portfolio-card-title">Itch.io Project 1</div>
-          <div style="color:#babacf; font-size:1em;">Dungones with a pinch of magic. <span class="portfolio-card-link">View on Itch.io</span></div>
+          <img src="images/itch1.jpg" alt="Dungeons Magic Itch Project" loading="lazy">
+          <div class="portfolio-card-title">Dungeons with a Pinch of Magic</div>
+          <div style="color:#babacf; font-size:1em;">Game jam prototype.<span class="portfolio-card-link">View on Itch.io</span></div>
         </a>
         <a class="portfolio-card" href="https://zipasaurus.itch.io/pleasant-present" target="_blank">
-          <img src="images/itch2.jpg" alt="Itch.io Project 2" loading="lazy">
-          <div class="portfolio-card-title">College game jam project</div>
-          <div style="color:#babacf; font-size:1em;">Minigame Madness <span class="portfolio-card-link">View on Itch.io</span></div>
+          <img src="images/itch2.jpg" alt="Pleasant Present Itch Project" loading="lazy">
+          <div class="portfolio-card-title">Pleasant Present</div>
+          <div style="color:#babacf; font-size:1em;">Minigame Madness.<span class="portfolio-card-link">View on Itch.io</span></div>
         </a>
       </div>
       <p style="margin-top:2rem;font-size:1.09em;">
-        See more at <a href="https://zipasaurus.itch.io/" target="_blank" style="color: var(--accent); font-weight:600;">zipasaurus.itch.io</a>
+        See more at <a href="https://zipasaurus.itch.io/" target="_blank" style="color:var(--accent);font-weight:600;">zipasaurus.itch.io</a>
       </p>
     </div>
   </section>
+
   <section class="testimonials-section fade-in">
     <h2>Game Jam Teammates</h2>
-    <div class="testimonials-title">People that have reviewed my work and worked with say:</div>
+    <div class="testimonials-title">People that have reviewed my work and worked with me say:</div>
     <div class="testimonial-card">
       <span class="testimonial-quote">"Shaun is a really hardworking student and has produced a lot of high quality work in Blender as well as Unity"</span>
-      <span class="testimonial-author">—Abhinav - College Lecturer</span>
+      <span class="testimonial-author">— Abhinav, College Lecturer</span>
     </div>
     <div class="testimonial-card">
-      <span class="testimonial-quote">"shaun is good to work with as he brings good creativaty and knowladge "</span>
-      <span class="testimonial-author">—Jack (Game Jam Teammate)</span>
+      <span class="testimonial-quote">"Shaun is good to work with as he brings good creativity and knowledge."</span>
+      <span class="testimonial-author">— Jack (Game Jam Teammate)</span>
     </div>
     <div class="testimonial-card">
-      <span class="testimonial-quote">"Shaun is hard working and very helpful to other members of the team and is lowkey a femboy"</span>
-      <span class="testimonial-author">—James (Game Jam Teammate)</span>
+      <span class="testimonial-quote">"Shaun is hard working and very helpful to other members of the team."</span>
+      <span class="testimonial-author">— James (Game Jam Teammate)</span>
     </div>
   </section>
   <section id="skills" class="skills fade-in" style="background: #162037;">
@@ -139,7 +150,7 @@
         <span class="skills-meter-wrapper">
           <span class="skills-meter">
             <span class="skills-meter-fill" data-level="92"></span>
-            <span class="skill-tooltip">Expert – professional experience/game jams</span>
+            <span class="skill-tooltip">Expert – game jams & prototyping</span>
           </span>
         </span>
         <span class="skills-level">Expert</span>
@@ -149,7 +160,7 @@
         <span class="skills-meter-wrapper">
           <span class="skills-meter">
             <span class="skills-meter-fill" data-level="84"></span>
-            <span class="skill-tooltip">Advanced – tools, gameplay, scripting</span>
+            <span class="skill-tooltip">Advanced – tools & scripting</span>
           </span>
         </span>
         <span class="skills-level">Advanced</span>
@@ -169,7 +180,7 @@
         <span class="skills-meter-wrapper">
           <span class="skills-meter">
             <span class="skills-meter-fill" data-level="70"></span>
-            <span class="skill-tooltip">Proficient – web landing pages, portfolios</span>
+            <span class="skill-tooltip">Proficient – web portfolios</span>
           </span>
         </span>
         <span class="skills-level">Proficient</span>
@@ -179,7 +190,7 @@
         <span class="skills-meter-wrapper">
           <span class="skills-meter">
             <span class="skills-meter-fill" data-level="66"></span>
-            <span class="skill-tooltip">Intermediate – jams and asset work</span>
+            <span class="skill-tooltip">Intermediate – 3D modeling/art jams</span>
           </span>
         </span>
         <span class="skills-level">Intermediate</span>
@@ -189,7 +200,7 @@
         <span class="skills-meter-wrapper">
           <span class="skills-meter">
             <span class="skills-meter-fill" data-level="72"></span>
-            <span class="skill-tooltip">Intermediate – pixel art, textures</span>
+            <span class="skill-tooltip">Intermediate – pixel art & branding</span>
           </span>
         </span>
         <span class="skills-level">Intermediate</span>
@@ -221,6 +232,7 @@
     </div>
   </div>
   <script>
+    // Starfield
     const canvas = document.getElementById("space-bg");
     const ctx = canvas.getContext("2d");
     function resizeCanvas() {canvas.width = window.innerWidth;canvas.height = window.innerHeight;}
@@ -352,5 +364,3 @@
   </script>
 </body>
 </html>
-<div class='last-updated'>Last Updated: 2025-11-13 15:32:15</div>
-<div class='last-updated'>Last Updated: 2025-11-13 15:36:21</div>
