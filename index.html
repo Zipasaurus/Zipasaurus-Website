@@ -19,9 +19,10 @@
   <section id="about" class="about fade-in">
     <h2>About Me</h2>
     <p>
-     I'm a dream to be Games Designer, hoping to specialise in the field of Art and 3D asset creation for Games.
+      I'm a game designer focused on crafting interactive systems that feel deliberate and fun.
+      I combine mechanics, prototyping, and player-focused design to build experiences that stick. I enjoy quick jams as much as larger prototypes.
     </p>
-    <a href="Shaun_Dowling_Resume.pdf" download class="btn">Download Resume (PDF)(Not Completed Yet)</a>
+    <a href="Shaun_Dowling_Resume.pdf" download class="btn">Download Resume (PDF)</a>
   </section>
   <section class="counters-section fade-in">
     <div class="counter-box">
@@ -66,7 +67,7 @@
       </li>
     </ul>
   </section>
-  <section class="portfolio-categories fade-in" id="portfolio">
+  <section id="portfolio" class="fade-in">
     <h2>Portfolio</h2>
     <div class="featured-projects">
       <div class="featured-project-card">
@@ -80,39 +81,39 @@
         <p>Prototype picked as "Staff Pick" on Itch.io.<br>Platformer with layered progression.</p>
       </div>
     </div>
-    <div class="portfolio-cards">
-      <div class="portfolio-card">
-        <div>
-          <img src="images/art1.jpg" alt="Art Piece 1" loading="lazy" style="margin-bottom:14px;">
+    <div class="portfolio-section">
+      <h3>Art</h3>
+      <div class="portfolio-cards">
+        <div class="portfolio-card">
+          <img src="images/art1.jpg" alt="Art Piece 1" loading="lazy">
           <div class="portfolio-card-title">Art Piece 1</div>
           <div style="color:#babacf; font-size:1em;margin-bottom:10px;">Artwork for a jam game. Created in GIMP/Blender.</div>
         </div>
-      </div>
-      <div class="portfolio-card">
-        <div>
-          <img src="images/art2.jpg" alt="Art Piece 2" loading="lazy" style="margin-bottom:14px;">
+        <div class="portfolio-card">
+          <img src="images/art2.jpg" alt="Art Piece 2" loading="lazy">
           <div class="portfolio-card-title">Art Piece 2</div>
           <div style="color:#babacf; font-size:1em;margin-bottom:10px;">Experimental pixel art game assets.</div>
         </div>
       </div>
-      <a class="portfolio-card" href="https://zipasaurus.itch.io/myproject1" target="_blank">
-        <div>
-          <img src="images/itch1.jpg" alt="Itch.io Project 1" loading="lazy" style="margin-bottom:14px;">
+    </div>
+    <div class="portfolio-section">
+      <h3>Itch.io Projects</h3>
+      <div class="portfolio-cards">
+        <a class="portfolio-card" href="https://zipasaurus.itch.io/myproject1" target="_blank">
+          <img src="images/itch1.jpg" alt="Itch.io Project 1" loading="lazy">
           <div class="portfolio-card-title">Itch.io Project 1</div>
           <div style="color:#babacf; font-size:1em;">Playable prototype for a jam. <span class="portfolio-card-link">View on Itch.io</span></div>
-        </div>
-      </a>
-      <a class="portfolio-card" href="https://zipasaurus.itch.io/myproject2" target="_blank">
-        <div>
-          <img src="images/itch2.jpg" alt="Itch.io Project 2" loading="lazy" style="margin-bottom:14px;">
+        </a>
+        <a class="portfolio-card" href="https://zipasaurus.itch.io/myproject2" target="_blank">
+          <img src="images/itch2.jpg" alt="Itch.io Project 2" loading="lazy">
           <div class="portfolio-card-title">Itch.io Project 2</div>
           <div style="color:#babacf; font-size:1em;">Narrative-driven game. <span class="portfolio-card-link">View on Itch.io</span></div>
-        </div>
-      </a>
+        </a>
+      </div>
+      <p style="margin-top:2rem;font-size:1.09em;">
+        See more at <a href="https://zipasaurus.itch.io/" target="_blank" style="color: var(--accent); font-weight:600;">zipasaurus.itch.io</a>
+      </p>
     </div>
-    <p style="margin-top:2rem;font-size:1.09em;">
-      See more at <a href="https://zipasaurus.itch.io/" target="_blank" style="color: var(--accent); font-weight:600;">zipasaurus.itch.io</a>
-    </p>
   </section>
   <section class="testimonials-section fade-in">
     <h2>Game Jam Teammates</h2>
@@ -195,7 +196,6 @@
       </li>
     </ul>
   </section>
-  <!-- Contact Form Message Me -->
   <section class="contact-form-section fade-in">
     <h2>Message Me</h2>
     <form id="contactForm" class="contact-form" autocomplete="off" action="https://formspree.io/f/xgvrvpnw" method="POST">
@@ -209,10 +209,9 @@
       <div id="form_status"></div>
     </form>
   </section>
-  <footer class="fade-in" style="background: #151621; color: #bbb; font-size:1.1em; padding:2em 0; text-align:center; border-radius:0;">
+  <footer class="fade-in">
     <p>© 2025 Shaun Dowling. All rights reserved.</p>
   </footer>
-  <!-- Modal -->
   <div id="modal-bg" onclick="closeModal(event)" aria-modal="true" role="dialog">
     <div id="modal-card">
       <button id="modal-close" onclick="closeModal(event)" title="Close">&times;</button>
@@ -222,7 +221,6 @@
     </div>
   </div>
   <script>
-    // Starfield
     const canvas = document.getElementById("space-bg");
     const ctx = canvas.getContext("2d");
     function resizeCanvas() {canvas.width = window.innerWidth;canvas.height = window.innerHeight;}
@@ -245,7 +243,6 @@
       requestAnimationFrame(draw);
     }
     draw();
-    // Modal/lightbox for portfolio
     function openModal(img, title, desc) {
       document.getElementById('modal-img').src = img;
       document.getElementById('modal-img').alt = title;
@@ -260,7 +257,6 @@
         document.getElementById('modal-img').src = "";
       }
     }
-    // Animated numbers play only once
     function animateCounters() {
       document.querySelectorAll('.counter-value').forEach(function(el){
         if (el.classList.contains("done")) return;
@@ -281,7 +277,6 @@
         tick();
       });
     }
-    // Skill bars animate and gradient
     function getGradient(percent) {
       if (percent <= 50) return `linear-gradient(90deg, #EF4444 0%, #FFE900 100%)`;
       if (percent <= 80) return `linear-gradient(90deg, #FFE900 0%, #25d665 100%)`;
@@ -330,7 +325,6 @@
     document.addEventListener('keydown', function(e) {
       if (e.key === "Escape") closeModal({target:{id:"modal-bg"}});
     });
-    // Contact form submission (real Formspree)
     document.getElementById('contactForm').addEventListener('submit', function(ev){
       ev.preventDefault();
       var status = document.getElementById('form_status');
