@@ -12,11 +12,10 @@
       --card: #111827;
       --accent: #2563eb;
       --soft-shadow: 0 6px 20px rgba(0,0,0,0.3);
-      --social-instagram: #E4405F;
-      --social-linkedin: #0077B5;
-      --social-discord: #5865F2;
-      --social-gmail: #D14836;
-      --social-itch: #FA5C5C;
+      --test-green: #25d665;
+      --test-yellow: #FFE900;
+      --test-red: #EF4444;
+      --highlight: #174bb6;
     }
     body {
       font-family: "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
@@ -24,224 +23,134 @@
       color: var(--text);
       line-height: 1.6;
       scroll-behavior: smooth;
-      position: relative;
       min-height: 100vh;
-      z-index: 0;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      transition: background 0.15s, color 0.15s;
     }
-    a { color: inherit; text-decoration: none }
-    img { display: block; max-width: 100%; border-radius: 10px; transition: transform .3s }
+    a { color:inherit; text-decoration:none }
+    img { display: block; max-width:100%; border-radius: 10px; transition: transform .3s }
     img:hover { transform: scale(1.045) }
-    #space-bg {
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
-      background: radial-gradient(ellipse at bottom, #0d1d31, #000);
-    }
-    header {
-      min-height: 60vh;
-      display: flex; align-items: center; justify-content: center;
-      text-align: center;
-      padding: 2.8rem 1.2rem 2rem 1.2rem;
-      background: rgba(0,0,0,0.33);
-      backdrop-filter: blur(2.5px);
-    }
-    header .hero { max-width: 900px }
-    header h1 { font-size: 2.6rem; margin-bottom: .21rem }
-    header p { color: var(--muted); font-size: 1.09rem }
-    .btn {
-      display: inline-block;
-      margin-top: 1.3rem;
-      padding: .8rem 1.4rem;
-      border-radius: 30px;
-      background: var(--accent);
-      color: #fff;
-      font-weight: 600;
-      border: none;
-      font-size: 1rem;
-      letter-spacing: .5px;
-      transition: transform .19s, background .19s;
-      cursor: pointer;
-    }
+    #space-bg { position: fixed; top:0; left:0; width:100vw; height:100vh; z-index: -1; background: radial-gradient(ellipse at bottom, #0d1d31, #000);}
+    header { min-height:60vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:2.8rem 1.2rem 2rem 1.2rem; background:rgba(0,0,0,0.33); backdrop-filter: blur(2.5px);}
+    header .hero { max-width:900px;}
+    header h1 { font-size:2.6rem; margin-bottom:.21rem;}
+    header p { color:var(--muted); font-size:1.09rem;}
+    .btn { display:inline-block; margin-top:1.3rem; padding:.8rem 1.4rem; border-radius:30px; background:var(--accent); color:#fff; font-weight:600; border:none; font-size:1rem; letter-spacing:.5px; transition:transform .19s, background .19s; cursor:pointer;}
     .btn:hover { transform: translateY(-3px) scale(1.04); background: #174bb6 }
-    section {
-      max-width: 1000px;
-      margin: 2.2rem auto;
-      padding: 0 1.25rem;
-    }
-    h2 {
-      font-size: 1.6rem;
-      margin-bottom: 1rem;
-      position: relative;
+    section { max-width:1000px; margin:2.2rem auto; padding:0 1.25rem;}
+    h2 { font-size:1.6rem; margin-bottom:1rem; position:relative; color:#fff; letter-spacing:0.5px; font-weight:700;}
+    h2::after { content:""; position:absolute; bottom:-8px; left:0; width:56px; height:3px; background:var(--accent); border-radius:3px;}
+    .about p { max-width:760px; color:#ddd; margin-bottom:1.3rem;}
+    /* Socials */
+    .socials-list { display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin-top:1rem; margin-bottom:1.7rem;}
+    .social-btn { display:flex; align-items:center; gap:.45em; font-size:1.09rem; background:var(--card); color:#fff; border-radius:28px; padding:.68em 1.2em; font-weight:600; text-decoration:none; box-shadow:0 2px 13px rgba(0,0,0,0.03); transition:background .18s, transform .18s; border:none; cursor:pointer; letter-spacing:.2px;}
+    .social-btn:hover { transform:translateY(-2px) scale(1.04);}
+    .social-icon { width:1.15em; height:1.15em; margin-right:.13em; display:inline-block; vertical-align:middle; line-height:1;}
+    /* Featured Projects */
+    .featured-projects { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.5rem;}
+    @media (max-width:700px) { .featured-projects{grid-template-columns:1fr;} }
+    .featured-project-card {
+      background: var(--highlight);
+      border-radius: 13px;
+      padding: 1.4em 1em;
+      box-shadow: 0 5px 24px rgba(20,45,115,.18);
       color: #fff;
-      letter-spacing: 0.5px;
-      font-weight: 700;
-    }
-    h2::after {
-      content: "";
-      position: absolute;
-      bottom: -8px;
-      left: 0;
-      width: 56px;
-      height: 3px;
-      background: var(--accent);
-      border-radius: 3px;
-    }
-    .about p {
-      max-width: 760px;
-      color: #ddd;
-      margin-bottom: 1.3rem;
-    }
-    /* Portfolio Section */
-    .portfolio-categories { display: grid; gap: 2.05rem; }
-    .portfolio-section {
-      background: var(--card);
-      border-radius: 14px;
-      box-shadow: var(--soft-shadow);
-      padding: 2rem 1rem 1.7rem 1rem;
-      margin-bottom: 1rem;
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 1.3rem;
-      margin-top: 1.25rem;
-      margin-bottom: 0.5rem;
-      align-items: stretch;
-    }
-    figure {
-      background: #172239;
-      border-radius: 8px;
-      overflow: hidden;
-      margin: 0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.13);
-      transition: transform .21s;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: flex-start;
-    }
-    figure:hover { transform: scale(1.045); box-shadow: 0 6px 18px rgba(0,0,0,0.18);}
-    figure img {
-      width: 100%;
-      aspect-ratio: 4/3;
-      object-fit: cover;
-      border-bottom: 2px solid #2563eb33;
-      background: #151a22;
-    }
-    figcaption {
-      padding: .7em 1em 1em 1em;
       text-align: center;
-      color: #e8eaf0;
-      font-size: .99rem;
-      min-height: 2em;
+      position:relative;
+      overflow:hidden;
+      margin-bottom:1rem;
     }
-    /* Socials Area */
-    .socials-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
-      margin-top: 1rem;
-      margin-bottom: 1.7rem;
+    .featured-project-card h3 { font-size:1.18em; color:#fff; margin-top:0;}
+    .featured-project-card .project-badge {
+      position: absolute;
+      top:1.2em; right:1.2em;
+      background:var(--test-green);
+      color:#222; font-weight:700;
+      padding:.38em .9em .38em .9em;
+      border-radius:20px;
+      font-size:.95em;
+      letter-spacing:.03em;
+      box-shadow:0 1px 8px rgba(0,0,0,.13);
+      z-index:2;
     }
-    .social-btn {
-      display: flex;
-      align-items: center;
-      gap: .45em;
-      font-size: 1.09rem;
-      background: var(--card);
-      color: #fff;
-      border-radius: 28px;
-      padding: .68em 1.2em;
-      font-weight: 600;
-      text-decoration: none;
-      box-shadow: 0 2px 13px rgba(0,0,0,0.03);
-      transition: background .18s, transform .18s;
-      border: none;
-      cursor: pointer;
-      letter-spacing: .2px;
-    }
-    .social-btn:hover { transform: translateY(-2px) scale(1.04); }
-    .social-instagram:hover { background: var(--social-instagram);}
-    .social-linkedin:hover { background: var(--social-linkedin);}
-    .social-discord:hover { background: var(--social-discord);}
-    .social-gmail:hover { background: var(--social-gmail);}
-    .social-itch:hover { background: var(--social-itch);}
-    .social-icon {
-      width: 1.15em;
-      height: 1.15em;
-      margin-right: .13em;
-      display: inline-block;
-      vertical-align: middle;
-      line-height: 1;
-    }
-    /* Skills Chart */
-    .skills-list { list-style:none; margin-top:1.4rem; }
+    /* Timeline */
+    .timeline-section{margin-top:2.5rem;margin-bottom:2rem;}
+    .timeline-list{list-style:none;padding:0;position:relative;}
+    .timeline-list::before{content:"";display:block;position:absolute;left:8px;width:4px;height:100%;background:var(--accent);}
+    .timeline-event{padding-left:32px;position:relative;margin-bottom:1.7em;}
+    .timeline-dot{position:absolute;left:-2px;top:4px;width:14px;height:14px;border-radius:7px;background:var(--test-green);border:2px solid #fff;}
+    .timeline-event-title{font-weight:700;color:var(--accent);}
+    .timeline-event-date{color:#aaa;font-size:.93em;display:block;}
+    .timeline-event-desc{color:#ddd;margin-top:.3em;}
+
+    /* Skill Bars */
+    .skills-list { list-style:none; margin-top:1.4rem;}
     .skills-bar { padding:.8em 0 .7em 0; }
     .skills-label { display:inline-block; min-width:120px; }
     .skills-meter-wrapper { display:inline-block; width:60%; vertical-align:middle; }
-    .skills-meter {
-      background: #333;
-      height: 10px;
-      display: inline-block;
-      width: 100%;
-      border-radius: 6px;
-      overflow: hidden;
-      vertical-align: middle;
-      margin-right: 0.5em;
-    }
+    .skills-meter { background: #333; height: 10px; display: inline-block; width: 100%; border-radius: 6px; overflow: hidden; vertical-align: middle; margin-right: 0.5em; }
     .skills-meter-fill {
-      background: linear-gradient(90deg, var(--accent), #3a74ee 85%);
       min-width: 8px;
       width: 0%;
       height: 100%;
       border-radius: 6px;
-      transition: width 1.4s cubic-bezier(.52,.57,.39,1);
+      background: var(--test-red);
+      transition: width 1.3s cubic-bezier(.52,.57,.39,1), background 0.8s;
+      position:relative;
     }
+    .skill-tooltip {
+      position:absolute; left:50%; top:-34px; transform:translateX(-50%);
+      color:#eee; background:rgba(85,85,85,0.97); font-size:.89em; padding:.33em .85em; border-radius:18px; display:none; white-space:nowrap; pointer-events:none;
+    }
+    .skills-bar:hover .skill-tooltip {display:block;}
+
     .skills-level { display:inline-block; margin-left:.2em; color:#bbb; vertical-align:middle; font-size:.97em;}
-    /* Modal/Lightbox */
-    #modal-bg {
-      display: none; position: fixed; top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.85);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
+
+    /* Animated numbers */
+    .counters-section {display:flex;justify-content:center;gap:2.7em;margin:2.3em 0;flex-wrap:wrap;}
+    .counter-box {background:#191e35;padding:1.3em 2em;border-radius:18px;box-shadow:0 2px 13px rgba(0,0,0,0.09);text-align:center;}
+    .counter-value {font-size:2.35em;font-weight:700;color:var(--test-green);}
+    .counter-label {color:var(--accent);margin-top:.3em;font-size:1.07em;}
+
+    /* Testimonials Section */
+    .testimonials-section { background: #1b2338; border-radius: 12px; box-shadow: 0 2px 14px rgba(0,0,0,0.13); padding: 2rem; margin-bottom: 1rem;}
+    .testimonials-title {font-size:1.2em;margin-bottom:1em;}
+    .testimonial-card { background: #222d44; color: #fff; border-radius: 8px; padding: 1.1em 1em; margin-bottom: .8em; box-shadow: 0 2px 8px rgba(0,0,0,0.10);}
+    .testimonial-quote { font-size: 1.09em; font-style: italic; }
+    .testimonial-author { color: var(--accent); font-weight: bold; margin-top: .5em; display: block; }
+
+    /* Contact Form */
+    .contact-form-section {background: #19355a; border-radius: 12px; box-shadow: 0 2px 14px rgba(0,0,0,0.13); padding: 2rem; margin-bottom:1rem;}
+    .contact-form label {display:block; margin-bottom:0.2em;}
+    .contact-form input, .contact-form textarea {
+      width: 90%; max-width:420px; padding:0.65em; margin-bottom:0.7em; border-radius:6px; border:none; background: #263a56; color:#fff;
+      resize:vertical; font-size:1em;
     }
-    #modal-card {
-      background: #222;
-      padding: 1.7rem;
-      max-width: 430px;
-      border-radius: 13px;
-      box-shadow: 0 4px 28px rgba(0,0,0,0.7);
-      color: #fff;
-      position: relative;
-    }
-    #modal-close {
+    .contact-form input:focus, .contact-form textarea:focus { outline:2px solid var(--accent);}
+    .contact-form button {margin-top:0.5em;}
+    .contact-success {color:var(--test-green);font-weight:600;}
+    .contact-error {color:var(--test-red);font-weight:600;}
+
+    .gallery .featured-badge {
       position: absolute;
-      top: 10px;
-      right: 16px;
-      color: #eee;
-      font-size: 1.4em;
-      cursor: pointer;
-      background: none;
-      border: none;
+      top:8px; left:8px;
+      background:var(--test-yellow); color:#222;
+      font-weight:700; border-radius:8px; padding:.18em .7em;
+      font-size:.95em; box-shadow:0 2px 9px rgba(120,100,25,.15); z-index:1;
     }
-    #modal-card img { max-width:100%; border-radius:9px; margin-bottom:.9em; }
-    /* Scroll Animations */
-    .fade-in { opacity:0; transform:translateY(30px); transition:opacity .7s,transform .7s; }
+    .gallery figure {position:relative;}
+
+    .fade-in { opacity:0; transform:translateY(30px); transition:opacity .7s,transform .7s;}
     .fade-in.visible { opacity:1; transform:none; }
+
     @media (max-width:700px) {
       section { padding: 1.1rem; max-width: 97vw; }
       header { padding: 2rem 1rem; }
       header h1 { font-size: 1.7rem; }
       .gallery { grid-template-columns: 1fr; }
-      .portfolio-section { padding: 1.2rem; }
+      .portfolio-section, .testimonials-section, .blog-section, .contact-form-section, .counters-section, .timeline-section { padding: 1rem;}
       .socials-list { flex-direction: column; gap: 1rem; }
       #modal-card { max-width: 96vw; }
+      .featured-projects { grid-template-columns: 1fr;}
+      .counters-section {gap:1.6em;}
     }
     a:focus { outline:3px solid rgba(255,255,255,0.4); outline-offset:3px; border-radius:8px }
   </style>
@@ -263,41 +172,116 @@
     </p>
     <a href="Shaun_Dowling_Resume.pdf" download class="btn">Download Resume (PDF)</a>
   </section>
+
+  <section class="counters-section fade-in">
+    <div class="counter-box">
+      <div class="counter-value" data-counter="18">0</div>
+      <div class="counter-label">Games Created</div>
+    </div>
+    <div class="counter-box">
+      <div class="counter-value" data-counter="9">0</div>
+      <div class="counter-label">Total Game Jams</div>
+    </div>
+    <div class="counter-box">
+      <div class="counter-value" data-counter="7">0</div>
+      <div class="counter-label">Years in Game Dev</div>
+    </div>
+  </section>
+
+  <section class="timeline-section fade-in">
+    <h2>My Journey</h2>
+    <ul class="timeline-list">
+      <li class="timeline-event">
+        <div class="timeline-dot"></div>
+        <span class="timeline-event-title">First Game Jam Win</span>
+        <span class="timeline-event-date">2019</span>
+        <span class="timeline-event-desc">Led a team to create a platformer that won best mechanics at RetroJam.</span>
+      </li>
+      <li class="timeline-event">
+        <div class="timeline-dot"></div>
+        <span class="timeline-event-title">Unity Certification</span>
+        <span class="timeline-event-date">2020</span>
+        <span class="timeline-event-desc">Certified Unity Developer and started posting public prototypes.</span>
+      </li>
+      <li class="timeline-event">
+        <div class="timeline-dot"></div>
+        <span class="timeline-event-title">Major Jam – Top 3 Placement</span>
+        <span class="timeline-event-date">2022</span>
+        <span class="timeline-event-desc">Helped design and ship a puzzle game in 48h, rated 3rd overall.</span>
+      </li>
+      <li class="timeline-event">
+        <div class="timeline-dot"></div>
+        <span class="timeline-event-title">Itch.io Featured Project</span>
+        <span class="timeline-event-date">2025</span>
+        <span class="timeline-event-desc">Narrative jam game ranked as a "Staff Pick" on Itch.io.</span>
+      </li>
+    </ul>
+  </section>
+
   <section id="socials" class="fade-in">
     <h2>Contact & Socials</h2>
     <div class="socials-list">
-      <a class="social-btn social-instagram" href="https://instagram.com/yourusername" target="_blank" title="Instagram">
+      <a class="social-btn" style="background:#E4405F;" href="https://instagram.com/yourusername" target="_blank" title="Instagram">
         <span class="social-icon">
           <svg viewBox="0 0 32 32" fill="currentColor"><circle cx="16" cy="16" r="8"/><rect x="2" y="2" width="28" height="28" rx="8" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="24" cy="8" r="2.1"/></svg>
         </span>Instagram
       </a>
-      <a class="social-btn social-linkedin" href="https://linkedin.com/in/yourusername" target="_blank" title="LinkedIn">
+      <a class="social-btn" style="background:#0077B5;" href="https://linkedin.com/in/yourusername" target="_blank" title="LinkedIn">
         <span class="social-icon">
           <svg viewBox="0 0 32 32" fill="currentColor"><rect x="6" y="14" width="4" height="12"/><circle cx="8" cy="10" r="2.2"/><rect x="14" y="14" width="4" height="12"/><rect x="14" y="18" width="10" height="4"/><rect x="24" y="14" width="4" height="12"/></svg>
         </span>LinkedIn
       </a>
-      <a class="social-btn social-discord" href="https://discord.gg/yourserver" target="_blank" title="Discord">
+      <a class="social-btn" style="background:#5865F2;" href="https://discord.gg/yourserver" target="_blank" title="Discord">
         <span class="social-icon">
           <svg viewBox="0 0 32 32" fill="currentColor"><circle cx="12" cy="16" r="2"/><circle cx="20" cy="16" r="2"/><rect x="4" y="8" width="24" height="16" rx="7" fill="none" stroke="currentColor" stroke-width="2"/></svg>
         </span>Discord
       </a>
-      <a class="social-btn social-gmail" href="mailto:shaundowling1606@gmail.com" title="Gmail">
+      <a class="social-btn" style="background:#D14836;" href="mailto:shaundowling1606@gmail.com" title="Gmail">
         <span class="social-icon">
           <svg viewBox="0 0 32 32" fill="currentColor"><rect x="6" y="10" width="20" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><polyline points="6,10 16,18 26,10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
         </span>Gmail
       </a>
-      <a class="social-btn social-itch" href="https://zipasaurus.itch.io/" target="_blank" title="Itch.io">
+      <a class="social-btn" style="background:#FA5C5C;" href="https://zipasaurus.itch.io/" target="_blank" title="Itch.io">
         <span class="social-icon">
           <svg viewBox="0 0 32 32" fill="currentColor"><rect x="6" y="10" width="20" height="12" rx="4" fill="currentColor"/><rect x="10" y="14" width="12" height="4" rx="2" fill="#fff"/></svg>
         </span>Itch.io
       </a>
     </div>
   </section>
-  <section id="portfolio" class="portfolio-categories">
-    <div id="art" class="portfolio-section fade-in">
-      <h2>Art</h2>
+
+  <section class="blog-section fade-in">
+    <h2>Dev Blog</h2>
+    <div class="blog-post">
+      <span class="blog-title">How I approach game jams</span>
+      <span class="blog-date">2025-10-27</span>
+      <span class="blog-summary">Thoughts on rapid prototyping, what makes a small project successful, and fun lessons learned from past events.</span>
+    </div>
+    <div class="blog-post">
+      <span class="blog-title">5 Tips for making mechanics feel great</span>
+      <span class="blog-date">2025-09-12</span>
+      <span class="blog-summary">Animation, feedback, and the difference between “it works” and “it’s fun!”</span>
+    </div>
+  </section>
+
+  <section id="portfolio" class="portfolio-categories fade-in">
+    <h2>Portfolio</h2>
+    <div class="featured-projects">
+      <div class="featured-project-card">
+        <span class="project-badge">JAM WINNER</span>
+        <h3>Ghost Hunt</h3>
+        <p>3-day jam winner: hunt ghosts, emergent AI, tight controls.</p>
+      </div>
+      <div class="featured-project-card">
+        <span class="project-badge">STAFF PICK</span>
+        <h3>LightRunner</h3>
+        <p>Prototype picked as "Staff Pick" on Itch.io.<br>Platformer with layered progression.</p>
+      </div>
+    </div>
+    <div id="art" class="portfolio-section">
+      <h3>Art</h3>
       <div class="gallery">
         <figure tabindex="0" aria-label="View Art Piece 1" onclick="openModal('images/art1.jpg','Art Piece 1','Artwork for a jam game. Created in GIMP/Blender.')">
+          <span class="featured-badge">Featured Art</span>
           <img src="images/art1.jpg" alt="Art Piece 1" loading="lazy">
           <figcaption>Art Piece 1</figcaption>
         </figure>
@@ -307,8 +291,8 @@
         </figure>
       </div>
     </div>
-    <div id="itchio" class="portfolio-section fade-in">
-      <h2>Itch.io Projects</h2>
+    <div id="itchio" class="portfolio-section">
+      <h3>Itch.io Projects</h3>
       <div class="gallery">
         <figure tabindex="0" aria-label="View Itch.io Project 1" onclick="openModal('images/itch1.jpg','Itch.io Project 1','Playable prototype for a jam. See it on Itch.io.')">
           <img src="images/itch1.jpg" alt="Itch.io Project 1" loading="lazy">
@@ -324,41 +308,105 @@
       </p>
     </div>
   </section>
+
+  <section class="testimonials-section fade-in">
+    <h2>Game Jam Teammates</h2>
+    <div class="testimonials-title">People I've worked with say:</div>
+    <div class="testimonial-card">
+      <span class="testimonial-quote">"Shaun brings creativity and drive to every project. If you want meaningful gameplay, he's your guy."</span>
+      <span class="testimonial-author">— DevJam Teammate</span>
+    </div>
+    <div class="testimonial-card">
+      <span class="testimonial-quote">"Fast, fun, and polished work. A fantastic jam partner!"</span>
+      <span class="testimonial-author">— Alice B.</span>
+    </div>
+    <div class="testimonial-card">
+      <span class="testimonial-quote">"Always ready with ideas and a bug fix. Our jam could not have been finished without him."</span>
+      <span class="testimonial-author">— JAM TEAM 2025</span>
+    </div>
+  </section>
+
   <section id="skills" class="skills fade-in">
     <h2>Skills</h2>
     <ul class="skills-list">
       <li class="skills-bar">
         <span class="skills-label">Unity</span>
-        <span class="skills-meter-wrapper"><span class="skills-meter"><span class="skills-meter-fill" data-level="90"></span></span></span>
+        <span class="skills-meter-wrapper">
+          <span class="skills-meter">
+            <span class="skills-meter-fill" data-level="92"></span>
+            <span class="skill-tooltip">Expert – professional experience/game jams</span>
+          </span>
+        </span>
         <span class="skills-level">Expert</span>
       </li>
       <li class="skills-bar">
         <span class="skills-label">Python</span>
-        <span class="skills-meter-wrapper"><span class="skills-meter"><span class="skills-meter-fill" data-level="84"></span></span></span>
+        <span class="skills-meter-wrapper">
+          <span class="skills-meter">
+            <span class="skills-meter-fill" data-level="84"></span>
+            <span class="skill-tooltip">Advanced – tools, gameplay, scripting</span>
+          </span>
+        </span>
         <span class="skills-level">Advanced</span>
       </li>
       <li class="skills-bar">
         <span class="skills-label">C#</span>
-        <span class="skills-meter-wrapper"><span class="skills-meter"><span class="skills-meter-fill" data-level="79"></span></span></span>
+        <span class="skills-meter-wrapper">
+          <span class="skills-meter">
+            <span class="skills-meter-fill" data-level="79"></span>
+            <span class="skill-tooltip">Proficient – Unity/Coding</span>
+          </span>
+        </span>
         <span class="skills-level">Proficient</span>
       </li>
       <li class="skills-bar">
         <span class="skills-label">HTML/CSS</span>
-        <span class="skills-meter-wrapper"><span class="skills-meter"><span class="skills-meter-fill" data-level="70"></span></span></span>
+        <span class="skills-meter-wrapper">
+          <span class="skills-meter">
+            <span class="skills-meter-fill" data-level="70"></span>
+            <span class="skill-tooltip">Proficient – web landing pages, portfolios</span>
+          </span>
+        </span>
         <span class="skills-level">Proficient</span>
       </li>
       <li class="skills-bar">
         <span class="skills-label">Blender</span>
-        <span class="skills-meter-wrapper"><span class="skills-meter"><span class="skills-meter-fill" data-level="66"></span></span></span>
+        <span class="skills-meter-wrapper">
+          <span class="skills-meter">
+            <span class="skills-meter-fill" data-level="66"></span>
+            <span class="skill-tooltip">Intermediate – jams and asset work</span>
+          </span>
+        </span>
         <span class="skills-level">Intermediate</span>
       </li>
       <li class="skills-bar">
         <span class="skills-label">GIMP</span>
-        <span class="skills-meter-wrapper"><span class="skills-meter"><span class="skills-meter-fill" data-level="72"></span></span></span>
+        <span class="skills-meter-wrapper">
+          <span class="skills-meter">
+            <span class="skills-meter-fill" data-level="72"></span>
+            <span class="skill-tooltip">Intermediate – pixel art, textures</span>
+          </span>
+        </span>
         <span class="skills-level">Intermediate</span>
       </li>
     </ul>
   </section>
+
+  <!-- Contact Form Message Me -->
+  <section class="contact-form-section fade-in">
+    <h2>Message Me</h2>
+    <form id="contactForm" class="contact-form" autocomplete="off" action="https://formspree.io/f/xgvrvpnw" method="POST">
+      <label for="form_name">Name</label>
+      <input type="text" id="form_name" name="name" required maxlength="40" autocomplete="off">
+      <label for="form_email">Email</label>
+      <input type="email" id="form_email" name="email" required maxlength="80" autocomplete="off">
+      <label for="form_message">Message</label>
+      <textarea id="form_message" name="message" rows="4" maxlength="500" required autocomplete="off"></textarea>
+      <button type="submit" class="btn">Send</button>
+      <div id="form_status"></div>
+    </form>
+  </section>
+
   <footer class="fade-in">
     <p>© 2025 Shaun Dowling. All rights reserved.</p>
   </footer>
@@ -372,13 +420,14 @@
     </div>
   </div>
   <script>
-    // Starfield bg
+    // Starfield
     const canvas = document.getElementById("space-bg");
     const ctx = canvas.getContext("2d");
     function resizeCanvas() {canvas.width = window.innerWidth;canvas.height = window.innerHeight;}
     resizeCanvas();window.addEventListener("resize", resizeCanvas);
-    let stars = [];for (let i = 0; i < 140; i++) {
-      stars.push({x: Math.random() * canvas.width,y: Math.random() * canvas.height,r: Math.random() * 2 + 1,dx: (Math.random() - 0.5) * 0.5,dy: (Math.random() - 0.5) * 0.5});
+    let stars = [];
+    for (let i = 0; i < 140; i++) {
+      stars.push({x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 2 + 1, dx: (Math.random() - 0.5) * 0.5, dy: (Math.random() - 0.5) * 0.5});
     }
     let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
     window.addEventListener("mousemove", e => {mouse.x = e.clientX;mouse.y = e.clientY;});
@@ -410,43 +459,65 @@
         document.getElementById('modal-img').src = "";
       }
     }
-    // Animated scroll fade-in & animated skill bars
+
+    // Animated numbers play only once
+    function animateCounters() {
+      document.querySelectorAll('.counter-value').forEach(function(el){
+        if (el.classList.contains("done")) return; // ← only runs once per element!
+        let target = +el.getAttribute('data-counter');
+        let current = 0;
+        const step = Math.ceil(target / 60);
+        function tick() {
+          if (current < target) {
+            current += step;
+            if (current > target) current = target;
+            el.textContent = current;
+            setTimeout(tick, 22);
+          } else {
+            el.textContent = target;
+            el.classList.add("done"); // Mark as animated
+          }
+        }
+        tick();
+      });
+    }
+
+    // Skill bars animate and gradient
+    function getGradient(percent) {
+      if (percent <= 50) return `linear-gradient(90deg, #EF4444 0%, #FFE900 100%)`;
+      if (percent <= 80) return `linear-gradient(90deg, #FFE900 0%, #25d665 100%)`;
+      return `linear-gradient(90deg, #25d665 0%, #25d665 100%)`;
+    }
     function revealOnScroll() {
       const els = document.querySelectorAll('.fade-in');
       els.forEach(el => {
         const rect = el.getBoundingClientRect();
-        // Show fade-in when in view, remove when not
         if (rect.top < window.innerHeight-40 && rect.bottom > 40) {
-          el.classList.add("visible");
-          // Skills section? Animate bars!
-          if (el.id === "skills") {
-            animateSkillBars(rect);
-          }
+          if (!el.classList.contains("visible")) el.classList.add("visible");
+          if (el.classList.contains("counters-section")) animateCounters();
+          if (el.id === "skills") animateSkillBars();
         } else {
-          el.classList.remove("visible");
-          if (el.id === "skills") {
-            resetSkillBars();
-          }
+          if (el.classList.contains("visible")) el.classList.remove("visible");
+          if (el.id === "skills") resetSkillBars();
         }
       });
     }
     window.addEventListener('scroll', revealOnScroll);
     window.addEventListener('DOMContentLoaded', revealOnScroll);
 
-    // Animate skills bars when visible, reset if not
-    function animateSkillBars(rect) {
+    function animateSkillBars() {
       const bars = document.querySelectorAll('.skills-meter-fill');
       bars.forEach((bar, i) => {
-        // Only animate if not already filled
         if (!bar.classList.contains('filled')) {
-          const level = bar.dataset.level;
+          const percent = parseInt(bar.getAttribute('data-level'), 10);
           bar.style.transition = "none";
           bar.style.width = "0%";
+          bar.style.background = getGradient(percent);
           setTimeout(() => {
-            bar.style.transition = "width 1.4s cubic-bezier(.52,.57,.39,1)";
-            bar.style.width = level + "%";
+            bar.style.transition = "width 1.25s cubic-bezier(.52,.57,.39,1)";
+            bar.style.width = percent + "%";
             bar.classList.add('filled');
-          }, 130 + i*140); // Stagger bars a bit
+          }, 140 + i*120);
         }
       });
     }
@@ -458,12 +529,35 @@
         bar.classList.remove('filled');
       });
     }
-    // Keyboard modal close (Esc)
     document.addEventListener('keydown', function(e) {
       if (e.key === "Escape") closeModal({target:{id:"modal-bg"}});
+    });
+
+    // Contact form submission (real Formspree)
+    document.getElementById('contactForm').addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var status = document.getElementById('form_status');
+      status.textContent = "Sending...";
+      status.className = "";
+      var formData = new FormData(this);
+      fetch(this.action, {
+        method:"POST",
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      }).then(function(response){
+        if(response.ok) {
+          status.textContent = "Thank you for your message! I'll reply soon.";
+          status.className = "contact-success";
+          document.getElementById('contactForm').reset();
+        } else {
+          status.textContent = "Message could not be sent. Please try again later, or use email!";
+          status.className = "contact-error";
+        }
+      }).catch(function(){
+        status.textContent = "Network error. Try again or email directly!";
+        status.className = "contact-error";
+      });
     });
   </script>
 </body>
 </html>
-<div class='last-updated'>Last Updated: 2025-11-13 14:11:26</div>
-<div class='last-updated'>Last Updated: 2025-11-13 14:11:48</div>
