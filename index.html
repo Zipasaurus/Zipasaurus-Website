@@ -14,13 +14,11 @@
       --wire:rgba(255,255,255,0.05);
       --wire-strong:rgba(255,255,255,0.1);
     }
-
-    /* Reset */
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
     body{
       font-family:"Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
-      background:transparent; /* let starfield show through */
+      background:transparent;
       color:var(--text);
       line-height:1.6;
       -webkit-font-smoothing:antialiased;
@@ -32,8 +30,6 @@
     a{color:inherit;text-decoration:none}
     img{display:block;max-width:100%;height:auto;border-radius:10px;transition:transform .3s ease}
     img:hover{transform:scale(1.03)}
-
-    /* Canvas starfield */
     #space-bg {
       position: fixed;
       top: 0;
@@ -43,8 +39,6 @@
       z-index: -1;
       background: radial-gradient(ellipse at bottom, #0d1d31, #000);
     }
-
-    /* Header / Hero */
     header{
       min-height:70vh;
       display:flex;
@@ -69,8 +63,31 @@
       transition:transform .22s ease,background .22s ease;
     }
     .btn:hover{transform:translateY(-3px);background:#1d4ed8}
-
-    /* Section container */
+    nav {
+      margin: 0 auto 0.5rem auto;
+      text-align: center;
+    }
+    nav ul {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+    }
+    nav a {
+      color: #fff;
+      font-weight: 500;
+      font-size: 1.03rem;
+      background: var(--card);
+      border-radius: 6px;
+      padding: 0.5em 1em;
+      transition: background .15s;
+    }
+    nav a:hover {
+      background: var(--accent);
+      color: #fff;
+    }
     section{
       max-width:1000px;
       margin:2.5rem auto;
@@ -87,94 +104,54 @@
       background:var(--accent);
       border-radius:3px;
     }
-
-    /* About */
     .about p{max-width:760px;color:#ddd}
-
-    /* Projects grid */
-    .projects-grid{
-      display:grid;
-      gap:1.6rem;
-      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-      margin-top:1rem;
+    /* Portfolio (projects grid) */
+    .portfolio-categories {
+      display: grid;
+      gap: 2rem;
     }
-
-    .project-card{
-      position:relative;
-      overflow:hidden;
-      background:var(--card);
-      border-radius:14px;
-      padding:1rem;
-      box-shadow:var(--soft-shadow);
-      transition:transform .28s ease,box-shadow .28s ease;
-      isolation:isolate;
+    .portfolio-section {
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: var(--soft-shadow);
+      padding: 2rem;
+      margin-bottom: 1rem;
     }
-    .project-card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.5)}
-    .project-card *{position:relative;z-index:1}
-
-    .thumb{
-      width:100%;
-      height:180px;
-      border-radius:10px;
-      overflow:hidden;
-      position:relative;
-      background:linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.02));
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.3rem;
+      margin-top: 1rem;
     }
-    .thumb img{width:100%;height:100%;object-fit:cover;border-radius:10px;display:block}
-    .thumb::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.3));
-      pointer-events:none;
-      z-index:1;
+    figure {
+      background: #1e293b;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      transition: transform .22s;
     }
-
-    .project-card h3{margin-top:1rem;margin-bottom:.4rem;font-size:1.05rem}
-    .project-card p{color:#bbb;font-size:.95rem}
-
-    /* Wireframe octagons */
-    .project-card::before,
-    .project-card::after{
-      content:"";
-      position:absolute;
-      width:220px;
-      height:220px;
-      border:2px solid var(--wire);
-      clip-path:polygon(
-        30% 0%,70% 0%,
-        100% 30%,100% 70%,
-        70% 100%,30% 100%,
-        0% 70%,0% 30%
-      );
-      z-index:0;
-      pointer-events:none;
-      opacity:0.9;
-      mix-blend-mode:screen;
-      filter:blur(.2px);
-      transform-origin:center;
-      animation:drift 18s linear infinite;
+    figure:hover {
+      transform: scale(1.04);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.18);
     }
-    .project-card::before{
-      top:-48px;
-      left:-48px;
-      border-color:var(--wire);
-      opacity:.65;
-      animation-duration:18s;
+    figure img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      border-bottom: 2px solid #2563eb33;
+      display: block;
+      background: #151a22;
     }
-    .project-card::after{
-      bottom:-48px;
-      right:-48px;
-      border-color:var(--wire-strong);
-      opacity:.5;
-      animation-duration:26s;
+    figcaption {
+      padding: 10px 7px 12px 7px;
+      text-align: center;
+      color: #ddd;
+      font-size: .97rem;
     }
-    @keyframes drift{
-      0%{transform:rotate(0deg) translateY(0px) scale(1);opacity:.55}
-      50%{transform:rotate(180deg) translateY(14px) scale(1.02);opacity:.9}
-      100%{transform:rotate(360deg) translateY(0px) scale(1);opacity:.55}
+    .portfolio-section h2 {
+      color: #fff;
     }
-
     /* Skills */
     .skills-list{
       display:grid;
@@ -195,7 +172,6 @@
       color:#ccc;
     }
     .skills-list li:hover{transform:translateY(-4px)}
-
     /* Contact */
     .contact-links{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.5rem}
     .contact-links a{
@@ -207,75 +183,98 @@
       font-weight:600;
     }
     .contact-links a:hover{transform:translateY(-3px);background:#1d4ed8}
-
-    /* Footer */
     footer{text-align:center;padding:2rem 1rem;color:#aaa;font-size:.92rem}
-
-    /* Responsive tweaks */
-    @media (max-width:600px){
-      header{padding:2rem 1rem;min-height:56vh}
-      header h1{font-size:1.9rem}
-      .thumb{height:160px}
+    @media (max-width:700px) {
+      section {
+        padding: 1.1rem;
+        max-width: 97vw;
+      }
+      header {
+        padding: 2rem 1rem;
+        min-height: 56vh;
+      }
+      header h1 {
+        font-size: 1.7rem;
+      }
+      nav ul {
+        gap: 1rem;
+        flex-direction: column;
+      }
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+      .portfolio-section {
+        padding: 1.2rem;
+      }
     }
-
     a:focus{outline:3px solid rgba(255,255,255,0.4);outline-offset:3px;border-radius:8px}
   </style>
 </head>
 <body>
-
-  <!-- Starfield canvas -->
   <canvas id="space-bg"></canvas>
-
-  <!-- Hero -->
   <header>
     <div class="hero">
       <h1>Shaun Dowling</h1>
+      <nav>
+        <ul>
+          <li><a href="#web-design">Web Design</a></li>
+          <li><a href="#art">Art</a></li>
+          <li><a href="#photography">Photography</a></li>
+        </ul>
+      </nav>
       <p>Game Designer • Programmer • Creative Thinker</p>
-      <a class="btn" href="#projects">See my work</a>
+      <a class="btn" href="#portfolio">See my work</a>
     </div>
   </header>
-
-  <!-- About -->
   <section id="about" class="about">
     <h2>About Me</h2>
     <p>
-      I'm a game designer focused on crafting interactive systems that feel
-      deliberate and fun. I combine mechanics, prototyping, and player-focused design to
-      build experiences that stick. I enjoy quick jams as much as larger prototypes.
+      I'm a game designer focused on crafting interactive systems that feel deliberate and fun.
+      I combine mechanics, prototyping, and player-focused design to build experiences that stick. I enjoy quick jams as much as larger prototypes.
     </p>
   </section>
-
-  <!-- Projects -->
-  <section id="projects" class="projects">
-    <h2>Projects</h2>
-    <div class="projects-grid">
-      <article class="project-card" aria-labelledby="p1">
-        <div class="thumb">
-          <img src="PortfolioFolder/Game1.png" alt="Screenshot of Project One">
-        </div>
-        <h3 id="p1">Project One</h3>
-        <p>3 day game jam prototype where you hunt and eliminate ghosts — tight controls and emergent enemy behaviour.</p>
-      </article>
-
-      <article class="project-card" aria-labelledby="p2">
-        <div class="thumb">
-          <img src="PortfolioFolder/Game2.png" alt="Screenshot of Project Two">
-        </div>
-        <h3 id="p2">Project Two</h3>
-        <p>Collection of minigames inside a larger shell — focus on accessibility and fast, repeatable fun.</p>
-      </article>
-
-      <article class="project-card" aria-labelledby="p3">
-        <div class="thumb">
-          <img src="PortfolioFolder/Game3.png" alt="Screenshot of Project Three">
-        </div>
-        <h3 id="p3">Project Three</h3>
-        <p>Multi-day/week jam project exploring layered progression and cooperative mechanics.</p>
-      </article>
+  <!-- Portfolio -->
+  <section id="portfolio" class="portfolio-categories">
+    <div id="web-design" class="portfolio-section">
+      <h2>Web Design</h2>
+      <div class="gallery">
+        <figure>
+          <img src="images/web1.jpg" alt="Web project 1">
+          <figcaption>Website Project 1</figcaption>
+        </figure>
+        <figure>
+          <img src="images/web2.jpg" alt="Web project 2">
+          <figcaption>Website Project 2</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div id="art" class="portfolio-section">
+      <h2>Art</h2>
+      <div class="gallery">
+        <figure>
+          <img src="images/art1.jpg" alt="Art piece 1">
+          <figcaption>Art Piece 1</figcaption>
+        </figure>
+        <figure>
+          <img src="images/art2.jpg" alt="Art piece 2">
+          <figcaption>Art Piece 2</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div id="photography" class="portfolio-section">
+      <h2>Photography</h2>
+      <div class="gallery">
+        <figure>
+          <img src="images/photo1.jpg" alt="Photo 1">
+          <figcaption>Photo 1</figcaption>
+        </figure>
+        <figure>
+          <img src="images/photo2.jpg" alt="Photo 2">
+          <figcaption>Photo 2</figcaption>
+        </figure>
+      </div>
     </div>
   </section>
-
-  <!-- Skills -->
   <section id="skills" class="skills">
     <h2>Skills</h2>
     <ul class="skills-list">
@@ -287,8 +286,6 @@
       <li>GIMP</li>
     </ul>
   </section>
-
-  <!-- Contact -->
   <section id="contact" class="contact">
     <h2>Contact</h2>
     <div class="contact-links">
@@ -298,17 +295,14 @@
       <a href="https://zipasaurus.me/portfolio.html" target="_blank">Old Website</a>
     </div>
   </section>
-
-  <!-- Footer -->
   <footer>
     <p>© 2025 Shaun Dowling. All rights reserved.</p>
   </footer>
-
   <!-- Starfield Script -->
   <script>
     const canvas = document.getElementById("space-bg");
     const ctx = canvas.getContext("2d");
-    function resizeCanvas(){
+    function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     }
@@ -354,9 +348,5 @@
     }
     draw();
   </script>
-
 </body>
 </html>
-<div class='last-updated'>Last Updated: 2025-09-25 23:19:36</div>
-<div class='last-updated'>Last Updated: 2025-09-25 23:20:48</div>
-<div class='last-updated'>Last Updated: 2025-09-25 23:22:53</div>
