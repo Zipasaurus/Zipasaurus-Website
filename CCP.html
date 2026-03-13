@@ -2,19 +2,136 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CCP Presentation</title>
+    <title>Nightmare – GDD Presentation</title>
+
+    <style>
+        :root {
+            --bg: #050507;
+            --fg: #e6e6eb;
+            --accent: #6cf2ff;
+            --muted: #8a8a96;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at center, rgba(108,242,255,0.08), transparent 60%),
+                var(--bg);
+            color: var(--fg);
+            font-family: "Segoe UI", system-ui, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        header {
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        h1::after {
+            content: "";
+            display: block;
+            width: 120px;
+            height: 2px;
+            margin-top: 0.5rem;
+            background: linear-gradient(90deg, var(--accent), transparent);
+        }
+
+        .subtitle {
+            color: var(--muted);
+            margin-top: 0.5rem;
+            font-size: 1rem;
+            max-width: 600px;
+        }
+
+        .frame-wrapper {
+            position: relative;
+            margin-top: 2rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow:
+                0 0 40px rgba(108,242,255,0.15),
+                0 0 120px rgba(0,0,0,0.9);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        iframe {
+            width: 100%;
+            height: 75vh;
+            border: none;
+            background: black;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow:
+                    0 0 25px rgba(108,242,255,0.12),
+                    0 0 90px rgba(0,0,0,0.9);
+            }
+            50% {
+                box-shadow:
+                    0 0 50px rgba(108,242,255,0.25),
+                    0 0 140px rgba(0,0,0,0.95);
+            }
+        }
+
+        footer {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--muted);
+            text-align: right;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
+
 <body>
+    <div class="container">
+        <header>
+            <h1>Nightmare</h1>
+            <p class="subtitle">
+                A horror game built around echolocation — navigate a world you cannot see,
+                where sound is your only sense of safety.
+            </p>
+        </header>
 
-<h1>CCP Presentation</h1>
+        <div class="frame-wrapper">
+            <iframe
+                src="https://newcollegeonline-my.sharepoint.com/personal/728513_newcollege_ac_uk/_layouts/15/Doc.aspx?sourcedoc={f7558a5f-fbe6-4703-8bf0-0c8452941ee0}&action=embedview&wdAr=1.7777777777777777"
+                title="Nightmare CCP Presentation">
+            </iframe>
+        </div>
 
-<iframe src="https://newcollegeonline-my.sharepoint.com/personal/728513_newcollege_ac_uk/_layouts/15/Doc.aspx?sourcedoc={f7558a5f-fbe6-4703-8bf0-0c8452941ee0}&action=embedview&wdAr=1.7777777777777777"
-width="1080"
-height="1920"
-frameborder="0"
-title="PowerPoint Viewer">
-This is an embedded <a target="_blank" href="https://office.com">Microsoft Office</a> presentation.
-</iframe>
-
+        <footer>
+            Embedded via <a href="https://office.com" target="_blank">Microsoft Office</a>
+        </footer>
+    </div>
 </body>
 </html>
