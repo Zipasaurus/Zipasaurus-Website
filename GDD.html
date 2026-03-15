@@ -24,15 +24,13 @@
                 var(--bg);
             color: var(--fg);
             font-family: "Segoe UI", system-ui, sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .container {
             max-width: 1200px;
             width: 100%;
             padding: 2rem;
+            margin: auto;
         }
 
         header {
@@ -63,39 +61,25 @@
             max-width: 600px;
         }
 
-        .frame-wrapper {
-            position: relative;
+        .slides {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
             margin-top: 2rem;
+        }
+
+        .slides img {
+            width: 100%;
+            max-width: 1200px;
             border-radius: 12px;
-            overflow: hidden;
             box-shadow:
                 0 0 40px rgba(108,242,255,0.15),
                 0 0 120px rgba(0,0,0,0.9);
-            animation: pulse 4s ease-in-out infinite;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100vh;
-            border: none;
-            background: black;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow:
-                    0 0 25px rgba(108,242,255,0.12),
-                    0 0 90px rgba(0,0,0,0.9);
-            }
-            50% {
-                box-shadow:
-                    0 0 50px rgba(108,242,255,0.25),
-                    0 0 140px rgba(0,0,0,0.95);
-            }
+            object-fit: contain;
         }
 
         footer {
-            margin-top: 1rem;
+            margin-top: 2rem;
             font-size: 0.85rem;
             color: var(--muted);
             text-align: right;
@@ -122,16 +106,27 @@
             </p>
         </header>
 
-        <div class="frame-wrapper">
-            <iframe
-                src="https://newcollegeonline-my.sharepoint.com/personal/728513_newcollege_ac_uk/_layouts/15/Doc.aspx?sourcedoc={f7558a5f-fbe6-4703-8bf0-0c8452941ee0}&action=embedview&wdAr=1.7777777777777777"
-                title="Nightmare CCP Presentation">
-            </iframe>
-        </div>
+        <div class="slides" id="slides"></div>
 
         <footer>
-            Embedded via <a href="https://office.com" target="_blank">Microsoft Office</a>
+            Slides loaded from local images
         </footer>
     </div>
+
+    <script>
+        // Relative path to the slides folder
+        const slidesPath = 'images/Nightmare - powerpoint slides/';
+
+        // Numbered images (you can adjust extension if needed)
+        const totalSlides = 20; // change this to however many images you have
+        const slidesContainer = document.getElementById('slides');
+
+        for (let i = 1; i <= totalSlides; i++) {
+            const img = document.createElement('img');
+            img.src = `${slidesPath}${i}.png`; // assumes files named 1.png, 2.png, etc.
+            img.alt = `Slide ${i}`;
+            slidesContainer.appendChild(img);
+        }
+    </script>
 </body>
 </html>
