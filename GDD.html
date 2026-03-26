@@ -65,21 +65,25 @@
             max-width: 1200px;
             margin: 0 auto;
             display: block;
-            min-height: 600px;           /* Big safety height */
+            min-height: 500px;
             border-radius: 12px;
             box-shadow: 0 0 50px rgba(108,242,255,0.2);
-            background: #1a1a22;         /* Dark gray fallback */
-            border: 2px solid rgba(108,242,255,0.3);
+            background: #1a1a22;
+            border: 3px solid rgba(108,242,255,0.3);
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.6s ease;
         }
         .slides img.loaded {
             opacity: 1;
         }
         .slides img.error {
-            border: 6px solid #ff4444 !important;
+            border: 8px solid #ff4444 !important;
             background: #2a0f0f !important;
-            min-height: 400px;
+            min-height: 300px;
+            color: #ffaaaa;
+            padding: 2rem;
+            text-align: center;
+            font-size: 1.1rem;
         }
         footer {
             margin-top: 5rem;
@@ -106,7 +110,7 @@
         <div class="slides" id="slides"></div>
 
         <footer>
-            Nightmare GDD Presentation • Check browser console (F12) for errors
+            Nightmare GDD Presentation • Hosted on GitHub Pages
         </footer>
     </div>
 
@@ -127,7 +131,8 @@
 
         for (let i = 1; i <= totalSlides; i++) {
             const img = document.createElement('img');
-            img.src = `${slidesPath}/${i}${extension}`;
+            const fullUrl = `${slidesPath}/${i}${extension}`;
+            img.src = fullUrl;
             img.alt = `Slide ${i}`;
 
             img.onload = () => {
@@ -138,9 +143,9 @@
             };
 
             img.onerror = () => {
-                console.error(`❌ Failed to load slide ${i} at: ${img.src}`);
+                console.error(`Failed to load slide ${i} at: ${img.src}`);
                 img.classList.add('error');
-                img.alt = `MISSING OR BROKEN - Slide ${i}`;
+                img.innerHTML = `<strong>MISSING:</strong> Slide ${i}<br><small>${fullUrl}</small>`;
                 loadedCount++;
                 updateProgress();
                 checkAllLoaded();
@@ -151,19 +156,11 @@
 
         function checkAllLoaded() {
             if (loadedCount >= totalSlides) {
-                setTimeout(() => {
-                    loadingEl.style.display = 'none';
-                }, 500);
+                setTimeout(() => loadingEl.style.display = 'none', 400);
             }
         }
 
         updateProgress();
-
-        // Keyboard scrolling
-        document.addEventListener('keydown', e => {
-            if (e.key === 'ArrowRight') window.scrollBy({ top: 700, behavior: 'smooth' });
-            if (e.key === 'ArrowLeft') window.scrollBy({ top: -700, behavior: 'smooth' });
-        });
     </script>
 </body>
 </html>
