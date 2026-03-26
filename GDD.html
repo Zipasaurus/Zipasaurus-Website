@@ -19,15 +19,8 @@
             color: var(--fg);
             font-family: "Segoe UI", system-ui, sans-serif;
         }
-        .container {
-            max-width: 1250px;
-            padding: 2rem 1.5rem;
-            margin: auto;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
+        .container { max-width: 1250px; padding: 2rem 1.5rem; margin: auto; }
+        header { text-align: center; margin-bottom: 3rem; }
         h1 {
             font-size: 3rem;
             letter-spacing: 0.15em;
@@ -42,17 +35,12 @@
             margin: 0.8rem auto;
             background: linear-gradient(90deg, var(--accent), transparent);
         }
-        .subtitle {
-            color: var(--muted);
-            font-size: 1.15rem;
-            max-width: 720px;
-            margin: 0 auto;
-        }
+        .subtitle { color: var(--muted); font-size: 1.15rem; max-width: 720px; margin: 0 auto; }
         .loading {
             text-align: center;
-            padding: 3rem;
+            padding: 4rem;
             color: var(--accent);
-            font-size: 1.25rem;
+            font-size: 1.3rem;
         }
         .slides {
             display: flex;
@@ -65,28 +53,23 @@
             max-width: 1200px;
             margin: 0 auto;
             display: block;
-            min-height: 500px;
+            min-height: 550px;
             border-radius: 12px;
             box-shadow: 0 0 50px rgba(108,242,255,0.2);
             background: #1a1a22;
             border: 3px solid rgba(108,242,255,0.3);
             opacity: 0;
-            transition: opacity 0.6s ease;
+            transition: opacity 0.8s ease;
         }
-        .slides img.loaded {
-            opacity: 1;
-        }
+        .slides img.loaded { opacity: 1; }
         .slides img.error {
             border: 8px solid #ff4444 !important;
             background: #2a0f0f !important;
             min-height: 300px;
-        }
-        footer {
-            margin-top: 5rem;
+            padding: 2rem;
             text-align: center;
-            color: var(--muted);
-            font-size: 0.9rem;
         }
+        footer { margin-top: 5rem; text-align: center; color: var(--muted); font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -105,15 +88,11 @@
         
         <div class="slides" id="slides"></div>
 
-        <footer>
-            Nightmare GDD Presentation
-        </footer>
+        <footer>Nightmare GDD Presentation • zipasaurus.me</footer>
     </div>
 
     <script>
-        // ←←← CHANGE THIS LINE TO MATCH YOUR NEW FOLDER NAME
-        const slidesPath = 'images/nightmare-slides';
-
+        const slidesPath = 'images/nightmare-slides';   // Make sure this matches your folder name exactly
         const totalSlides = 20;
         const extension = '.png';
 
@@ -127,31 +106,33 @@
             progressEl.textContent = loadedCount;
         }
 
-        for (let i = 1; i <= totalSlides; i++) {
-            const img = document.createElement('img');
-            img.src = `${slidesPath}/${i}${extension}`;
-            img.alt = `Slide ${i}`;
+        // Small delay to help GitHub Pages finish deploying
+        setTimeout(() => {
+            for (let i = 1; i <= totalSlides; i++) {
+                const img = document.createElement('img');
+                img.src = `${slidesPath}/${i}${extension}`;
+                img.alt = `Slide ${i}`;
 
-            img.onload = () => {
-                img.classList.add('loaded');
-                loadedCount++;
-                updateProgress();
-                if (loadedCount >= totalSlides) loadingEl.style.display = 'none';
-            };
+                img.onload = () => {
+                    img.classList.add('loaded');
+                    loadedCount++;
+                    updateProgress();
+                    if (loadedCount >= totalSlides) loadingEl.style.display = 'none';
+                };
 
-            img.onerror = () => {
-                console.error(`Failed to load slide ${i} at: ${img.src}`);
-                img.classList.add('error');
-                img.alt = `MISSING: Slide ${i}`;
-                loadedCount++;
-                updateProgress();
-                if (loadedCount >= totalSlides) loadingEl.style.display = 'none';
-            };
+                img.onerror = () => {
+                    console.error(`Failed to load slide ${i} → ${img.src}`);
+                    img.classList.add('error');
+                    img.innerHTML = `❌ MISSING SLIDE ${i}<br><small>${img.src}</small>`;
+                    loadedCount++;
+                    updateProgress();
+                    if (loadedCount >= totalSlides) loadingEl.style.display = 'none';
+                };
 
-            slidesContainer.appendChild(img);
-        }
-
-        updateProgress();
+                slidesContainer.appendChild(img);
+            }
+            updateProgress();
+        }, 1500);   // 1.5 second delay
     </script>
 </body>
 </html>
