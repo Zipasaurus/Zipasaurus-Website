@@ -80,10 +80,6 @@
             border: 8px solid #ff4444 !important;
             background: #2a0f0f !important;
             min-height: 300px;
-            color: #ffaaaa;
-            padding: 2rem;
-            text-align: center;
-            font-size: 1.1rem;
         }
         footer {
             margin-top: 5rem;
@@ -110,12 +106,14 @@
         <div class="slides" id="slides"></div>
 
         <footer>
-            Nightmare GDD Presentation • Hosted on GitHub Pages
+            Nightmare GDD Presentation
         </footer>
     </div>
 
     <script>
-        const slidesPath = 'images/Nightmare - powerpoint slides';
+        // ←←← CHANGE THIS LINE TO MATCH YOUR NEW FOLDER NAME
+        const slidesPath = 'images/nightmare-slides';
+
         const totalSlides = 20;
         const extension = '.png';
 
@@ -131,33 +129,26 @@
 
         for (let i = 1; i <= totalSlides; i++) {
             const img = document.createElement('img');
-            const fullUrl = `${slidesPath}/${i}${extension}`;
-            img.src = fullUrl;
+            img.src = `${slidesPath}/${i}${extension}`;
             img.alt = `Slide ${i}`;
 
             img.onload = () => {
                 img.classList.add('loaded');
                 loadedCount++;
                 updateProgress();
-                checkAllLoaded();
+                if (loadedCount >= totalSlides) loadingEl.style.display = 'none';
             };
 
             img.onerror = () => {
                 console.error(`Failed to load slide ${i} at: ${img.src}`);
                 img.classList.add('error');
-                img.innerHTML = `<strong>MISSING:</strong> Slide ${i}<br><small>${fullUrl}</small>`;
+                img.alt = `MISSING: Slide ${i}`;
                 loadedCount++;
                 updateProgress();
-                checkAllLoaded();
+                if (loadedCount >= totalSlides) loadingEl.style.display = 'none';
             };
 
             slidesContainer.appendChild(img);
-        }
-
-        function checkAllLoaded() {
-            if (loadedCount >= totalSlides) {
-                setTimeout(() => loadingEl.style.display = 'none', 400);
-            }
         }
 
         updateProgress();
