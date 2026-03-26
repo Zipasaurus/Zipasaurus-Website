@@ -92,47 +92,38 @@
     </div>
 
     <script>
-        const slidesPath = 'images/Nightmare - powerpoint slides/';   // Make sure this matches your folder name exactly
+        // Choose the correct path to your slides folder
+        const slidesPath = 'images/Nightmare - powerpoint slides/';
+
         const totalSlides = 20;
-        const extension = '.png';
-
         const slidesContainer = document.getElementById('slides');
-        const loadingEl = document.getElementById('loading');
         const progressEl = document.getElementById('progress');
-
+        const loadingEl = document.getElementById('loading');
         let loadedCount = 0;
 
-        function updateProgress() {
-            progressEl.textContent = loadedCount;
+        for (let i = 1; i <= totalSlides; i++) {
+            const img = document.createElement('img');
+            img.src = `${slidesPath}${i}.png`;
+            img.alt = `Slide ${i}`;
+
+            img.onload = () => {
+                img.classList.add('loaded');
+                loadedCount++;
+                progressEl.textContent = loadedCount;
+                if (loadedCount === totalSlides) loadingEl.style.display = 'none';
+            };
+
+            img.onerror = () => {
+                img.classList.add('error');
+                img.alt = `Failed to load Slide ${i}`;
+                img.textContent = `Slide ${i} failed to load`;
+                loadedCount++;
+                progressEl.textContent = loadedCount;
+                if (loadedCount === totalSlides) loadingEl.style.display = 'none';
+            };
+
+            slidesContainer.appendChild(img);
         }
-
-        // Small delay to help GitHub Pages finish deploying
-        setTimeout(() => {
-            for (let i = 1; i <= totalSlides; i++) {
-                const img = document.createElement('img');
-                img.src = `${slidesPath}/${i}${extension}`;
-                img.alt = `Slide ${i}`;
-
-                img.onload = () => {
-                    img.classList.add('loaded');
-                    loadedCount++;
-                    updateProgress();
-                    if (loadedCount >= totalSlides) loadingEl.style.display = 'none';
-                };
-
-                img.onerror = () => {
-                    console.error(`Failed to load slide ${i} → ${img.src}`);
-                    img.classList.add('error');
-                    img.innerHTML = `❌ MISSING SLIDE ${i}<br><small>${img.src}</small>`;
-                    loadedCount++;
-                    updateProgress();
-                    if (loadedCount >= totalSlides) loadingEl.style.display = 'none';
-                };
-
-                slidesContainer.appendChild(img);
-            }
-            updateProgress();
-        }, 1500);   // 1.5 second delay
     </script>
 </body>
 </html>
