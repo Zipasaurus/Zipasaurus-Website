@@ -112,59 +112,59 @@
         </footer>
     </div>
 
-    <script>
-        // === CONFIGURATION ===
-        const slidesPath = '../images/Nightmare - powerpoint slides';  // ← Relative path (no leading /)
-        const totalSlides = 20;
-        const extension = '.png';
+   <script>
+    // === CONFIGURATION ===
+    const slidesPath = 'images/Nightmare - powerpoint slides';  // ← NO trailing slash, NO leading slash
+    const totalSlides = 20;
+    const extension = '.png';
 
-        const slidesContainer = document.getElementById('slides');
-        const loadingEl = document.getElementById('loading');
-        const progressEl = document.getElementById('progress');
+    const slidesContainer = document.getElementById('slides');
+    const loadingEl = document.getElementById('loading');
+    const progressEl = document.getElementById('progress');
 
-        let loadedCount = 0;
+    let loadedCount = 0;
 
-        function updateProgress() {
-            progressEl.textContent = loadedCount;
+    function updateProgress() {
+        progressEl.textContent = loadedCount;
+    }
+
+    for (let i = 1; i <= totalSlides; i++) {
+        const img = document.createElement('img');
+        
+        // Correct path construction (no extra space)
+        img.src = `${slidesPath}/${i}${extension}`;
+        
+        img.alt = `Slide ${i}`;
+        img.loading = "lazy";
+
+        img.onload = () => {
+            img.classList.add('loaded');
+            loadedCount++;
+            updateProgress();
+            checkAllLoaded();
+        };
+
+        img.onerror = () => {
+            console.error(`❌ Failed to load slide ${i} → ${img.src}`);
+            img.style.border = "4px solid #ff4444";
+            img.alt = `MISSING: Slide ${i}`;
+            loadedCount++;
+            updateProgress();
+            checkAllLoaded();
+        };
+
+        slidesContainer.appendChild(img);
+    }
+
+    function checkAllLoaded() {
+        if (loadedCount >= totalSlides) {
+            setTimeout(() => {
+                loadingEl.style.display = 'none';
+            }, 400);
         }
+    }
 
-        for (let i = 1; i <= totalSlides; i++) {
-            const img = document.createElement('img');
-            img.src = `${slidesPath}/${i}${extension}`;
-            img.alt = `Slide ${i}`;
-            img.loading = "lazy";
-
-            // Success
-            img.onload = () => {
-                img.classList.add('loaded');
-                loadedCount++;
-                updateProgress();
-                checkAllLoaded();
-            };
-
-            // Error (missing file, wrong name, etc.)
-            img.onerror = () => {
-                console.error(`Failed to load slide ${i}: ${img.src}`);
-                img.style.border = "3px solid #ff4444";
-                img.style.opacity = "1";
-                loadedCount++;
-                updateProgress();
-                checkAllLoaded();
-            };
-
-            slidesContainer.appendChild(img);
-        }
-
-        function checkAllLoaded() {
-            if (loadedCount >= totalSlides) {
-                setTimeout(() => {
-                    loadingEl.style.display = 'none';
-                }, 300);
-            }
-        }
-
-        // Initial progress
-        updateProgress();
-    </script>
+    updateProgress();
+</script>
 </body>
 </html>
