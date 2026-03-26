@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Nightmare – GDD Presentation</title>
-
     <style>
         :root {
             --bg: #050507;
@@ -11,11 +10,9 @@
             --accent: #6cf2ff;
             --muted: #8a8a96;
         }
-
         * {
             box-sizing: border-box;
         }
-
         body {
             margin: 0;
             min-height: 100vh;
@@ -25,49 +22,49 @@
             color: var(--fg);
             font-family: "Segoe UI", system-ui, sans-serif;
         }
-
         .container {
             max-width: 1200px;
             width: 100%;
             padding: 2rem;
             margin: auto;
         }
-
         header {
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
-
         h1 {
             margin: 0;
-            font-size: 2.5rem;
-            letter-spacing: 0.1em;
+            font-size: 2.8rem;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
             position: relative;
         }
-
         h1::after {
             content: "";
             display: block;
-            width: 120px;
-            height: 2px;
-            margin-top: 0.5rem;
+            width: 140px;
+            height: 3px;
+            margin-top: 0.6rem;
             background: linear-gradient(90deg, var(--accent), transparent);
         }
-
         .subtitle {
             color: var(--muted);
-            margin-top: 0.5rem;
-            font-size: 1rem;
-            max-width: 600px;
+            margin-top: 0.8rem;
+            font-size: 1.1rem;
+            max-width: 700px;
+            line-height: 1.5;
         }
-
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
         .slides {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 2.5rem;
             margin-top: 2rem;
         }
-
         .slides img {
             width: 100%;
             max-width: 1200px;
@@ -76,26 +73,27 @@
                 0 0 40px rgba(108,242,255,0.15),
                 0 0 120px rgba(0,0,0,0.9);
             object-fit: contain;
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
-
+        .slides img.loaded {
+            opacity: 1;
+        }
         footer {
-            margin-top: 2rem;
-            font-size: 0.85rem;
+            margin-top: 3rem;
+            font-size: 0.9rem;
             color: var(--muted);
             text-align: right;
         }
-
         footer a {
             color: var(--accent);
             text-decoration: none;
         }
-
         footer a:hover {
             text-decoration: underline;
         }
     </style>
 </head>
-
 <body>
     <div class="container">
         <header>
@@ -106,28 +104,67 @@
             </p>
         </header>
 
+        <div id="loading" class="loading">Loading slides... <span id="progress">0</span>/20</div>
         <div class="slides" id="slides"></div>
 
         <footer>
-            Slides loaded from local images
+            Nightmare GDD Presentation • Slides loaded from local folder
         </footer>
     </div>
 
-      <script>
-    // Path to your slides folder (relative to GDD.html)
-    const slidesPath = '/images/Nightmare - powerpoint slides';
-    const totalSlides = 20;           // Change if you have more or fewer slides
-    const extension = '.png';
+    <script>
+        // === CONFIGURATION ===
+        const slidesPath = 'images/Nightmare - powerpoint slides';  // ← Relative path (no leading /)
+        const totalSlides = 20;
+        const extension = '.png';
 
-    const slidesContainer = document.getElementById('slides');
+        const slidesContainer = document.getElementById('slides');
+        const loadingEl = document.getElementById('loading');
+        const progressEl = document.getElementById('progress');
 
-    for (let i = 1; i <= totalSlides; i++) {
-        const img = document.createElement('img');
-        img.src = `${slidesPath}${i}${extension}`;
-        img.alt = `Slide ${i}`;
-        img.loading = "lazy";         // Improves performance with many images
-        slidesContainer.appendChild(img);
-    }
-</script>
+        let loadedCount = 0;
+
+        function updateProgress() {
+            progressEl.textContent = loadedCount;
+        }
+
+        for (let i = 1; i <= totalSlides; i++) {
+            const img = document.createElement('img');
+            img.src = `${slidesPath}/${i}${extension}`;
+            img.alt = `Slide ${i}`;
+            img.loading = "lazy";
+
+            // Success
+            img.onload = () => {
+                img.classList.add('loaded');
+                loadedCount++;
+                updateProgress();
+                checkAllLoaded();
+            };
+
+            // Error (missing file, wrong name, etc.)
+            img.onerror = () => {
+                console.error(`Failed to load slide ${i}: ${img.src}`);
+                img.style.border = "3px solid #ff4444";
+                img.style.opacity = "1";
+                loadedCount++;
+                updateProgress();
+                checkAllLoaded();
+            };
+
+            slidesContainer.appendChild(img);
+        }
+
+        function checkAllLoaded() {
+            if (loadedCount >= totalSlides) {
+                setTimeout(() => {
+                    loadingEl.style.display = 'none';
+                }, 300);
+            }
+        }
+
+        // Initial progress
+        updateProgress();
+    </script>
 </body>
 </html>
