@@ -113,24 +113,21 @@
         </footer>
     </div>
 
-    <script>
-        // Relative path to the slides folder
-<<<<<<< HEAD
-        const slidesPath = '/images/';
-=======
-        const slidesPath = 'images/Nightmare - powerpoint slides/';
->>>>>>> 600b7f5 (Replace embedded PowerPoint with scrollable numbered slides)
+      <script>
+    // Path to your slides folder (relative to GDD.html)
+    const slidesPath = 'images/Nightmare%20-%20powerpoint%20slides/';
+    const totalSlides = 20;           // Change if you have more or fewer slides
+    const extension = '.png';
 
-        // Numbered images (you can adjust extension if needed)
-        const totalSlides = 20; // change this to however many images you have
-        const slidesContainer = document.getElementById('slides');
+    const slidesContainer = document.getElementById('slides');
 
-        for (let i = 1; i <= totalSlides; i++) {
-            const img = document.createElement('img');
-            img.src = `${slidesPath}${i}.png`; // assumes files named 1.png, 2.png, etc.
-            img.alt = `Slide ${i}`;
-            slidesContainer.appendChild(img);
-        }
-    </script>
+    for (let i = 1; i <= totalSlides; i++) {
+        const img = document.createElement('img');
+        img.src = `${slidesPath}${i}${extension}`;
+        img.alt = `Slide ${i}`;
+        img.loading = "lazy";         // Improves performance with many images
+        slidesContainer.appendChild(img);
+    }
+</script>
 </body>
 </html>
