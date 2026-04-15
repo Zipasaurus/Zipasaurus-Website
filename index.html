@@ -579,7 +579,7 @@ nav ul li a:hover {
             navMenu.classList.remove('active');
             hamburger.setAttribute('aria-expanded', 'false');
         }
-        // Gallery - completely rewritten for automatic folder-based loading + modern look
+      // Gallery
         let imagesVisible = false;
 
         function toggleImages() {
@@ -607,9 +607,10 @@ nav ul li a:hover {
         function loadImages() {
             const container = document.getElementById('image-container');
             
-            // === NO MORE MANUAL FULL PATHS ===
-            // Just update the folder once + add/remove filenames here
+            // ==================== JUST UPDATE THIS PART ====================
             const IMAGE_FOLDER = "images/MG ZR 105 Images/";
+            
+            // Add or remove filenames here. No need to change anything else!
             const IMAGE_FILENAMES = [
                 "GasStationBehind2.png",
                 "BonnetOpenView.jpg",
@@ -618,31 +619,38 @@ nav ul li a:hover {
                 "MyCarAtGarage2.jpeg",
                 "Subwoofer.jpg",
                 "my roof.png"
+                // ← Add new images here, for example:
+                // "NewPhoto.jpg",
+                // "InteriorView.png"
             ];
+            // ==============================================================
 
-            container.innerHTML = ''; // ensure clean slate
+            container.innerHTML = ''; // Clear previous images
 
             IMAGE_FILENAMES.forEach(filename => {
                 const src = IMAGE_FOLDER + filename;
                 const img = document.createElement('img');
                 img.src = src;
-                img.alt = `MG ZR 105 - ${filename}`;
-                img.style.opacity = '0'; // Start invisible for GSAP
-                container.appendChild(img);
-
-                // Click any thumbnail → beautiful full-screen lightbox
+                img.alt = `MG ZR 105 - ${filename.replace(/\.[^/.]+$/, "")}`; // nice alt text
+                img.style.opacity = '0';
+                
+                // Click thumbnail → open in lightbox
                 img.addEventListener('click', () => openLightbox(src));
+                
+                container.appendChild(img);
             });
 
+            // Nice fade-in animation
             gsap.to(container.querySelectorAll('img'), {
                 opacity: 1,
                 y: 0,
-                stagger: 0.1,
-                duration: 0.5
+                stagger: 0.08,
+                duration: 0.6,
+                ease: "power2.out"
             });
         }
 
-        // Lightbox functions (clean full-screen viewer)
+        // Lightbox functions (already in previous version)
         function openLightbox(src) {
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-image');
@@ -654,7 +662,6 @@ nav ul li a:hover {
             const lightbox = document.getElementById('lightbox');
             lightbox.classList.remove('active');
         }
-
         // Dark Mode Toggle
         function toggleDarkMode() {
             document.body.dataset.theme = document.body.dataset.theme === 'dark' ? '' : 'dark';
