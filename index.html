@@ -537,175 +537,160 @@ nav ul li a:hover {
         <div class="last-updated">Last Updated: 2025-09-11 14:49:20</div>
     </div>
 
-    <script>
-        // Navigation (exactly as in your original first version)
-        const navLinks = document.querySelectorAll('.nav-link');
-        const pages = document.querySelectorAll('.page');
-        const hamburger = document.querySelector('.hamburger');
-        const navMenu = document.querySelector('nav ul');
+   <script>
+    // Navigation (unchanged from your original)
+    const navLinks = document.querySelectorAll('.nav-link');
+    const pages = document.querySelectorAll('.page');
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('nav ul');
 
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const pageId = link.getAttribute('data-page');
-                showPage(pageId);
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const pageId = link.getAttribute('data-page');
+            showPage(pageId);
+        });
+    });
+
+    hamburger.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+        hamburger.setAttribute('aria-expanded', navMenu.classList.contains('active'));
+    });
+
+    function showPage(pageId) {
+        pages.forEach(page => {
+            page.classList.remove('active');
+            page.style.display = 'none';
+            page.style.opacity = '0';
+        });
+        navLinks.forEach(link => link.classList.remove('active'));
+
+        const targetPage = document.getElementById(pageId);
+        if (targetPage) {
+            targetPage.classList.add('active');
+            targetPage.style.display = 'block';
+
+            gsap.to(targetPage, {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                onStart: () => { targetPage.style.display = 'block'; }
             });
-        });
 
-        hamburger.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            hamburger.setAttribute('aria-expanded', navMenu.classList.contains('active'));
-        });
+            document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
+        }
 
-        function showPage(pageId) {
-            pages.forEach(page => {
-                page.classList.remove('active');
-                page.style.display = 'none';
-                page.style.opacity = '0';
+        navMenu.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', 'false');
+    }
+
+    // ==================== FIXED GALLERY - RELATIVE PATHS (Best for GitHub Pages) ====================
+    let imagesVisible = false;
+
+    function toggleImages() {
+        const container = document.getElementById('image-container');
+        const button = document.querySelector('.image-button');
+
+        if (imagesVisible) {
+            gsap.to(container.querySelectorAll('img'), {
+                opacity: 0,
+                stagger: 0.1,
+                duration: 0.3,
+                onComplete: () => {
+                    container.innerHTML = '';
+                    button.classList.remove('active');
+                    button.setAttribute('aria-expanded', 'false');
+                }
             });
-            navLinks.forEach(link => link.classList.remove('active'));
-
-            const targetPage = document.getElementById(pageId);
-            if (targetPage) {
-                targetPage.classList.add('active');
-                targetPage.style.display = 'block';
-
-                gsap.to(targetPage, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.5,
-                    onStart: () => { targetPage.style.display = 'block'; }
-                });
-
-                document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
-            }
-
-            navMenu.classList.remove('active');
-            hamburger.setAttribute('aria-expanded', 'false');
+        } else {
+            loadImages();
+            button.classList.add('active');
+            button.setAttribute('aria-expanded', 'true');
         }
+        imagesVisible = !imagesVisible;
+    }
 
-        // ==================== GALLERY - FULLY AUTOMATIC (GitHub API) ====================
-        let imagesVisible = false;
+    function loadImages() {
+        const container = document.getElementById('image-container');
+        container.innerHTML = '';
 
-        async function toggleImages() {
-            const container = document.getElementById('image-container');
-            const button = document.querySelector('.image-button');
+        const IMAGE_FOLDER = "images/MG ZR 105 Images/";
 
-            if (imagesVisible) {
-                gsap.to(container.querySelectorAll('img'), {
-                    opacity: 0,
-                    stagger: 0.1,
-                    duration: 0.3,
-                    onComplete: () => {
-                        container.innerHTML = '';
-                        button.classList.remove('active');
-                        button.setAttribute('aria-expanded', 'false');
-                    }
-                });
-            } else {
-                await loadImagesAutomatically();
-                button.classList.add('active');
-                button.setAttribute('aria-expanded', 'true');
-            }
-            imagesVisible = !imagesVisible;
-        }
+        const IMAGE_FILENAMES = [
+            "GasStationBehind2.png",
+            "BonnetOpenView.jpg",
+            "OpenBonnetDriveWay2.jpg",
+            "EmptyBonnetView2.jpg",
+            "MyCarAtGarage2.jpeg",
+            "Subwoofer.jpg",
+            "my roof.png",
+            "WhatsApp Image 2026-04-15 at 01.23.01.jpeg",
+            "WhatsApp Image 2026-04-15 at 01.23.02.jpeg",
+            "WhatsApp Image 2026-04-15 at 01.26.38.jpeg",
+            "WhatsApp Image wd2026-04-15 at 01.26.38.jpeg",
+            "WhatsApp Imagewd 2026-04-15 at 01.26.38.jpeg",
+            "WhatsApp awd2026-04-15 at 01.26.38.jpeg"
+            // Add any new images here
+        ];
 
-        async function loadImagesAutomatically() {
-            const container = document.getElementById('image-container');
-            container.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:var(--text-muted); padding:20px;">🔄 Loading all images from your folder...</p>';
+        IMAGE_FILENAMES.forEach(filename => {
+            const src = IMAGE_FOLDER + filename;
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = `MG ZR 105 - ${filename}`;
+            img.loading = "lazy";
+            img.style.opacity = '0';
 
-            // ==================== CHANGE THESE TWO LINES ONLY ====================
-            const GITHUB_USERNAME = "Zipasaurus";   // ←←← PUT YOUR USERNAME
-            const GITHUB_REPO     = "Zipasaurus-Website";         // ←←← PUT YOUR REPO NAME (e.g. zipasaurus.github.io)
-            const FOLDER_PATH     = "images/MG ZR 105 Images/";     // Folder must match exactly
-            // ==================================================================
-
-            try {
-                const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${encodeURIComponent(FOLDER_PATH)}`;
-                const response = await fetch(url);
-
-                if (!response.ok) throw new Error("Folder not found or rate limited");
-
-                const files = await response.json();
-
-                container.innerHTML = '';
-
-                const imageFiles = files.filter(file => 
-                    file.type === "file" && 
-                    /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name)
-                );
-
-                if (imageFiles.length === 0) {
-                    container.innerHTML = '<p style="grid-column: 1/-1; text-align:center;">No images found in the folder.</p>';
-                    return;
-                }
-
-                imageFiles.forEach(file => {
-                    const fullPath = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main/${FOLDER_PATH}/${file.name}`;
-                    const img = document.createElement('img');
-                    img.src = fullPath;
-                    img.alt = `MG ZR 105 - ${file.name}`;
-                    img.loading = "lazy";
-                    img.style.opacity = '0';
-
-                    img.addEventListener('click', () => openLightbox(fullPath));
-                    container.appendChild(img);
-                });
-
-                gsap.to(container.querySelectorAll('img'), {
-                    opacity: 1,
-                    y: 20,
-                    stagger: 0.07,
-                    duration: 0.65,
-                    ease: "power2.out"
-                });
-
-            } catch (error) {
-                console.error(error);
-                container.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:red;">Could not load images.<br>Check that your GitHub username and repo name are correct.</p>`;
-            }
-        }
-
-        function openLightbox(src) {
-            const lightbox = document.getElementById('lightbox');
-            const lightboxImg = document.getElementById('lightbox-image');
-            lightboxImg.src = src;
-            lightbox.classList.add('active');
-        }
-
-        function closeLightbox() {
-            const lightbox = document.getElementById('lightbox');
-            lightbox.classList.remove('active');
-        }
-
-        // Everything else stays exactly the same as your original
-        function toggleDarkMode() {
-            document.body.dataset.theme = document.body.dataset.theme === 'dark' ? '' : 'dark';
-        }
-
-        function playDinoRoar() {
-            const audio = new Audio('path/to/dino-roar.mp3');
-            audio.play().catch(() => alert('Rawr! 🦖'));
-        }
-
-        gsap.utils.toArray('.section').forEach(section => {
-            gsap.fromTo(section,
-                { opacity: 0, y: 50 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1,
-                    scrollTrigger: {
-                        trigger: section,
-                        start: 'top 80%',
-                        toggleActions: 'play none none reverse'
-                    }
-                }
-            );
+            img.addEventListener('click', () => openLightbox(src));
+            container.appendChild(img);
         });
 
-        // Initialize
-        showPage('about');
-    </script>
+        gsap.to(container.querySelectorAll('img'), {
+            opacity: 1,
+            y: 20,
+            stagger: 0.07,
+            duration: 0.65,
+            ease: "power2.out"
+        });
+    }
+
+    function openLightbox(src) {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-image');
+        lightboxImg.src = src;
+        lightbox.classList.add('active');
+    }
+
+    function closeLightbox() {
+        const lightbox = document.getElementById('lightbox');
+        lightbox.classList.remove('active');
+    }
+
+    // Dark Mode + Dino Roar
+    function toggleDarkMode() {
+        document.body.dataset.theme = document.body.dataset.theme === 'dark' ? '' : 'dark';
+    }
+
+    function playDinoRoar() {
+        const audio = new Audio('path/to/dino-roar.mp3');
+        audio.play().catch(() => alert('Rawr! 🦖'));
+    }
+
+    // Scroll animations - Fixed: Removed ScrollTrigger since you're using the free GSAP version
+    gsap.utils.toArray('.section').forEach(section => {
+        gsap.fromTo(section,
+            { opacity: 0, y: 50 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.1
+            }
+        );
+    });
+
+    // Initialize
+    showPage('about');
+</script>
 </body>
 </html>
