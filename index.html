@@ -315,17 +315,17 @@
         } else {
             container.style.display = 'grid';
             currentOpen = container;
-            loadCategory(folder, container, button.getAttribute('data-category'));
+            loadCategory(folder, container);
         }
     }
 
-    function loadCategory(folder, container, category) {
+    function loadCategory(folder, container) {
         if (container.hasChildNodes()) return;
 
         let filenames = [];
 
         // === MG ZR 105 FILENAMES ===
-        if (category === "mgzr") {
+        if (folder.includes("MG ZR 105 Images")) {
             filenames = [
                 "GasStationBehind2.png",
                 "BonnetOpenView.jpg",
@@ -336,16 +336,17 @@
                 "my roof.png",
                 "WhatsApp Image 2026-04-15 at 01.23.01.jpeg",
                 "WhatsApp Image 2026-04-15 at 01.23.02.jpeg",
+                "WhatsApp Image 2026-04-15 at 01.26.38.jpeg"
             ];
         } 
         // === FATHER'S CARS FILENAMES ===
-        else if (category === "fathers") {
+        else if (folder.includes("FathersCar")) {
             filenames = [
-                "WhatsApp Image 2026-04-15 at 01.26.38.jpeg",     // ← Replace with your actual father's car image names
+                "WhatsApp Image 2026-04-15 at 01.26.38.jpeg",
                 "WhatsApp Image wd2026-04-15 at 01.26.38.jpeg",
                 "WhatsApp Imagewd 2026-04-15 at 01.26.38.jpeg",
                 "WhatsApp awd2026-04-15 at 01.26.38.jpeg"
-                // Add all your father's car image filenames here
+                // Add more father's car images here
             ];
         }
 
