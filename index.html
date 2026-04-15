@@ -261,69 +261,72 @@
         </div>
     </div>
 
-    <script>
-        // Navigation
-        const navLinks = document.querySelectorAll('.nav-link');
-        const pages = document.querySelectorAll('.page');
-        const hamburger = document.querySelector('.hamburger');
-        const navMenu = document.querySelector('nav ul');
+<script>
+    // Navigation
+    const navLinks = document.querySelectorAll('.nav-link');
+    const pages = document.querySelectorAll('.page');
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('nav ul');
 
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const pageId = link.getAttribute('data-page');
-                showPage(pageId);
-            });
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const pageId = link.getAttribute('data-page');
+            showPage(pageId);
         });
+    });
 
-        hamburger.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            hamburger.setAttribute('aria-expanded', navMenu.classList.contains('active'));
+    hamburger.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+        hamburger.setAttribute('aria-expanded', navMenu.classList.contains('active'));
+    });
+
+    function showPage(pageId) {
+        pages.forEach(page => {
+            page.classList.remove('active');
+            page.style.display = 'none';
+            page.style.opacity = '0';
         });
+        navLinks.forEach(link => link.classList.remove('active'));
 
-        function showPage(pageId) {
-            pages.forEach(page => {
-                page.classList.remove('active');
-                page.style.display = 'none';
-                page.style.opacity = '0';
-            });
-            navLinks.forEach(link => link.classList.remove('active'));
+        const targetPage = document.getElementById(pageId);
+        if (targetPage) {
+            targetPage.classList.add('active');
+            targetPage.style.display = 'block';
+            gsap.to(targetPage, { opacity: 1, y: 0, duration: 0.5 });
+        }
+        navMenu.classList.remove('active');
+    }
 
-            const targetPage = document.getElementById(pageId);
-            if (targetPage) {
-                targetPage.classList.add('active');
-                targetPage.style.display = 'block';
-                gsap.to(targetPage, { opacity: 1, y: 0, duration: 0.5 });
-            }
-            navMenu.classList.remove('active');
+    // ==================== EASY MULTI-CATEGORY GALLERY ====================
+    let currentOpen = null;
+
+    function toggleCategory(button) {
+        const folder = button.getAttribute('data-folder');
+        const container = button.parentElement.querySelector('.image-gallery');
+
+        if (currentOpen && currentOpen !== container) {
+            currentOpen.style.display = 'none';
         }
 
-        // Easy Gallery System
-        let currentOpen = null;
-
-        function toggleCategory(button) {
-            const folder = button.getAttribute('data-folder');
-            const container = button.parentElement.querySelector('.image-gallery');
-
-            if (currentOpen && currentOpen !== container) {
-                currentOpen.style.display = 'none';
-            }
-
-            if (container.style.display === 'grid') {
-                container.style.display = 'none';
-                currentOpen = null;
-            } else {
-                container.style.display = 'grid';
-                currentOpen = container;
-                loadCategory(folder, container);
-            }
+        if (container.style.display === 'grid') {
+            container.style.display = 'none';
+            currentOpen = null;
+        } else {
+            container.style.display = 'grid';
+            currentOpen = container;
+            loadCategory(folder, container, button.getAttribute('data-category'));
         }
+    }
 
-        function loadCategory(folder, container) {
-            if (container.hasChildNodes()) return;
+    function loadCategory(folder, container, category) {
+        if (container.hasChildNodes()) return;
 
-            // === PASTE FILENAMES HERE (just name + extension) ===
-            const filenames = [
+        let filenames = [];
+
+        // === MG ZR 105 FILENAMES ===
+        if (category === "mgzr") {
+            filenames = [
                 "GasStationBehind2.png",
                 "BonnetOpenView.jpg",
                 "OpenBonnetDriveWay2.jpg",
@@ -333,49 +336,58 @@
                 "my roof.png",
                 "WhatsApp Image 2026-04-15 at 01.23.01.jpeg",
                 "WhatsApp Image 2026-04-15 at 01.23.02.jpeg",
-                "WhatsApp Image 2026-04-15 at 01.26.38.jpeg"
-                // Add more image names from this folder here
             ];
-
-            container.innerHTML = '';
-
-            filenames.forEach(name => {
-                const img = document.createElement('img');
-                img.src = folder + name;
-                img.alt = name;
-                img.loading = "lazy";
-                img.style.opacity = '0';
-                img.addEventListener('click', () => openLightbox(folder + name));
-                container.appendChild(img);
-            });
-
-            gsap.to(container.querySelectorAll('img'), {
-                opacity: 1,
-                y: 20,
-                stagger: 0.07,
-                duration: 0.6
-            });
+        } 
+        // === FATHER'S CARS FILENAMES ===
+        else if (category === "fathers") {
+            filenames = [
+                "WhatsApp Image 2026-04-15 at 01.26.38.jpeg",     // ← Replace with your actual father's car image names
+                "WhatsApp Image wd2026-04-15 at 01.26.38.jpeg",
+                "WhatsApp Imagewd 2026-04-15 at 01.26.38.jpeg",
+                "WhatsApp awd2026-04-15 at 01.26.38.jpeg"
+                // Add all your father's car image filenames here
+            ];
         }
 
-        function openLightbox(src) {
-            document.getElementById('lightbox-image').src = src;
-            document.getElementById('lightbox').classList.add('active');
-        }
+        container.innerHTML = '';
 
-        function closeLightbox() {
-            document.getElementById('lightbox').classList.remove('active');
-        }
+        filenames.forEach(name => {
+            const img = document.createElement('img');
+            img.src = folder + name;
+            img.alt = name;
+            img.loading = "lazy";
+            img.style.opacity = '0';
+            img.addEventListener('click', () => openLightbox(folder + name));
+            container.appendChild(img);
+        });
 
-        function toggleDarkMode() {
-            document.body.dataset.theme = document.body.dataset.theme === 'dark' ? '' : 'dark';
-        }
+        gsap.to(container.querySelectorAll('img'), {
+            opacity: 1,
+            y: 20,
+            stagger: 0.07,
+            duration: 0.6
+        });
+    }
 
-        function playDinoRoar() {
-            alert('Rawr! 🦖');
-        }
+    function openLightbox(src) {
+        document.getElementById('lightbox-image').src = src;
+        document.getElementById('lightbox').classList.add('active');
+    }
 
-        // Initialize
-        showPage('about');
-    </script>
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('active');
+    }
+
+    function toggleDarkMode() {
+        document.body.dataset.theme = document.body.dataset.theme === 'dark' ? '' : 'dark';
+    }
+
+    function playDinoRoar() {
+        alert('Rawr! 🦖');
+    }
+
+    // Initialize
+    showPage('about');
+</script>
 </body>
 </html>
