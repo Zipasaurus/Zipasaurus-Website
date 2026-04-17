@@ -64,13 +64,14 @@
         }
 
         .logo {
-            font-size: 1.85rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: var(--accent);
             cursor: pointer;
             transition: color 0.3s;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             text-align: center;
+            text-decoration: none;
         }
         .logo:hover { color: #00ff60; }
 
@@ -225,10 +226,10 @@
                 align-items: center;
             }
             .logo {
-                font-size: 1.1rem;
+                font-size: 0.9rem;
                 writing-mode: vertical-rl;
                 text-orientation: mixed;
-                margin-bottom: 4rem;
+                margin-bottom: 3rem;
                 transform: rotate(180deg);
             }
             .sidebar nav ul li a {
@@ -278,17 +279,17 @@
 
     <!-- LEFT SIDEBAR -->
     <div class="sidebar" id="sidebar">
-        <div class="logo retro-font" onclick="playDinoRoar()">ZIPASAURUS 🦖</div>
+        <a href="index.html" class="logo retro-font">ZIPASAURUS 🦖</a>
         
         <nav>
             <ul>
-                <li><a href="#about" class="nav-link active" data-page="about">About</a></li>
-                <li><a href="Projects.html">Projects</a></li>
-                <li><a href="Setup.html">Setup</a></li>
-                <li><a href="Socials.html">Socials</a></li>
-                <li><a href="Gallery.html">Gallery</a></li>
-                <li><a href="dj.html">DJ Zone</a></li>
-                <li><a href="GDD.html">GDD</a></li>
+                <li><a href="index.html" class="nav-item">About</a></li>
+                <li><a href="Projects.html" class="nav-item">Projects</a></li>
+                <li><a href="Setup.html" class="nav-item">Setup</a></li>
+                <li><a href="Socials.html" class="nav-item">Socials</a></li>
+                <li><a href="Gallery.html" class="nav-item">Gallery</a></li>
+                <li><a href="dj.html" class="nav-item">DJ Zone</a></li>
+                <li><a href="GDD.html" class="nav-item">GDD</a></li>
             </ul>
         </nav>
 
@@ -340,14 +341,33 @@
     </div>
 
 <script>
+    // Auto-detect active page and set active class (for index page)
+    function setActiveNavItem() {
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.nav-item').forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+    // Set active on index page
+    setTimeout(setActiveNavItem, 100);
+
     // Navigation
-    const navLinks = document.querySelectorAll('.nav-link');
+    const navLinks = document.querySelectorAll('.nav-item');
     const pages = document.querySelectorAll('.page');
     const hamburger = document.getElementById('hamburger');
     const sidebar = document.getElementById('sidebar');
 
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
+            // Only preventDefault for internal links (About)
+            const href = link.getAttribute('href');
+            if (href !== 'index.html') return; // Let external links work normally
+            
             e.preventDefault();
             const pageId = link.getAttribute('data-page');
             if (pageId) showPage(pageId);
@@ -408,7 +428,6 @@
     // Initialize
     window.addEventListener('load', () => {
         showPage('about');
-        gsap.from(".logo", { y: -60, opacity: 0, duration: 1.2, ease: "bounce.out" });
     });
 
     // Close sidebar when clicking outside on mobile

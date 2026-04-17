@@ -30,6 +30,7 @@
             color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
+            overflow-x: hidden;
         }
         .retro-font {
             font-family: 'Press Start 2P', sans-serif;
@@ -259,16 +260,15 @@
        
         <nav>
             <ul>
-                <li><a href="index.html">About</a></li>
-                <li><a href="Projects.html">Projects</a></li>
-                <li><a href="Setup.html" class="active">Setup</a></li>
-                <li><a href="Socials.html">Socials</a></li>
-                <li><a href="Gallery.html">Gallery</a></li>
-                <li><a href="dj.html">DJ Zone</a></li>
-                <li><a href="GDD.html">GDD</a></li>
+                <li><a href="index.html" class="nav-item">About</a></li>
+                <li><a href="Projects.html" class="nav-item">Projects</a></li>
+                <li><a href="Setup.html" class="nav-item">Setup</a></li>
+                <li><a href="Socials.html" class="nav-item">Socials</a></li>
+                <li><a href="Gallery.html" class="nav-item">Gallery</a></li>
+                <li><a href="dj.html" class="nav-item">DJ Zone</a></li>
+                <li><a href="GDD.html" class="nav-item">GDD</a></li>
             </ul>
         </nav>
-        <button class="theme-toggle" onclick="toggleDarkMode()">☀️ / 🌙</button>
     </div>
 
     <!-- Hamburger for mobile -->
@@ -384,7 +384,19 @@
         </footer>
     </main>
 
-    <script>
+    <script>        // Auto-detect active page and set active class
+        function setActiveNavItem() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('.nav-item').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+        setActiveNavItem();
         // Hamburger menu
         const hamburger = document.getElementById('hamburger');
         const sidebar = document.getElementById('sidebar');
