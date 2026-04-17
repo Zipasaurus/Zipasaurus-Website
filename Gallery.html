@@ -17,6 +17,14 @@
             --text-muted: #b0d0b0;
         }
 
+        [data-theme="light"] {
+            --accent: #00cc33;
+            --bg: #f0f7f0;
+            --surface: rgba(255, 255, 255, 0.92);
+            --text: #1a2a1a;
+            --text-muted: #445544;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Inter', system-ui, sans-serif;
@@ -30,30 +38,116 @@
             letter-spacing: 2px;
         }
 
-        header {
-            background: rgba(10, 15, 10, 0.97);
-            backdrop-filter: blur(12px);
-            position: sticky;
+        /* SIDEBAR NAV */
+        .sidebar {
+            position: fixed;
+            left: 0;
             top: 0;
+            bottom: 0;
+            width: 360px;
+            background: rgba(10, 15, 10, 0.98);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid rgba(0, 255, 65, 0.2);
             z-index: 1000;
-            border-bottom: 2px solid var(--accent);
-            padding: 1.2rem 0;
-        }
-
-        .nav-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 2rem;
+            padding: 2rem 1.5rem;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
         }
 
         .logo {
-            font-size: 1.9rem;
-            color: var(--accent);
-            text-decoration: none;
+            font-size: 1.4rem;
             font-weight: 700;
+            color: var(--accent);
+            cursor: pointer;
+            transition: color 0.3s;
+            margin-bottom: 2rem;
+            text-align: center;
+            text-decoration: none;
+        }
+        .logo:hover { color: #00ff60; }
+
+        .sidebar nav ul {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            list-style: none;
+            flex-grow: 1;
+        }
+
+        .sidebar nav ul li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 1rem 1.4rem;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(0, 255, 65, 0.3);
+            background: rgba(0, 255, 65, 0.05);
+            display: block;
+        }
+
+        .sidebar nav ul li a:hover {
+            border-color: var(--accent);
+            background: rgba(0, 255, 65, 0.15);
+            color: var(--accent);
+            transform: translateX(8px);
+        }
+
+        .sidebar nav ul li a.active {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: #000;
+        }
+
+        main {
+            margin-left: 360px;
+            min-height: 100vh;
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.7rem 1.2rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: auto;
+            align-self: center;
+            transition: all 0.3s;
+            display: none;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,255,65,0.03) 1px, transparent 1px),
+                        linear-gradient(to right, rgba(0,255,65,0.03) 1px, transparent 1px);
+            background-size: 70px 70px;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .theme-toggle:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .hamburger {
+            display: none;
+            position: fixed;
+            top: 1.2rem;
+            left: 1.2rem;
+            font-size: 2rem;
+            z-index: 1100;
+            background: rgba(10,15,10,0.9);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
         }
 
         .container {
@@ -195,20 +289,72 @@
             font-size: 0.95rem;
         }
 
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 80px;
+                padding: 1.5rem 0.8rem;
+                align-items: center;
+            }
+            .logo {
+                font-size: 0.9rem;
+                writing-mode: vertical-rl;
+                text-orientation: mixed;
+                margin-bottom: 3rem;
+                transform: rotate(180deg);
+            }
+            .sidebar nav ul li a {
+                padding: 1rem 0.8rem;
+                text-align: center;
+                font-size: 0.85rem;
+            }
+            main {
+                margin-left: 80px;
+            }
+        }
+
         @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.4s ease;
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            main {
+                margin-left: 0;
+            }
+            .hamburger {
+                display: flex;
+            }
             .gallery-grid { gap: 1.4rem; }
         }
     </style>
 </head>
 <body data-theme="dark">
 
-    <header>
-        <div class="nav-container">
-            <a href="index.html" class="logo retro-font">ZIPASAURUS 🦖</a>
-            <a href="Socials.html" style="color: var(--accent); text-decoration: none; font-weight: 500;">← Back to Socials</a>
-        </div>
-    </header>
+    <!-- LEFT SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <a href="index.html" class="logo retro-font">ZIPASAURUS 🦖</a>
+        
+        <nav>
+            <ul>
+                <li><a href="index.html">About</a></li>
+                <li><a href="Projects.html">Projects</a></li>
+                <li><a href="Setup.html">Setup</a></li>
+                <li><a href="Socials.html">Socials</a></li>
+                <li><a href="Gallery.html" class="active">Gallery</a></li>
+                <li><a href="dj.html">DJ Zone</a></li>
+                <li><a href="GDD.html">GDD</a></li>
+            </ul>
+        </nav>
 
+        <button class="theme-toggle" onclick="toggleDarkMode()">☀️ / 🌙</button>
+    </div>
+
+    <!-- Hamburger for mobile -->
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation">☰</button>
+
+    <main>
     <div class="container">
         <h1 class="retro-font">GALLERY</h1>
         <p class="subtitle">Cars • Audio Builds • Random Shots</p>
@@ -479,6 +625,8 @@
     <footer>
         © 2026 Zipasaurus • Click any image to expand
     </footer>
+    </div>
+    </main>
 
     <script>
         function toggleGallery(event, thumbnailsId) {
@@ -503,6 +651,32 @@
                 closeLightbox();
             }
         });
+
+        // Hamburger menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+        hamburger.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // Close sidebar when clicking on a link
+        document.querySelectorAll('.sidebar nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+            });
+        });
+
+        // Theme toggle
+        function toggleDarkMode() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
     </script>
 
 </body>

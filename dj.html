@@ -6,456 +6,428 @@
     <meta name="description" content="Zipasaurus DJ Zone: Explore my OldSkool, techno, DnB, and house tracks, VRChat rave events, and music platforms!">
     <meta name="keywords" content="DJ, techno, DnB, house, OldSkool, VRChat, music, Zipasaurus">
     <link rel="icon" type="image/x-icon" href="/images/PageIcon.ico">
-    <title>Zipasaurus - DJ Zone</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>DJ Zone • Zipasaurus 🦖</title>
+   
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Press+Start+2P&amp;display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
     <style>
         :root {
-            --page-background: linear-gradient(to bottom, #1a3c1a, #003300);
-            --header-background: rgba(20, 20, 20, 0.9);
-            --text-primary: #e0e0e0;
-            --text-secondary: #cccccc;
-            --text-light: #ffffff;
-            --text-muted: #888888;
-            --accent: #00ff00; /* Neon green */
-            --accent-secondary: #ff00ff; /* Neon purple for rave vibe */
-            --accent-hover: #33ff33;
-            --container-background: rgba(10, 10, 10, 0.7);
-            --section-background: rgba(40, 40, 40, 0.8);
-            --shadow: rgba(0, 0, 0, 0.5);
-            --shadow-accent: #00ff00;
-            --overlay-background: rgba(0, 0, 0, 0.7);
-            --focus-ring: rgba(0, 255, 0, 0.4);
-            --dark-mode-bg: #0a0a0a;
-            --dark-mode-text: #e0e0e0;
+            --accent: #00ff41;
+            --accent-secondary: #ff00ff;
+            --bg: #0a0f0a;
+            --surface: rgba(20, 28, 20, 0.96);
+            --text: #e0ffe0;
+            --text-muted: #b0d0b0;
+            --rave-glow: #00ff4180;
         }
 
-        [data-theme="dark"] {
-            --page-background: linear-gradient(to bottom, #0a0a0a, #1a001a);
-            --text-primary: var(--dark-mode-text);
-            --section-background: rgba(20, 20, 20, 0.9);
-            --container-background: rgba(10, 10, 10, 0.8);
+        [data-theme="light"] {
+            --accent: #00cc33;
+            --accent-secondary: #cc00cc;
+            --bg: #f0f7f0;
+            --surface: rgba(255, 255, 255, 0.92);
+            --text: #1a2a1a;
+            --text-muted: #445544;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--page-background);
-            color: var(--text-primary);
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
+        }
+
+        .retro-font {
+            font-family: 'Press Start 2P', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        /* SIDEBAR - Consistent with other pages */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 360px;
+            background: rgba(10, 15, 10, 0.98);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid rgba(0, 255, 65, 0.2);
+            z-index: 1000;
+            padding: 2rem 1.5rem;
             display: flex;
             flex-direction: column;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%2300ff00" stroke="%23ff00ff" stroke-width="2"/></svg>'), auto; /* Vinyl record cursor */
-        }
-
-        header {
-            background: var(--header-background);
-            color: var(--text-light);
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 5px var(--shadow);
-            animation: pulse 4s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { background: var(--header-background); }
-            50% { background: linear-gradient(to right, rgba(20, 20, 20, 0.9), rgba(0, 255, 0, 0.2)); }
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
         }
 
         .logo {
-            font-size: 1.8em;
+            font-size: 1.4rem;
             font-weight: 700;
             color: var(--accent);
             cursor: pointer;
-            text-shadow: 0 0 10px var(--shadow-accent);
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-        }
-
-        nav ul li a.nav-link {
-            color: var(--text-light);
+            transition: color 0.3s;
+            margin-bottom: 2rem;
+            text-align: center;
             text-decoration: none;
+        }
+        .logo:hover { color: #00ff60; }
+
+        .sidebar nav ul {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            list-style: none;
+            flex-grow: 1;
+        }
+
+        .sidebar nav ul li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 1rem 1.4rem;
+            border-radius: 12px;
             font-weight: 500;
-            padding: 10px;
-            transition: color 0.3s ease, transform 0.2s;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(0, 255, 65, 0.3);
+            background: rgba(0, 255, 65, 0.05);
+            display: block;
         }
 
-        nav ul li a.nav-link:hover {
-            color: var(--accent-secondary);
-            transform: scale(1.1);
+        .sidebar nav ul li a:hover {
+            border-color: var(--accent);
+            background: rgba(0, 255, 65, 0.15);
+            color: var(--accent);
+            transform: translateX(8px);
         }
 
+        .sidebar nav ul li a.active {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: #000;
+        }
+
+        main {
+            margin-left: 360px;
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,255,65,0.03) 1px, transparent 1px),
+                        linear-gradient(to right, rgba(0,255,65,0.03) 1px, transparent 1px);
+            background-size: 70px 70px;
+            pointer-events: none;
+            z-index: -1;
+        }
         .hamburger {
             display: none;
-            font-size: 1.5em;
-            background: none;
-            border: none;
-            color: var(--text-light);
+            position: fixed;
+            top: 1.2rem;
+            left: 1.2rem;
+            font-size: 2rem;
+            z-index: 1100;
+            background: rgba(10,15,10,0.9);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-        }
-
-        .dark-mode-toggle {
-            background: var(--accent);
-            color: var(--text-light);
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-left: 10px;
-            transition: background 0.3s, transform 0.2s;
-        }
-
-        .dark-mode-toggle:hover {
-            background: var(--accent-hover);
-            transform: scale(1.05);
         }
 
         .container {
-            max-width: 1200px;
-            width: 90%;
-            margin: 40px auto;
-            background: var(--container-background);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px var(--shadow);
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 5rem 2rem 6rem;
         }
 
         h1 {
-            font-size: 2.5em;
-            font-weight: 700;
+            font-size: 3.8rem;
             color: var(--accent);
-            margin-bottom: 20px;
+            text-shadow: 0 0 40px var(--rave-glow);
+            margin-bottom: 0.5rem;
             text-align: center;
-            text-shadow: 0 0 15px var(--shadow-accent);
-            position: relative;
+            font-family: 'Press Start 2P', sans-serif;
         }
 
-        h1::after {
-            content: '🎧';
-            font-size: 0.8em;
-            position: absolute;
-            top: -10px;
-            right: -20px;
-            animation: spin 4s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        h2 {
-            font-size: 1.8em;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin: 30px 0 15px;
-            border-bottom: 2px solid var(--accent-secondary);
-            padding-bottom: 5px;
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            margin-bottom: 4rem;
         }
 
         .section {
-            margin: 20px 0;
-            padding: 20px;
-            background: var(--section-background);
-            border-radius: 8px;
-            transition: box-shadow 0.3s ease, transform 0.3s;
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(0, 255, 65, 0.15);
+            transition: all 0.3s ease;
         }
 
         .section:hover {
-            box-shadow: 0 4px 15px var(--shadow);
-            transform: translateY(-5px);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0, 255, 65, 0.25);
         }
 
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background: var(--accent);
-            color: var(--text-light);
-            font-size: 1em;
-            font-weight: 500;
-            text-decoration: none;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
-            margin: 10px 5px;
-        }
-
-        .btn:hover {
-            background: var(--accent-hover);
-            transform: scale(1.05) rotate(2deg);
-        }
-
-        .btn:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px var(--focus-ring);
+        h2 {
+            font-size: 2.1rem;
+            color: var(--accent);
+            margin-bottom: 1.2rem;
+            border-bottom: 2px solid var(--accent-secondary);
+            padding-bottom: 0.6rem;
         }
 
         .music-player {
-            margin: 20px auto;
-            max-width: 600px;
-            padding: 20px;
-            background: var(--container-background);
-            border-radius: 8px;
-            box-shadow: 0 0 15px var(--shadow-accent);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .music-player::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, var(--accent), var(--accent-secondary));
-            opacity: 0.2;
-            animation: pulsePlayer 2s infinite;
-        }
-
-        @keyframes pulsePlayer {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 0.4; }
+            margin: 2rem auto;
+            max-width: 700px;
+            padding: 1.5rem;
+            background: rgba(10, 10, 10, 0.85);
+            border-radius: 16px;
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 30px var(--rave-glow);
         }
 
         .music-player iframe {
             width: 100%;
-            height: 300px;
+            height: 320px;
             border: none;
-            border-radius: 8px;
-            position: relative;
-            z-index: 1;
+            border-radius: 12px;
         }
 
         .event-gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-            perspective: 1000px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
         }
 
         .event-item {
             position: relative;
+            border-radius: 12px;
+            overflow: hidden;
             cursor: pointer;
         }
 
         .event-item img {
             width: 100%;
-            height: auto;
-            border-radius: 8px;
-            transition: transform 0.5s ease;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
         }
 
         .event-item:hover img {
-            transform: rotateY(10deg) scale(1.05);
+            transform: scale(1.08);
         }
 
-        .event-item .overlay-text {
+        .overlay-text {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: var(--text-light);
-            font-size: 1.2em;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
+            color: white;
+            padding: 1.2rem 1rem 1rem;
             font-weight: 600;
-            background: var(--overlay-background);
-            padding: 10px 20px;
-            border-radius: 6px;
+            text-align: center;
+            transform: translateY(30px);
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .event-item:hover .overlay-text {
+            transform: translateY(0);
             opacity: 1;
         }
 
-        .last-updated {
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: #000;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #33ff33;
+            transform: scale(1.05);
+        }
+
+        footer {
             text-align: center;
+            padding: 4rem 1rem 3rem;
             color: var(--text-muted);
-            font-size: 0.9em;
-            margin-top: 30px;
+            font-size: 0.95rem;
+        }
+
+        /* Mobile */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 80px;
+                padding: 1.5rem 0.8rem;
+                align-items: center;
+            }
+            .logo {
+                font-size: 0.9rem;
+                writing-mode: vertical-rl;
+                text-orientation: mixed;
+                transform: rotate(180deg);
+            }
+            main {
+                margin-left: 80px;
+            }
         }
 
         @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
-                align-items: flex-start;
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.4s ease;
+                width: 260px;
             }
-
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            main {
+                margin-left: 0;
+            }
             .hamburger {
-                display: block;
-            }
-
-            nav ul {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                padding: 10px 0;
-            }
-
-            nav ul.active {
                 display: flex;
             }
-
-            nav ul li {
-                width: 100%;
-                text-align: center;
-            }
-
             .container {
-                padding: 20px;
-            }
-
-            h1 {
-                font-size: 2em;
-            }
-
-            .music-player iframe {
-                height: 250px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .btn {
-                padding: 8px 14px;
-                font-size: 0.9em;
-            }
-
-            .event-gallery {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                padding: 3rem 1.5rem;
             }
         }
     </style>
 </head>
-<body>
-    <header>
-        <div class="nav-container">
-            <div class="logo" onclick="playDjScratch()">Zipasaurus - DJ Zone 🎧</div>
-            <button class="hamburger" aria-label="Toggle navigation">☰</button>
-            <nav>
-                <ul>
-                    <li><a href="/index.html" class="nav-link">Home</a></li>
-                    <li><a href="https://open.spotify.com/user/9psov2osd8lh0ktwo0h7qua68" class="nav-link" target="_blank" rel="noopener">Spotify</a></li>
-                    <li><a href="https://soundcloud.com/zipasaurus" class="nav-link" target="_blank" rel="noopener">SoundCloud</a></li>
-                    <li><a href="https://www.youtube.com/@zipasaurus" class="nav-link" target="_blank" rel="noopener">YouTube</a></li>
-                </ul>
-            </nav>
-            <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
-        </div>
-    </header>
+<body data-theme="dark">
 
-    <div class="container">
-        <h1>DJ Zone</h1>
-        <div class="section">
-            <h2>About My DJing</h2>
-            <p>I'm a 19-year-old UK DJ obsessed with OldSkool sounds from the 80s to 2000s—techno, DnB, and house are my jam. I started DJing to bring back those nostalgic beats that make your heart race, inspired by the raw energy of club classics.</p>
-            <p>I spin sets at VRChat raves, where I mix pulsing techno and euphoric house for virtual crowds. I'm also learning music production with FL Studio (or similar—update with your DAW), crafting tracks that blend retro vibes with modern flair.</p>
-            <p>Fun fact: My best rave moment was a 2024 VRChat set where the crowd went wild for my 90s house mix, complete with virtual glowsticks!</p>
-        </div>
-
-        <div class="section">
-            <h2>My Tracks</h2>
-            <p>Check out my latest mixes and tracks below. From gritty DnB to soulful house, these are made to get you moving!</p>
-            <div class="music-player">
-                <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2046907200&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/zipasaurus" title="Zipasaurus" target="_blank" style="color: #cccccc; text-decoration: none;">Zipasaurus</a> · <a href="https://soundcloud.com/zipasaurus/happy-hardcore-mix-50minutes-by-yours-truly-zipasaurus" title="Happy Hardcore Mix! 42minutes! By yours truly Zipasaurus!" target="_blank" style="color: #cccccc; text-decoration: none;">Happy Hardcore Mix! 42minutes! By yours truly Zipasaurus!</a></div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>Events I've DJed</h2>
-            <p>Scroll through some of the epic events where I've dropped beats, from VRChat raves to local gigs!</p>
-            <div class="event-gallery">
-                <div class="event-item">
-                    <img src="images/event1.png" alt="VRChat Rave 2024 by Zipasaurus">
-                    <div class="overlay-text">PlaceHolder</div>
-                </div>
-                <div class="event-item">
-                    <img src="images/event1.png" alt="Local Club Gig 2024 by Zipasaurus">
-                    <div class="overlay-text">PlaceHolder</div>
-                </div>
-            </div>
-            <p>PlaceHolder</p>
-        </div>
-
-        <div class="section">
-            <h2>Connect with My Music</h2>
-            <p>Follow me on these platforms to stay updated with my latest tracks and mixes!</p>
-            <p>
-                <a href="https://open.spotify.com/user/9psov2osd8lh0ktwo0h7qua68" class="btn" target="_blank" rel="noopener">Spotify</a>
-                <a href="https://soundcloud.com/zipasaurus" class="btn" target="_blank" rel="noopener">SoundCloud</a>
-                <a href="https://www.youtube.com/@zipasaurus" class="btn" target="_blank" rel="noopener">YouTube</a>
-            </p>
-            <p>Fun fact: I once mixed a DnB track that got a VRChat crowd to form a virtual mosh pit!</p>
-        </div>
-
-        <div class="last-updated">Last Updated: 2025-09-01 19:38:00</div>
+    <!-- LEFT SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <a href="index.html" class="logo retro-font">ZIPASAURUS 🦖</a>
+       
+        <nav>
+            <ul>
+                <li><a href="index.html">About</a></li>
+                <li><a href="Projects.html">Projects</a></li>
+                <li><a href="Setup.html">Setup</a></li>
+                <li><a href="Socials.html">Socials</a></li>
+                <li><a href="Gallery.html">Gallery</a></li>
+                <li><a href="dj.html" class="active">DJ Zone</a></li>
+                <li><a href="GDD.html">GDD</a></li>
+            </ul>
+        </nav>
+        <button class="theme-toggle" onclick="toggleDarkMode()">☀️ / 🌙</button>
     </div>
 
+    <!-- Hamburger -->
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation">☰</button>
+
+    <main>
+        <div class="container">
+            <h1 class="retro-font">DJ ZONE 🎧</h1>
+            <p class="subtitle">OldSkool Techno • DnB • House • VRChat Raves</p>
+
+            <div class="section">
+                <h2>About My DJing</h2>
+                <p>I'm a 19-year-old UK DJ obsessed with OldSkool sounds from the 80s to 2000s — techno, DnB, and house are my jam. I spin at VRChat raves and love bringing that raw club energy to the virtual world.</p>
+                <p>Whether it's gritty drum & bass, euphoric house, or happy hardcore, I mix to make people move. Currently learning music production too.</p>
+            </div>
+
+            <div class="section">
+                <h2>My Latest Mixes</h2>
+                <p>Check out my latest mixes and tracks below.</p>
+                <div class="music-player">
+                    <iframe width="100%" height="320" scrolling="no" frameborder="no" allow="autoplay" 
+                        src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2046907200&amp;color=%2300ff41&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=true&amp;visual=true">
+                    </iframe>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Events I've DJed</h2>
+                <p>Some of the raves and events where I've dropped beats — mostly in VRChat so far!</p>
+                <div class="event-gallery">
+                    <div class="event-item">
+                        <img src="images/event1.png" alt="VRChat Rave 2024">
+                        <div class="overlay-text">VRChat Rave • 2024</div>
+                    </div>
+                    <div class="event-item">
+                        <img src="images/event1.png" alt="Local Club Gig">
+                        <div class="overlay-text">Local Gig • 2024</div>
+                    </div>
+                    <!-- Add more as needed -->
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Connect With My Music</h2>
+                <p>Follow me on these platforms for the latest mixes and updates:</p>
+                <p>
+                    <a href="https://open.spotify.com/user/9psov2osd8lh0ktwo0h7qua68" class="btn" target="_blank">Spotify</a>
+                    <a href="https://soundcloud.com/zipasaurus" class="btn" target="_blank">SoundCloud</a>
+                    <a href="https://www.youtube.com/@zipasaurus" class="btn" target="_blank">YouTube</a>
+                </p>
+            </div>
+
+            <div class="last-updated" style="text-align:center; margin-top: 3rem; color: var(--text-muted);">
+                Last Updated: April 2026
+            </div>
+        </div>
+
+        <footer>
+        </footer>
+    </main>
+
     <script>
-        // Hamburger Menu
-        const hamburger = document.querySelector('.hamburger');
-        const navMenu = document.querySelector('nav ul');
-
+        // Hamburger
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+        
         hamburger.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            hamburger.setAttribute('aria-expanded', navMenu.classList.contains('active'));
+            sidebar.classList.toggle('active');
         });
 
-        // Dark Mode Toggle
-        function toggleDarkMode() {
-            document.body.dataset.theme = document.body.dataset.theme === 'dark' ? '' : 'dark';
-        }
-
-        // DJ Scratch Easter Egg
-        function playDjScratch() {
-            const audio = new Audio('path/to/dj-scratch.mp3'); // Add your DJ scratch sound file
-            audio.play().catch(() => {
-                alert('Scratch it! 🎧');
+        // Close sidebar on link click
+        document.querySelectorAll('.sidebar nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                sidebar.classList.remove('active');
             });
-        }
-
-        // Scroll-Triggered Animations
-        gsap.utils.toArray('.section').forEach(section => {
-            gsap.fromTo(section, 
-                { opacity: 0, y: 50 },
-                { 
-                    opacity: 1, 
-                    y: 0, 
-                    duration: 1,
-                    scrollTrigger: {
-                        trigger: section,
-                        start: 'top 80%',
-                        toggleActions: 'play none none reverse'
-                    }
-                }
-            );
         });
 
-        // Initial Fade-In
-        gsap.to('.container', { opacity: 1, y: 0, duration: 0.5 });
+        // Theme toggle
+        function toggleDarkMode() {
+            const current = document.body.getAttribute('data-theme') || 'dark';
+            document.body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+            localStorage.setItem('theme', current === 'dark' ? 'light' : 'dark');
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768 &&
+                !sidebar.contains(e.target) &&
+                e.target !== hamburger) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.body.setAttribute('data-theme', savedTheme);
+
+        // Optional: GSAP fade-in for sections
+        gsap.fromTo('.section', 
+            { opacity: 0, y: 40 }, 
+            { opacity: 1, y: 0, duration: 0.8, stagger: 0.2, ease: "power2.out" }
+        );
     </script>
 </body>
 </html>

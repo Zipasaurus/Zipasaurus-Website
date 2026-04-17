@@ -7,10 +7,10 @@
     <meta name="keywords" content="game design, Unity, Blender, cars, DJ, portfolio">
     <link rel="icon" type="image/x-icon" href="/images/PageIcon.ico">
     <title>Zipasaurus 🦖 | Portfolio</title>
-    
+   
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Press+Start+2P&amp;display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    
+   
     <style>
         :root {
             --accent: #00ff41;
@@ -21,7 +21,7 @@
             --text-muted: #a0c0a0;
             --shadow: 0 10px 30px rgba(0, 255, 65, 0.15);
         }
-        
+       
         [data-theme="light"] {
             --bg: #f0f7f0;
             --surface: rgba(255, 255, 255, 0.92);
@@ -31,48 +31,36 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
             font-family: 'Inter', system-ui, sans-serif;
             background: var(--bg);
             color: var(--text);
-            line-height: 1.7;
+            line-height: 1.6;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        .retro-font { 
-            font-family: 'Press Start 2P', sans-serif; 
-            letter-spacing: 2px; 
+        .retro-font {
+            font-family: 'Press Start 2P', sans-serif;
+            letter-spacing: 2px;
         }
 
-        body::before {
-            content: '';
+        /* SIDEBAR NAV */
+        .sidebar {
             position: fixed;
-            inset: 0;
-            background: 
-                linear-gradient(to bottom, rgba(0,255,65,0.03) 1px, transparent 1px),
-                linear-gradient(to right, rgba(0,255,65,0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        header {
-            background: rgba(10, 15, 10, 0.96);
-            backdrop-filter: blur(12px);
-            position: sticky;
+            left: 0;
             top: 0;
+            bottom: 0;
+            width: 360px;
+            background: rgba(10, 15, 10, 0.98);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid rgba(0, 255, 65, 0.2);
             z-index: 1000;
-            border-bottom: 2px solid var(--accent);
-        }
-
-        .nav-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
+            padding: 2rem 1.5rem;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
         }
 
         .logo {
@@ -80,48 +68,61 @@
             font-weight: 700;
             color: var(--accent);
             cursor: pointer;
-            transition: all 0.3s;
-            text-shadow: 0 0 20px var(--accent-glow);
+            transition: color 0.3s;
+            margin-bottom: 3rem;
+            text-align: center;
         }
-        .logo:hover { transform: scale(1.08) rotate(4deg); }
+        .logo:hover { color: #00ff60; }
 
-        nav ul {
+        .sidebar nav ul {
             display: flex;
-            gap: 1.6rem;
+            flex-direction: column;
+            gap: 0.6rem;
             list-style: none;
+            flex-grow: 1;
         }
-        nav ul li a {
+
+        .sidebar nav ul li a {
             color: var(--text);
             text-decoration: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 9999px;
+            padding: 1rem 1.4rem;
+            border-radius: 12px;
             font-weight: 500;
             transition: all 0.3s ease;
-        }
-        nav ul li a:hover,
-        nav ul li a.active {
-            background: var(--accent);
-            color: #000;
-            box-shadow: var(--shadow);
+            border: 2px solid rgba(0, 255, 65, 0.3);
+            background: rgba(0, 255, 65, 0.05);
+            display: block;
         }
 
-        .hamburger {
-            display: none;
-            font-size: 1.9rem;
-            background: none;
-            border: none;
-            color: var(--text);
-            cursor: pointer;
+        .sidebar nav ul li a:hover {
+            border-color: var(--accent);
+            background: rgba(0, 255, 65, 0.15);
+            color: var(--accent);
+            transform: translateX(8px);
+        }
+
+        .sidebar nav ul li a.active {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: #000;
+        }
+
+        /* Main Content */
+        main {
+            margin-left: 360px;
+            min-height: 100vh;
         }
 
         .theme-toggle {
             background: transparent;
-            border: 2px solid var(--accent);
+            border: 1px solid var(--accent);
             color: var(--accent);
-            padding: 0.55rem 1.1rem;
+            padding: 0.7rem 1.2rem;
             border-radius: 9999px;
             cursor: pointer;
             font-size: 1rem;
+            margin-top: auto;
+            align-self: center;
             transition: all 0.3s;
         }
         .theme-toggle:hover {
@@ -129,8 +130,9 @@
             color: #000;
         }
 
+        /* Hero & Content */
         .hero {
-            min-height: 100vh;
+            min-height: 50vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -138,45 +140,37 @@
             position: relative;
             overflow: hidden;
         }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,255,65,0.03) 1px, transparent 1px),
+                        linear-gradient(to right, rgba(0,255,65,0.03) 1px, transparent 1px);
+            bauckground-size: 70px 70px;
+            pointer-events: none;
+            z-index: -1;
+        }
         .hero::after {
             content: '🦖';
             position: absolute;
-            font-size: 28vw;
-            opacity: 0.06;
+            font-size: 25vw;
+            opacity: 0.08;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             pointer-events: none;
             user-select: none;
         }
-
         .hero-content h1 {
             font-size: 4.8rem;
             margin-bottom: 1rem;
             color: var(--accent);
-            text-shadow: 0 0 40px var(--accent-glow);
         }
         .hero-content p {
-            font-size: 1.45rem;
+            font-size: 1.3rem;
             max-width: 620px;
             margin: 0 auto 2.5rem;
             color: var(--text-muted);
-        }
-
-        .cta-btn {
-            display: inline-block;
-            background: var(--accent);
-            color: #000;
-            padding: 1.1rem 2.8rem;
-            border-radius: 9999px;
-            font-weight: 600;
-            text-decoration: none;
-            box-shadow: var(--shadow);
-            transition: all 0.4s ease;
-        }
-        .cta-btn:hover {
-            transform: translateY(-6px) scale(1.05);
-            box-shadow: 0 20px 50px rgba(0, 255, 65, 0.35);
         }
 
         .container {
@@ -184,7 +178,16 @@
             margin: 0 auto;
             padding: 4rem 2rem;
         }
-
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,255,65,0.03) 1px, transparent 1px),
+                        linear-gradient(to right, rgba(0,255,65,0.03) 1px, transparent 1px);
+            background-size: 70px 70px;
+            pointer-events: none;
+            z-index: -1;
+        }
         .page {
             display: none;
             opacity: 0;
@@ -196,175 +199,169 @@
 
         .card {
             background: var(--surface);
-            border-radius: 18px;
+            border-radius: 16px;
             padding: 2.5rem;
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(0,255,65,0.12);
-            box-shadow: var(--shadow);
-            transition: all 0.4s ease;
+            border: 1px solid rgba(0,255,65,0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
         }
         .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 60px rgba(0,255,65,0.22);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,255,65,0.15);
         }
 
         h2 {
             font-size: 2.3rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             color: var(--accent);
-            position: relative;
-            display: inline-block;
-        }
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 65%;
-            height: 4px;
-            background: var(--accent);
-            border-radius: 2px;
         }
 
-        /* Lightbox */
-        .lightbox {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.94);
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            backdrop-filter: blur(10px);
-        }
-        .lightbox.active { display: flex; }
-        .lightbox img {
-            max-width: 94%;
-            max-height: 94vh;
-            border-radius: 20px;
-            box-shadow: 0 30px 80px rgba(0,255,65,0.3);
-        }
-        .lightbox .close {
-            position: absolute;
-            top: 30px;
-            right: 40px;
-            font-size: 3.8rem;
-            color: white;
-            cursor: pointer;
-            line-height: 1;
-        }
-        .lightbox .close:hover { color: var(--accent); }
-
-        footer {
-            text-align: center;
-            padding: 3rem 1rem 2rem;
-            color: var(--text-muted);
-            font-size: 0.95rem;
+        /* Mobile */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 80px;
+                padding: 1.5rem 0.8rem;
+                align-items: center;
+            }
+            .logo {
+                font-size: 1.1rem;
+                writing-mode: vertical-rl;
+                text-orientation: mixed;
+                margin-bottom: 4rem;
+                transform: rotate(180deg);
+            }
+            .sidebar nav ul li a {
+                padding: 1rem 0.8rem;
+                text-align: center;
+                font-size: 0.85rem;
+            }
+            .sidebar nav ul li a span {
+                display: none;
+            }
+            main {
+                margin-left: 80px;
+            }
         }
 
         @media (max-width: 768px) {
-            .hamburger { display: block; }
-            nav ul {
-                position: fixed;
-                top: 85px;
-                left: 0;
-                right: 0;
-                background: var(--bg);
-                flex-direction: column;
-                padding: 2rem 1.5rem;
-                display: none;
-                gap: 1rem;
-                box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.4s ease;
             }
-            nav ul.active { display: flex; }
-            .hero-content h1 { font-size: 3.2rem; }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            main {
+                margin-left: 0;
+            }
+            .hamburger {
+                display: block;
+                position: fixed;
+                top: 1.2rem;
+                left: 1.2rem;
+                font-size: 2rem;
+                z-index: 1100;
+                background: rgba(10,15,10,0.9);
+                border: 2px solid var(--accent);
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body data-theme="dark">
 
-    <header>
-        <div class="nav-container">
-            <div class="logo retro-font" onclick="playDinoRoar()">ZIPASAURUS 🦖</div>
-            
-            <button class="hamburger" aria-label="Toggle navigation">☰</button>
-            
-            <nav>
-                <ul>
-                    <li><a href="#about" class="nav-link active" data-page="about">About</a></li>
-                  <!--  <li><a href="#skills" class="nav-link" data-page="skills">Skills</a></li> -->
-                    <li><a href="Projects.html">Projects</a></li>
-                    <li><a href="Setup.html">Setup</a></li>
-                    <li><a href="Socials.html">Socials</a></li>
-                    <li><a href="Gallery.html">Gallery</a></li>
-                   <!-- <li><a href="#adventures" class="nav-link" data-page="adventures">Adventures</a></li> -->
-                    <li><a href="dj.html">DJ Zone</a></li>
-                    <li><a href="GDD.html">GDD</a></li>
-                </ul>
-            </nav>
-            
-            <button class="theme-toggle" onclick="toggleDarkMode()">☀️ / 🌙</button>
-        </div>
-    </header>
-
-    <!-- HERO -->
-    <section class="hero" id="about">
-        <div class="hero-content">
-            <h1 class="retro-font">ZIPASAURUS</h1>
-            <p>Aspiring UK Game Designer • Car Enthusiast • DJ</p>
-
-        </div>
-    </section>
-
-    <div class="container">
-
-        <!-- About Page -->
-        <div id="about-full" class="page active">
-            <div class="card">
-                <h2>About Me</h2>
-                <p>I'm a 19-year-old aspiring game designer from the United Kingdom, passionate about crafting immersive digital worlds using Unity and Blender.</p>
-                <p>When I'm not building games, you'll find me behind the decks playing old-school techno, DnB, and house in VRChat, or wrenching on my yellow MG ZR 105.</p>
-                <p>Anime enjoyer, car nerd, and a friendly Brit who loves connecting with creative people.</p>
-            </div>
-        </div>
-
-        <!-- Placeholder pages - ready for you to fill -->
-        <div id="skills" class="page"></div>
-        <div id="projects" class="page"></div>
-        <div id="setup" class="page"></div>
-        <div id="socials" class="page"></div>
-        <div id="gallery" class="page"></div>
-        <div id="adventures" class="page"></div>
+    <!-- LEFT SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo retro-font" onclick="playDinoRoar()">ZIPASAURUS 🦖</div>
+        
+        <nav>
+            <ul>
+                <li><a href="#about" class="nav-link active" data-page="about">About</a></li>
+                <li><a href="Projects.html">Projects</a></li>
+                <li><a href="Setup.html">Setup</a></li>
+                <li><a href="Socials.html">Socials</a></li>
+                <li><a href="Gallery.html">Gallery</a></li>
+                <li><a href="dj.html">DJ Zone</a></li>
+                <li><a href="GDD.html">GDD</a></li>
+            </ul>
+        </nav>
 
     </div>
 
-    <!-- Lightbox (kept for Gallery later) -->
+    <!-- Hamburger for mobile -->
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation">☰</button>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero" id="about">
+            <div class="hero-content">
+                <h1 class="retro-font">ZIPASAURUS</h1>
+                <p>Aspiring UK Game Designer • Car Enthusiast • DJ</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- About Page -->
+            <div id="about-full" class="page active">
+                <div class="card">
+                    <h2>About Me</h2>
+                    <p>Hey! To the person reading this... welcome to my corner of the web! My name is Zipasaurus or just Zip. </p>
+                    <p>Probably wandering what I do? Well- I create games, atleast try to, and when I'm not I'm most likely working on cars or watching anime.</p>
+                    <p>When I'm not playing games, you'd most likely find me learning new skills, or asleep...</p>
+                    <br>
+                    <p>Also yes! I used AI to code this website- I seen no reason in spending time doing it myself.</p>
+
+                </div>
+            </div>
+
+            <!-- Other pages -->
+            <div id="skills" class="page"></div>
+            <div id="projects" class="page"></div>
+            <div id="setup" class="page"></div>
+            <div id="socials" class="page"></div>
+            <div id="gallery" class="page"></div>
+            <div id="adventures" class="page"></div>
+        </div>
+
+        <footer>
+        </footer>
+    </main>
+
+    <!-- Lightbox -->
     <div id="lightbox" class="lightbox" onclick="if(event.target === this) closeLightbox();">
         <span class="close" onclick="closeLightbox(); event.stopImmediatePropagation();">×</span>
-        <img id="lightbox-image" src="" alt="Full size view" onclick="event.stopImmediatePropagation();">
+        <img id="lightbox-image" src="" alt="Full size view">
     </div>
-
-    <footer>
-        © 2026 Zipasaurus • Made with 🦖 and neon energy
-    </footer>
 
 <script>
     // Navigation
     const navLinks = document.querySelectorAll('.nav-link');
     const pages = document.querySelectorAll('.page');
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('nav ul');
+    const hamburger = document.getElementById('hamburger');
+    const sidebar = document.getElementById('sidebar');
 
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const pageId = link.getAttribute('data-page');
-            showPage(pageId);
+            if (pageId) showPage(pageId);
+            
+            // Close sidebar on mobile after click
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('active');
+            }
         });
     });
 
+    // Mobile hamburger
     hamburger.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
+        sidebar.classList.toggle('active');
     });
 
     function showPage(pageId) {
@@ -372,21 +369,19 @@
             page.classList.remove('active');
             page.style.opacity = '0';
         });
-        
+       
         navLinks.forEach(link => link.classList.remove('active'));
-
-        const targetPage = document.getElementById(pageId);
+        
+        const targetPage = document.getElementById(pageId + '-full') || document.getElementById(pageId);
         if (targetPage) {
             targetPage.classList.add('active');
             gsap.to(targetPage, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" });
         }
 
-        // Highlight active nav link
+        // Highlight active link
         document.querySelectorAll(`[data-page="${pageId}"]`).forEach(link => {
             link.classList.add('active');
         });
-
-        navMenu.classList.remove('active');
     }
 
     // Theme Toggle
@@ -401,12 +396,11 @@
         alert(roars[Math.floor(Math.random() * roars.length)]);
     }
 
-    // Lightbox functions (ready for gallery)
+    // Lightbox functions
     function openLightbox(src) {
         document.getElementById('lightbox-image').src = src;
         document.getElementById('lightbox').classList.add('active');
     }
-
     function closeLightbox() {
         document.getElementById('lightbox').classList.remove('active');
     }
@@ -415,6 +409,15 @@
     window.addEventListener('load', () => {
         showPage('about');
         gsap.from(".logo", { y: -60, opacity: 0, duration: 1.2, ease: "bounce.out" });
+    });
+
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768 && 
+            !sidebar.contains(e.target) && 
+            e.target !== hamburger) {
+            sidebar.classList.remove('active');
+        }
     });
 </script>
 </body>
