@@ -156,7 +156,7 @@
             inset: 0;
             background: linear-gradient(to bottom, rgba(0,255,65,0.03) 1px, transparent 1px),
                         linear-gradient(to right, rgba(0,255,65,0.03) 1px, transparent 1px);
-            bauckground-size: 70px 70px;
+            background-size: 70px 70px;
             pointer-events: none;
             z-index: -1;
         }
@@ -188,16 +188,6 @@
             margin: 0 auto;
             padding: 4rem 2rem;
         }
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(to bottom, rgba(0,255,65,0.03) 1px, transparent 1px),
-                        linear-gradient(to right, rgba(0,255,65,0.03) 1px, transparent 1px);
-            background-size: 70px 70px;
-            pointer-events: none;
-            z-index: -1;
-        }
         .page {
             display: none;
             opacity: 0;
@@ -225,6 +215,29 @@
             font-size: 2.3rem;
             margin-bottom: 1.5rem;
             color: var(--accent);
+        }
+
+        .slides {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .slides img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            display: block;
+        }
+
+        .loading {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin: 2rem 0;
         }
 
         footer { margin-top: 5rem; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
@@ -289,6 +302,8 @@
                 <li><a href="GDD.html" class="nav-item">GDD</a></li>
             </ul>
         </nav>
+
+        <button class="theme-toggle" onclick="toggleDarkMode()">☀️ / 🌙</button>
     </div>
 
     <!-- Hamburger for mobile -->
