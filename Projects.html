@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Zipasaurus Projects - Game Development Portfolio">
+    <title>Projects • Zipasaurus 🦖</title>
+   
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Press+Start+2P&amp;display=swap" rel="stylesheet">
+    <!-- Removed GSAP since we're not using the fade animation anymore -->
+   
+    <style>
+        :root {
+            --accent: #00ff41;
+            --accent-glow: #00ff4180;
+            --bg: #0a0f0a;
+            --surface: rgba(20, 28, 20, 0.96);
+            --text: #e0ffe0;
+            --text-muted: #b0d0b0;
+            --shadow: 0 10px 35px rgba(0, 255, 65, 0.15);
+        }
+       
+        [data-theme="light"] {
+            --bg: #f0f7f0;
+            --surface: rgba(255, 255, 255, 0.97);
+            --text: #1a2a1a;
+            --text-muted: #445544;
+            --accent: #00cc33;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+        .retro-font {
+            font-family: 'Press Start 2P', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,255,65,0.03) 1px, transparent 1px),
+                        linear-gradient(to right, rgba(0,255,65,0.03) 1px, transparent 1px);
+            background-size: 70px 70px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        header {
+            background: rgba(10, 15, 10, 0.97);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--accent);
+            padding: 1.1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.95rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        .logo:hover { transform: scale(1.08) rotate(4deg); }
+
+        .projects-header {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 6rem 2.5rem 4rem;
+            text-align: center;
+        }
+        .projects-header h1 {
+            font-size: 4rem;
+            color: var(--accent);
+            text-shadow: 0 0 50px var(--accent-glow);
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2.5rem 7rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 3rem;
+        }
+
+        /* PROJECT CARD - Fully visible immediately */
+        .project-card {
+            background: var(--surface);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 255, 65, 0.15);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            opacity: 1; /* Explicitly fully visible */
+        }
+
+        .project-card:hover {
+            transform: translateY(-16px);
+            box-shadow: 0 30px 70px rgba(0, 255, 65, 0.35);
+            border-color: var(--accent);
+        }
+
+        .project-image {
+            height: 260px;
+            background-size: cover;
+            background-position: center;
+            background-color: #112211;
+            position: relative;
+        }
+
+        .featured {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background: var(--accent);
+            color: #000;
+            font-size: 0.85rem;
+            padding: 7px 18px;
+            border-radius: 9999px;
+            font-weight: 700;
+            box-shadow: 0 0 20px var(--accent-glow);
+            z-index: 2;
+        }
+
+        .project-content {
+            padding: 2.2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-content h3 {
+            font-size: 1.85rem;
+            margin-bottom: 0.7rem;
+            color: var(--accent);
+            line-height: 1.2;
+        }
+
+        .project-type {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 1.3px;
+            font-weight: 500;
+        }
+
+        .project-desc {
+            flex: 1;
+            margin-bottom: 2rem;
+            color: var(--text-muted);
+            font-size: 1.08rem;
+            line-height: 1.65;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.65rem;
+            margin-bottom: 2rem;
+        }
+
+        .tech-tag {
+            background: rgba(0,255,65,0.1);
+            color: var(--accent);
+            padding: 7px 16px;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(0,255,65,0.3);
+        }
+
+        .project-links a {
+            display: block;
+            text-align: center;
+            padding: 1.1rem;
+            border-radius: 9999px;
+            text-decoration: none;
+            font-weight: 600;
+            background: var(--accent);
+            color: #000;
+            font-size: 1.05rem;
+            transition: all 0.3s;
+        }
+
+        .project-links a:hover {
+            background: #1eff1e;
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 1rem 3rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .projects-grid { 
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+            .projects-header h1 { font-size: 3.2rem; }
+            .project-image { height: 240px; }
+        }
+
+        @media (min-width: 1400px) {
+            .projects-grid {
+                grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo retro-font">ZIPASAURUS 🦖</a>
+            <a href="index.html" style="color: var(--accent); text-decoration: none; font-weight: 500;">← Back to Portfolio</a>
+        </div>
+    </header>
+
+    <div class="projects-header">
+        <h1 class="retro-font">MY PROJECTS</h1>
+        <p>Game jams, prototypes, and passion projects made with Unity</p>
+    </div>
+
+    <div class="container">
+        <div class="projects-grid">
+
+            <!-- Dungeons with a Pinch of Magic -->
+            <div class="project-card">
+                <div class="project-image" style="background-image: url('https://img.itch.zone/aW1hZ2UvMjA5OTk5Mi8xMjM0NTY3OC5wbmc=/original/%2Fexample-dungeon.jpg');"></div>
+                <div class="project-content">
+                    <h3>Dungeons with a Pinch of Magic</h3>
+                    <div class="project-type">Shooter • Game Jam</div>
+                    <p class="project-desc">Fast-paced dungeon shooter where you blast ghosts and survive the chaos. Made during The Soapbox Jam.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Unity</span>
+                        <span class="tech-tag">HTML5</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://zipasaurus.itch.io/dungeons-with-a-pinch-of-magic" target="_blank">Play on itch.io</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Will of the Wizard -->
+            <div class="project-card">
+                <div class="project-image" style="background-image: url('https://img.itch.zone/aW1hZ2Uv.../original/will-of-wizard.jpg');"></div>
+                <div class="project-content">
+                    <h3>Will of the Wizard</h3>
+                    <div class="project-type">Platformer • College Game Jam</div>
+                    <p class="project-desc">You are a wizard apprentice clearing a dangerous dungeon. Created in under 48 hours for a college jam.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Unity</span>
+                        <span class="tech-tag">Platformer</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://zipasaurus.itch.io/will-of-the-wizard" target="_blank">Play on itch.io</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pleasant Present -->
+            <div class="project-card">
+                <div class="featured">Featured</div>
+                <div class="project-image" style="background-image: url('https://img.itch.zone/aW1hZ2UvMTAwMDAwMDAwL3BsZWFzYW50LXByZXNlbnQuanBn/original/pleasant-present.jpg');"></div>
+                <div class="project-content">
+                    <h3>Pleasant Present</h3>
+                    <div class="project-type">Rhythm • Anthology • Collaborative</div>
+                    <p class="project-desc">80s-inspired rhythm experience blending coming-of-age vibes, cosmic horror, and pure joy. Part of the Solace & Joy anthology.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Unity</span>
+                        <span class="tech-tag">Rhythm</span>
+                        <span class="tech-tag">Collaborative</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://zipasaurus.itch.io/pleasant-present" target="_blank">Play on itch.io</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="text-align: center; margin-top: 6rem;">
+            <a href="https://zipasaurus.itch.io/" target="_blank"
+               style="display: inline-block; background: var(--accent); color: #000; padding: 1.3rem 4rem; border-radius: 9999px; text-decoration: none; font-weight: 700; font-size: 1.2rem; transition: all 0.3s;">
+                Visit My Full itch.io Page →
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        © 2026 Zipasaurus • Built with passion and late-night coding sessions
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Setup • Zipasaurus 🦖</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Press+Start+2P&amp;display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --accent: #00ff41;
+            --accent-glow: #00ff4180;
+            --bg: #0a0f0a;
+            --surface: rgba(20, 28, 20, 0.96);
+            --text: #e0ffe0;
+            --text-muted: #b0d0b0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .retro-font {
+            font-family: 'Press Start 2P', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        header {
+            background: rgba(10, 15, 10, 0.97);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--accent);
+            padding: 1.2rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.9rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem 6rem;
+        }
+
+        h1 {
+            font-size: 3.8rem;
+            color: var(--accent);
+            text-shadow: 0 0 40px var(--accent-glow);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.3rem;
+            color: var(--accent);
+            margin: 4rem 0 2rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .setup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+            gap: 2rem;
+        }
+
+        .setup-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 255, 65, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .setup-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 55px rgba(0, 255, 65, 0.25);
+        }
+
+        .pc-name {
+            font-size: 1.85rem;
+            color: var(--accent);
+            margin-bottom: 1.6rem;
+            padding-bottom: 0.9rem;
+            border-bottom: 2px solid rgba(0, 255, 65, 0.25);
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.95rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .spec-value {
+            text-align: right;
+            max-width: 60%;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 1rem 3rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .setup-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 { font-size: 3.1rem; }
+        }
+    </style>
+</head>
+<body data-theme="dark">
+
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo retro-font">ZIPASAURUS 🦖</a>
+            <a href="projects.html" style="color: var(--accent); text-decoration: none; font-weight: 500;">← Back to Projects</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="retro-font">PC SETUP</h1>
+        <p class="subtitle">My current machines for gaming, streaming, and art</p>
+
+        <!-- Gaming Desktop -->
+        <div class="section-title">GAMING DESKTOP</div>
+        <div class="setup-grid">
+            
+            <div class="setup-card">
+                <div class="pc-name">Main Gaming PC</div>
+                <div class="spec-item">
+                    <div class="spec-label">Operating System</div>
+                    <div class="spec-value">Windows 10 + Linux - NixOS (Hyprland btw)</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Motherboard</div>
+                    <div class="spec-value">TUF GAMING B450M-PLUS 2 - Released 2020</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">CPU</div>
+                    <div class="spec-value">AMD Ryzen 7 5800X</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">GPU</div>
+                    <div class="spec-value">AMD Radeon RX 7800 XT</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">RAM</div>
+                    <div class="spec-value">Crucial 64GB (2x32GB) DDR4-3200MHz</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Storage</div>
+                    <div class="spec-value">500GB NVMe SSD<br>1TB SSD<br>1TB HDD</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Server / Streaming Desktop -->
+        <div class="section-title">SERVER / STREAMING DESKTOP</div>
+        <div class="setup-grid">
+            <div class="setup-card">
+                <div class="pc-name">Server &amp; Streaming PC</div>
+                <div class="spec-item">
+                    <div class="spec-label">Operating System</div>
+                    <div class="spec-value">NixOS (Hyprland btw)</div>
+                </div>
+                    <div class="spec-item">
+                    <div class="spec-label">Motherboard</div>
+                    <div class="spec-value">GA-H81M-S2H (Rev. 1.0) - Released 2014</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">CPU</div>
+                    <div class="spec-value">Intel Core i5-4460</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">GPU</div>
+                    <div class="spec-value">AMD Radeon RX 580</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">RAM</div>
+                    <div class="spec-value">16GB DDR3-1600MHz</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Storage</div>
+                    <div class="spec-value">128GB SSD<br>2TB HDD</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Art Laptop -->
+        <div class="section-title">ART LAPTOP</div>
+        <div class="setup-grid">
+            <div class="setup-card">
+                <div class="pc-name">Lenovo IdeaPad Flex 5 14ARE05 (2-in-1)</div>
+                 <div class="spec-item">
+                    <div class="spec-label">Operating System</div>
+                    <div class="spec-value">Windows 10 + Linux - NixOS (Hyprland btw)</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Model</div>
+                    <div class="spec-value">IdeaPad Flex 5 14ARE05</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">CPU</div>
+                    <div class="spec-value">AMD Ryzen 7 4700U (8C/8T, up to 4.1GHz)</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">GPU</div>
+                    <div class="spec-value">Integrated AMD Radeon Graphics</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">RAM</div>
+                    <div class="spec-value">8GB LPDDR4X (soldered)</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Storage</div>
+                    <div class="spec-value">1TB NVME</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Display</div>
+                    <div class="spec-value">14" FHD (1920x1080) IPS Touchscreen<br>Convertible 2-in-1 with stylus support</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        © 2026 Zipasaurus • My current PC &amp; Laptop Setup
+    </footer>
+
+</body>
+</html>

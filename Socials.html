@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socials • Zipasaurus 🦖</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Press+Start+2P&amp;display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --accent: #00ff41;
+            --accent-glow: #00ff4180;
+            --bg: #0a0f0a;
+            --surface: rgba(20, 28, 20, 0.96);
+            --text: #e0ffe0;
+            --text-muted: #b0d0b0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .retro-font {
+            font-family: 'Press Start 2P', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        header {
+            background: rgba(10, 15, 10, 0.97);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--accent);
+            padding: 1.2rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.9rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem 6rem;
+        }
+
+        h1 {
+            font-size: 3.8rem;
+            color: var(--accent);
+            text-shadow: 0 0 40px var(--accent-glow);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            color: var(--accent);
+            margin: 3.5rem 0 1.8rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+            gap: 1.8rem;
+        }
+
+        .social-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 1.6rem 1.9rem;
+            border: 1px solid rgba(0, 255, 65, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .social-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 45px rgba(0, 255, 65, 0.25);
+        }
+
+        .steam-card {
+            cursor: pointer;
+        }
+
+        .steam-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 55px rgba(0, 255, 65, 0.35);
+        }
+
+        .social-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .platform-logo {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .platform-name {
+            font-size: 1.45rem;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .platform-username {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        .stats {
+            background: rgba(0,0,0,0.35);
+            padding: 0.85rem 1.2rem;
+            border-radius: 10px;
+            font-size: 0.98rem;
+            color: var(--text-muted);
+            margin-top: 1.2rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 1rem 3rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .social-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 { font-size: 3.1rem; }
+        }
+    </style>
+</head>
+<body data-theme="dark">
+
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo retro-font">ZIPASAURUS 🦖</a>
+            <a href="Setup.html" style="color: var(--accent); text-decoration: none; font-weight: 500;">← Back to Setup</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="retro-font">SOCIALS</h1>
+        <p class="subtitle">Where you can find me online</p>
+
+        <!-- Social Media Section -->
+        <div class="section-title">SOCIAL MEDIA</div>
+        <div class="social-grid">
+
+            <!-- Bluesky -->
+            <div class="social-card">
+                <div class="social-header">
+                    <div class="platform-logo" style="background:#1da1f2; color:white;">🐦</div>
+                    <div>
+                        <div class="platform-name">zipasaurus.bsky.social</div>
+                        <div class="platform-username">Bluesky</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- X -->
+            <div class="social-card">
+                <div class="social-header">
+                    <div class="platform-logo" style="background:#000; color:white;">𝕏</div>
+                    <div>
+                        <div class="platform-name">Zipasaurus</div>
+                        <div class="platform-username">X</div>
+                    </div>
+                </div>
+                <div class="stats">
+                    16 Posts • 1 Follower • Member since 25 Jul 2024
+                </div>
+            </div>
+
+            <!-- TikTok -->
+            <div class="social-card">
+                <div class="social-header">
+                    <div class="platform-logo" style="background:#000; color:white;">♬</div>
+                    <div>
+                        <div class="platform-name">zipasaurus</div>
+                        <div class="platform-username">TikTok</div>
+                    </div>
+                </div>
+                <div class="stats">
+                    45 Followers • 56 Following • 76 Likes
+                </div>
+            </div>
+
+            <!-- YouTube -->
+            <div class="social-card">
+                <div class="social-header">
+                    <div class="platform-logo" style="background:#ff0000; color:white;">▶️</div>
+                    <div>
+                        <div class="platform-name">zipasaurus</div>
+                        <div class="platform-username">YouTube</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Twitch -->
+            <div class="social-card">
+                <div class="social-header">
+                    <div class="platform-logo" style="background:#9146ff; color:white;">📺</div>
+                    <div>
+                        <div class="platform-name">zipasaurus</div>
+                        <div class="platform-username">Twitch</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spotify -->
+            <div class="social-card">
+                <div class="social-header">
+                    <div class="platform-logo" style="background:#1db954; color:white;">🎵</div>
+                    <div>
+                        <div class="platform-name">Zipasaurus</div>
+                        <div class="platform-username">Spotify</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reddit -->
+            <div class="social-card">
+                <div class="social-header">
+                    <div class="platform-logo" style="background:#ff4500; color:white;">🐼</div>
+                    <div>
+                        <div class="platform-name">Zipasaurus</div>
+                        <div class="platform-username">Reddit</div>
+                    </div>
+                </div>
+                <div class="stats">
+                    1 Karma • Member since 3 Jan 2025
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Gaming Accounts Section -->
+        <div class="section-title">GAMING ACCOUNTS</div>
+        <div class="social-grid">
+
+            <!-- Battle.net -->
+            <div class="social-card">
+                <div class="social-header">
+                    <div class="platform-logo" style="background:#0070dd; color:white;">🔵</div>
+                    <div>
+                        <div class="platform-name">Zipasaurus#2211</div>
+                        <div class="platform-username">Battle.net</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Epic Games -->
+            <div class="social-card">
+                <div class="social-header">
+                    <div class="platform-logo" style="background:#ffffff; color:#000;">🟦</div>
+                    <div>
+                        <div class="platform-name">zipasaurus</div>
+                        <div class="platform-username">Epic Games</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- League of Legends -->
+            <div class="social-card">
+                <div class="social-header">
+                    <div class="platform-logo" style="background:#c8aa6e; color:#000;">🛡️</div>
+                    <div>
+                        <div class="platform-name">Zipasaurus#6666</div>
+                        <div class="platform-username">League of Legends</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Riot Games -->
+            <div class="social-card">
+                <div class="social-header">
+                    <div class="platform-logo" style="background:#ff0000; color:white;">🔥</div>
+                    <div>
+                        <div class="platform-name">Zipasaurus#6666</div>
+                        <div class="platform-username">Riot Games</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roblox -->
+            <div class="social-card">
+                <div class="social-header">
+                    <div class="platform-logo" style="background:#ffffff; color:#000;">⬜</div>
+                    <div>
+                        <div class="platform-name">Zipasaurus</div>
+                        <div class="platform-username">Roblox</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Steam (Clickable) -->
+            <div class="social-card steam-card" onclick="window.open('https://steamcommunity.com/id/zipasaurus', '_blank')">
+                <div class="social-header">
+                    <div class="platform-logo" style="background:#171a21; color:white;">🎮</div>
+                    <div>
+                        <div class="platform-name">zipasaurus</div>
+                        <div class="platform-username">Steam</div>
+                    </div>
+                </div>
+                <div class="stats">
+                    344 Games • Member since 26 Dec 2015
+                </div>
+            </div>
+
+            <!-- Xbox -->
+            <div class="social-card">
+                <div class="social-header">
+                    <div class="platform-logo" style="background:#107c10; color:white;">⬛</div>
+                    <div>
+                        <div class="platform-name">Zipasaurus</div>
+                        <div class="platform-username">Xbox</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        © 2026 Zipasaurus • Social Media &amp; Gaming Accounts
+    </footer>
+
+</body>
+</html>
