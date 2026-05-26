@@ -227,6 +227,29 @@
             display: block;
         }
 
+        .gallery-thumbnails .gallery-item {
+            position: relative;
+        }
+
+        .gallery-thumbnails .gallery-item::before {
+            content: "⛶ Full Screen";
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.75);
+            color: var(--text);
+            font-size: 0.85rem;
+            padding: 0.4rem 0.75rem;
+            border-radius: 999px;
+            z-index: 2;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .gallery-thumbnails .gallery-caption {
+            display: none;
+        }
+
         .gallery-caption {
             padding: 1rem 1.2rem;
             text-align: center;
@@ -363,12 +386,12 @@
         <div class="section-title">CARS TOGETHER</div>
         <div class="gallery-grid">
             <div class="gallery-item featured-item">
-                <img src="images\Car's together\MG F + TF.jpg" alt="MG F + TF Together" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Cars+Together'">
+                <img src="images/Car's together/MG F + TF.jpg" alt="MG F + TF Together" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Cars+Together'">
                 <div class="gallery-caption">MG F + TF Together</div>
             </div>
         </div>
 
-        <!-- FathersCar Section 
+        <!-- FathersCar Section -->
         <div class="section-title">FATHER'S 2002 MG ZR 160</div>
         <div class="gallery-grid" id="fatherscar-grid">
             <div class="gallery-item featured-item" onclick="toggleGallery(event, 'fatherscar-thumbnails')">
@@ -377,23 +400,22 @@
             </div>
 
             <div class="gallery-thumbnails" id="fatherscar-thumbnails">
-                <div class="gallery-item" onclick="openLightbox('images/FathersCar/WhatsApp awd2026-04-15 at 01.26.38.jpeg', 'Fathers Car - Shot 2')">
-                    <img src="images/FathersCar/WhatsApp awd2026-04-15 at 01.26.38.jpeg" alt="Fathers Car Shot 2" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Shot+2'">
+                <div class="gallery-item" onclick="openLightbox('images/FathersCar/WhatsApp awd2026-04-15 at 01.26.38.jpeg', 'Fathers Car - Side Shot')">
+                    <img src="images/FathersCar/WhatsApp awd2026-04-15 at 01.26.38.jpeg" alt="Fathers Car Side Shot" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Side+Shot'">
                     <div class="gallery-caption">Click to expand</div>
                 </div>
 
-                <div class="gallery-item" onclick="openLightbox('images/FathersCar/WhatsApp Image wd2026-04-15 at 01.26.38.jpeg', 'Fathers Car - Shot 3')">
-                    <img src="images/FathersCar/WhatsApp Image wd2026-04-15 at 01.26.38.jpeg" alt="Fathers Car Shot 3" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Shot+3'">
+                <div class="gallery-item" onclick="openLightbox('images/FathersCar/WhatsApp Image wd2026-04-15 at 01.26.38.jpeg', 'Fathers Car - Rear Shot')">
+                    <img src="images/FathersCar/WhatsApp Image wd2026-04-15 at 01.26.38.jpeg" alt="Fathers Car Rear Shot" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Rear+Shot'">
                     <div class="gallery-caption">Click to expand</div>
                 </div>
 
-                <div class="gallery-item" onclick="openLightbox('images/FathersCar/WhatsApp Imagewd 2026-04-15 at 01.26.38.jpeg', 'Fathers Car - Shot 4')">
-                    <img src="images/FathersCar/WhatsApp Imagewd 2026-04-15 at 01.26.38.jpeg" alt="Fathers Car Shot 4" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Shot+4'">
+                <div class="gallery-item" onclick="openLightbox('images/FathersCar/WhatsApp Imagewd 2026-04-15 at 01.26.38.jpeg', 'Fathers Car - Close Shot')">
+                    <img src="images/FathersCar/WhatsApp Imagewd 2026-04-15 at 01.26.38.jpeg" alt="Fathers Car Close Shot" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Close+Shot'">
                     <div class="gallery-caption">Click to expand</div>
                 </div>
             </div>
         </div>
-        -->
 
         <!-- MG ZR 105 Section -->
         <div class="section-title">My 2002 MG ZR 105</div>
@@ -446,6 +468,41 @@
 
                 <div class="gallery-item" onclick="openLightbox('images/MG ZR 105 Images/WhatsApp Image 2026-04-15 at 01.23.02.jpeg', 'WhatsApp Image 2')">
                     <img src="images/MG ZR 105 Images/WhatsApp Image 2026-04-15 at 01.23.02.jpeg" alt="WhatsApp Image 2" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=WhatsApp+2'">
+                    <div class="gallery-caption">Click to expand</div>
+                </div>
+
+                <div class="gallery-item" onclick="openLightbox('images/MG ZR 105 Images/BonnetOpenView.jpg', 'Bonnet Open View')">
+                    <img src="images/MG ZR 105 Images/BonnetOpenView.jpg" alt="Bonnet Open View" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Bonnet+Open+View'">
+                    <div class="gallery-caption">Click to expand</div>
+                </div>
+
+                <div class="gallery-item" onclick="openLightbox('images/MG ZR 105 Images/Dash closeup.jpg', 'Dash Close Up')">
+                    <img src="images/MG ZR 105 Images/Dash closeup.jpg" alt="Dash Close Up" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Dash+Close+Up'">
+                    <div class="gallery-caption">Click to expand</div>
+                </div>
+
+                <div class="gallery-item" onclick="openLightbox('images/MG ZR 105 Images/Ext - at dash.jpg', 'Exterior at Dash')">
+                    <img src="images/MG ZR 105 Images/Ext - at dash.jpg" alt="Exterior at Dash" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Exterior+at+Dash'">
+                    <div class="gallery-caption">Click to expand</div>
+                </div>
+
+                <div class="gallery-item" onclick="openLightbox('images/MG ZR 105 Images/Int - Point at roof.jpg', 'Interior Roof Point')">
+                    <img src="images/MG ZR 105 Images/Int - Point at roof.jpg" alt="Interior Roof Point" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Interior+Roof+Point'">
+                    <div class="gallery-caption">Click to expand</div>
+                </div>
+
+                <div class="gallery-item" onclick="openLightbox('images/MG ZR 105 Images/int - Back seat.jpg', 'Interior Back Seat')">
+                    <img src="images/MG ZR 105 Images/int - Back seat.jpg" alt="Interior Back Seat" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Back+Seat'">
+                    <div class="gallery-caption">Click to expand</div>
+                </div>
+
+                <div class="gallery-item" onclick="openLightbox('images/MG ZR 105 Images/int - Door closed front right of car.jpg', 'Interior Door Closed Front Right')">
+                    <img src="images/MG ZR 105 Images/int - Door closed front right of car.jpg" alt="Interior Door Closed Front Right" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Door+Closed+Front+Right'">
+                    <div class="gallery-caption">Click to expand</div>
+                </div>
+
+                <div class="gallery-item" onclick="openLightbox('images/MG ZR 105 Images/Int bottom right looking up.jpg', 'Interior Bottom Right Looking Up')">
+                    <img src="images/MG ZR 105 Images/Int bottom right looking up.jpg" alt="Interior Bottom Right Looking Up" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Bottom+Right+Looking+Up'">
                     <div class="gallery-caption">Click to expand</div>
                 </div>
 
@@ -522,6 +579,11 @@
                     <img src="images/MG F/Side view Landscape.png" alt="MG F Side Landscape" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Landscape'">
                     <div class="gallery-caption">Click to expand</div>
                 </div>
+
+                <div class="gallery-item" onclick="openLightbox('images/MG F/Side view.jpg', 'MG F - Side View')">
+                    <img src="images/MG F/Side view.jpg" alt="MG F Side View" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Side+View'">
+                    <div class="gallery-caption">Click to expand</div>
+                </div>
             </div>
         </div>
 
@@ -556,6 +618,11 @@
 
                 <div class="gallery-item" onclick="openLightbox('images/MG TF/Front Right.jpg', 'MG TF - Front Right')">
                     <img src="images/MG TF/Front Right.jpg" alt="MG TF Front Right" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Front+Right'">
+                    <div class="gallery-caption">Click to expand</div>
+                </div>
+
+                <div class="gallery-item" onclick="openLightbox('images/MG TF/Front View.jpg', 'MG TF - Front View')">
+                    <img src="images/MG TF/Front View.jpg" alt="MG TF Front View" onerror="this.src='https://via.placeholder.com/600x400/112211/00ff41?text=Front+View'">
                     <div class="gallery-caption">Click to expand</div>
                 </div>
 
