@@ -1,1 +1,3014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio — Game Dev Workspace</title>
+<style>
+:root {
+--bg: #0c0e14;
+--bg-surface: #141720;
+--bg-elevated: #1a1e2b;
+--bg-hover: #222738;
+--border: #2a2f42;
+--border-light: #353b52;
+--text: #e4e6f0;
+--text-secondary: #8b90a5;
+--text-muted: #5c6178;
+--accent: #6c5ce7;
+--accent-light: #a29bfe;
+--accent-glow: rgba(108, 92, 231, 0.25);
+--green: #00cec9;
+--green-glow: rgba(0, 206, 201, 0.2);
+--orange: #fdcb6e;
+--red: #ff6b6b;
+--pink: #fd79a8;
+--radius: 12px;
+--radius-sm: 8px;
+--radius-lg: 16px;
+--shadow: 0 4px 24px rgba(0,0,0,0.3);
+--shadow-lg: 0 8px 40px rgba(0,0,0,0.4);
+--transition: 0.2s ease;
+--canvas-bg: #e5e5f7;
+--canvas-grid: radial-gradient(#444cf7 0.8px, transparent 0.8px), radial-gradient(#444cf7 0.8px, #e5e5f7 0.8px);
+--project-primary: var(--accent);
+--project-bg: var(--canvas-bg);
+--primary: var(--accent);
+--card-bg: var(--bg-elevated);
+--text-primary: var(--text);
+--toolbar-bg: var(--bg-elevated);
+--border-color: var(--border);
+--bg-color: var(--bg);
+--button-blur: 0px;
+--button-blur-size: 0px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); overflow: hidden; height: 100vh; transition: background-color 0.3s, color 0.3s; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-light); }
 
+#app-shell { display: flex; height: 100vh; }
+.sidebar { width: 240px; background: var(--bg-surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; z-index: 50; }
+.sidebar-brand { padding: 24px 20px 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); }
+.sidebar-brand-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--pink)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.sidebar-brand h1 { font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+.sidebar-brand span { font-size: 11px; color: var(--text-muted); display: block; margin-top: 1px; }
+.sidebar-nav { flex: 1; padding: 12px; overflow-y: auto; }
+.nav-section { margin-bottom: 20px; }
+.nav-section-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-muted); padding: 0 10px; margin-bottom: 6px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--radius-sm); cursor: pointer; color: var(--text-secondary); font-size: 13.5px; font-weight: 500; transition: all var(--transition); position: relative; }
+.nav-item:hover { background: var(--bg-hover); color: var(--text); }
+.nav-item.active { background: var(--accent-glow); color: var(--accent-light); }
+.nav-item.active::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 20px; background: var(--accent); border-radius: 0 3px 3px 0; }
+.nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
+.nav-item .badge { margin-left: auto; background: var(--accent); color: white; font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: 600; }
+.sidebar-footer { padding: 12px; border-top: 1px solid var(--border); }
+.sidebar-footer-btn { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: var(--radius-sm); cursor: pointer; color: var(--text-muted); font-size: 12px; transition: all var(--transition); }
+.sidebar-footer-btn:hover { color: var(--text-secondary); background: var(--bg-hover); }
+
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.main-header { height: 60px; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 28px; gap: 16px; flex-shrink: 0; background: var(--bg-surface); }
+.main-header-title { font-size: 15px; font-weight: 600; color: var(--text); }
+.main-header-search { flex: 1; max-width: 360px; position: relative; margin-left: auto; }
+.main-header-search input { width: 100%; padding: 8px 12px 8px 34px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-size: 13px; outline: none; transition: border var(--transition); }
+.main-header-search input:focus { border-color: var(--accent); }
+.main-header-search .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 14px; }
+.search-results { position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-sm); max-height: 300px; overflow-y: auto; box-shadow: var(--shadow-lg); z-index: 100; margin-top: 4px; display: none; }
+.search-results.active { display: block; }
+.search-result-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 13px; display: flex; justify-content: space-between; align-items: center; color: var(--text-secondary); }
+.search-result-item:hover { background: var(--bg-hover); color: var(--text); }
+.search-result-type { font-size: 9px; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; background: var(--accent); color: white; }
+.main-content { flex: 1; overflow-y: auto; padding: 28px; }
+.view { display: none; }
+.view.active { display: block; animation: viewFade 0.3s ease; }
+@keyframes viewFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.dash-hero { background: linear-gradient(135deg, rgba(108,92,231,0.15), rgba(253,121,168,0.08)); border: 1px solid rgba(108,92,231,0.25); border-radius: var(--radius-lg); padding: 36px; margin-bottom: 28px; position: relative; overflow: hidden; }
+.dash-hero::before { content: ''; position: absolute; top: -100px; right: -100px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(108,92,231,0.2), transparent 70%); pointer-events: none; }
+.dash-hero::after { content: ''; position: absolute; bottom: -80px; left: 20%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(253,121,168,0.15), transparent 70%); pointer-events: none; }
+.dash-hero h2 { font-size: 26px; font-weight: 700; margin-bottom: 8px; position: relative; }
+.dash-hero p { color: var(--text-secondary); font-size: 14px; margin-bottom: 22px; position: relative; }
+.dash-hero-actions { display: flex; gap: 10px; flex-wrap: wrap; position: relative; }
+.btn { padding: 10px 20px; border: none; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; transition: all var(--transition); display: inline-flex; align-items: center; gap: 7px; }
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); box-shadow: 0 4px 16px var(--accent-glow); }
+.btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+.btn-ghost:hover { background: var(--bg-hover); color: var(--text); border-color: var(--border-light); }
+.btn-accent { background: linear-gradient(135deg, var(--accent), var(--pink)); color: white; }
+.btn-accent:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(253,121,168,0.3); }
+.btn-sm { padding: 6px 14px; font-size: 12px; }
+.btn-danger { background: var(--red); color: white; }
+.btn-danger:hover { opacity: 0.9; }
+.btn-success { background: var(--green); color: #0c0e14; }
+.btn-icon { padding: 8px; border-radius: var(--radius-sm); background: transparent; border: 1px solid var(--border); color: var(--text-secondary); cursor: pointer; transition: all var(--transition); display: inline-flex; align-items: center; justify-content: center; }
+.btn-icon:hover { background: var(--bg-hover); color: var(--text); }
+.btn-secondary { background: var(--bg-hover) !important; color: var(--text) !important; border: 1px solid var(--border) !important; }
+.btn-secondary:hover { background: var(--border) !important; }
+
+.dash-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+.stat-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; transition: all var(--transition); }
+.stat-card:hover { border-color: var(--border-light); transform: translateY(-2px); }
+.stat-card-value { font-size: 30px; font-weight: 700; color: var(--text); line-height: 1; }
+.stat-card-label { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
+.stat-card-icon { font-size: 22px; margin-bottom: 10px; opacity: 0.8; }
+
+.dash-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 12px; flex-wrap: wrap; }
+.dash-section-title { font-size: 16px; font-weight: 600; }
+.dash-controls { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.sort-btn { padding: 6px 12px; background: transparent; border: 1px solid var(--border); border-radius: 6px; color: var(--text-muted); font-size: 12px; cursor: pointer; transition: all var(--transition); }
+.sort-btn:hover { color: var(--text-secondary); border-color: var(--border-light); }
+.sort-btn.active { background: var(--accent-glow); color: var(--accent-light); border-color: var(--accent); }
+
+.project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.project-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; cursor: pointer; transition: all var(--transition); position: relative; }
+.project-card:hover { border-color: var(--border-light); transform: translateY(-2px); box-shadow: var(--shadow); }
+.project-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 10px; }
+.project-card-title { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.3; flex: 1; }
+.project-card-status { font-size: 10px; padding: 3px 8px; border-radius: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+.status-idea { background: rgba(108,92,231,0.15); color: var(--accent-light); }
+.status-planning { background: rgba(253,203,110,0.15); color: var(--orange); }
+.status-prototype { background: rgba(0,206,201,0.15); color: var(--green); }
+.status-development { background: rgba(253,121,168,0.15); color: var(--pink); }
+.status-completed { background: rgba(0,206,201,0.2); color: var(--green); }
+.status-abandoned { background: rgba(255,107,107,0.15); color: var(--red); }
+.project-card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.project-card-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 12px; }
+.project-card-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: var(--bg-hover); color: var(--text-muted); }
+.project-card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--border); }
+.project-card-date { font-size: 11px; color: var(--text-muted); }
+.project-card-countdown { font-size: 11px; font-weight: 600; color: var(--orange); }
+.project-card-countdown.urgent { color: var(--red); }
+.project-card-countdown.expired { color: var(--text-muted); text-decoration: line-through; }
+.project-card-actions { position: absolute; top: 12px; right: 12px; display: flex; gap: 4px; opacity: 0; transition: opacity var(--transition); }
+.project-card:hover .project-card-actions { opacity: 1; }
+.project-card-action { width: 28px; height: 28px; border-radius: 6px; background: var(--bg-hover); border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all var(--transition); }
+.project-card-action:hover { color: var(--text); background: var(--border); }
+
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); grid-column: 1/-1; }
+.empty-state-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+.empty-state h3 { font-size: 16px; color: var(--text-secondary); margin-bottom: 8px; }
+.empty-state p { font-size: 13px; margin-bottom: 20px; }
+
+.gen-container { max-width: 1000px; margin: 0 auto; }
+.gen-header { text-align: center; margin-bottom: 32px; }
+.gen-header h2 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+.gen-header p { color: var(--text-secondary); font-size: 14px; }
+.gen-layout { display: grid; grid-template-columns: 340px 1fr; gap: 24px; }
+.gen-panel { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; height: fit-content; position: sticky; top: 0; }
+.gen-panel h3 { font-size: 14px; font-weight: 600; margin-bottom: 16px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); margin-bottom: 6px; }
+.form-input, .form-select { width: 100%; padding: 10px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-size: 13px; outline: none; transition: border var(--transition); }
+.form-input:focus, .form-select:focus { border-color: var(--accent); }
+.form-row { display: flex; gap: 8px; }
+.form-row > * { flex: 1; }
+.checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); cursor: pointer; }
+.checkbox-item input { accent-color: var(--accent); width: 14px; height: 14px; }
+.difficulty-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-top: 8px; }
+.difficulty-extreme { background: rgba(155,89,182,0.2); color: #bb8fce; }
+.difficulty-hard { background: rgba(255,107,107,0.15); color: var(--red); }
+.difficulty-medium { background: rgba(253,203,110,0.15); color: var(--orange); }
+.difficulty-easy { background: rgba(0,206,201,0.15); color: var(--green); }
+
+.idea-result { background: var(--bg-surface); border: 1px solid var(--accent); border-radius: var(--radius); padding: 28px; box-shadow: 0 0 30px var(--accent-glow); }
+.idea-result-title { font-size: 24px; font-weight: 700; color: var(--accent-light); margin-bottom: 4px; }
+.idea-result-meta { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.idea-tag { font-size: 11px; padding: 3px 10px; background: var(--bg-hover); border-radius: 20px; color: var(--text-secondary); }
+.idea-section { margin-bottom: 18px; }
+.idea-section:last-child { margin-bottom: 0; }
+.idea-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
+.idea-value { font-size: 14px; color: var(--text); line-height: 1.6; }
+.idea-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.idea-actions { display: flex; gap: 8px; margin-top: 24px; flex-wrap: wrap; padding-top: 20px; border-top: 1px solid var(--border); }
+.star-rating { display: flex; gap: 4px; font-size: 20px; cursor: pointer; }
+.star { color: var(--border); transition: color 0.15s; user-select: none; }
+.star.active { color: var(--orange); }
+
+.ideas-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+.idea-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; transition: all var(--transition); position: relative; }
+.idea-card:hover { border-color: var(--border-light); transform: translateY(-2px); }
+.idea-card-title { font-size: 14px; font-weight: 600; color: var(--accent-light); margin-bottom: 6px; }
+.idea-card-meta { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; }
+.idea-card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+.idea-card-tag { font-size: 10px; padding: 2px 8px; background: var(--bg-hover); border-radius: 10px; color: var(--text-muted); }
+.idea-card-actions { display: flex; gap: 6px; }
+.idea-card-btn { padding: 5px 10px; font-size: 11px; border-radius: 6px; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); transition: all var(--transition); }
+.idea-card-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+.idea-card-btn.danger:hover { background: var(--red); border-color: var(--red); }
+.idea-fav { position: absolute; top: 12px; right: 12px; cursor: pointer; font-size: 16px; opacity: 0.3; transition: opacity var(--transition); }
+.idea-fav.active { opacity: 1; }
+
+.achievements-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.achievement-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; align-items: center; gap: 14px; opacity: 0.4; transition: all var(--transition); }
+.achievement-card.unlocked { opacity: 1; border-color: rgba(253,203,110,0.3); }
+.achievement-icon { font-size: 28px; }
+.achievement-name { font-size: 13px; font-weight: 600; }
+.achievement-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+.tabs { display: flex; gap: 2px; margin-bottom: 20px; background: var(--bg-surface); border-radius: var(--radius-sm); padding: 3px; border: 1px solid var(--border); width: fit-content; }
+.tab { padding: 7px 16px; cursor: pointer; border-radius: 6px; color: var(--text-muted); font-size: 12px; font-weight: 500; transition: all var(--transition); }
+.tab:hover { color: var(--text-secondary); }
+.tab.active { background: var(--accent); color: white; }
+
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+.modal-overlay.active { display: flex; }
+.modal { background: var(--bg-elevated); border: 1px solid var(--border); padding: 28px; border-radius: var(--radius-lg); width: 500px; max-height: 80vh; overflow-y: auto; box-shadow: var(--shadow-lg); }
+.modal.wide { width: 680px; }
+.modal h2 { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--text); }
+.form-group-modal { margin-bottom: 14px; }
+.form-group-modal label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
+.form-group-modal input, .form-group-modal textarea, .form-group-modal select { width: 100%; padding: 10px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-size: 13px; outline: none; }
+.form-group-modal textarea { min-height: 80px; resize: vertical; }
+.form-group-modal input:focus, .form-group-modal textarea:focus, .form-group-modal select:focus { border-color: var(--accent); }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 24px; }
+.deadline-section { background: var(--bg); padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); margin-bottom: 14px; }
+.deadline-toggle { display: flex; align-items: center; gap: 8px; }
+.deadline-toggle input { width: auto; accent-color: var(--accent); }
+.deadline-dates { display: none; gap: 10px; margin-top: 12px; }
+.deadline-dates.show { display: grid; grid-template-columns: 1fr 1fr; }
+.tags-input-container { display: flex; flex-wrap: wrap; gap: 4px; padding: 6px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); min-height: 38px; align-items: center; }
+.tag-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; background: var(--accent); color: white; border-radius: 10px; font-size: 11px; }
+.tag-chip-remove { cursor: pointer; font-weight: bold; opacity: 0.7; }
+.tag-chip-remove:hover { opacity: 1; }
+.tags-input { border: none; outline: none; background: transparent; flex: 1; min-width: 80px; font-size: 12px; padding: 4px; color: var(--text); }
+.setting-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+.setting-row:last-child { border-bottom: none; }
+.setting-row label { font-size: 13px; color: var(--text-secondary); }
+.templates-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+.template-card { padding: 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; transition: all var(--transition); }
+.template-card:hover { border-color: var(--accent); background: var(--accent-glow); }
+.template-card h4 { font-size: 13px; margin-bottom: 3px; }
+.template-card p { font-size: 11px; color: var(--text-muted); }
+.trash-list { max-height: 280px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.trash-item { padding: 10px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+.trash-item:last-child { border-bottom: none; }
+.theme-presets-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 8px; }
+.theme-preset { padding: 10px; border: 2px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; text-align: center; font-size: 11px; font-weight: 600; transition: all var(--transition); }
+.theme-preset:hover { border-color: var(--accent); }
+.theme-preset.active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow); }
+.theme-preset.cyberpunk { background: linear-gradient(135deg, #0a0015, #2d004d); color: #ff00ff; }
+.theme-preset.paper { background: #faf8f3; color: #6b5d4a; }
+.theme-preset.neon { background: linear-gradient(135deg, #0a0a1a, #1a1a2e); color: #00ffaa; }
+.theme-preset.pastel { background: linear-gradient(135deg, #fdf6f0, #fce7f3); color: #9d6b8a; }
+.theme-preset.default { background: linear-gradient(135deg, #1a1e2b, #141720); color: #6c5ce7; }
+.keybinds-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.keybind-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: var(--bg); border-radius: 6px; border: 1px solid var(--border); }
+.keybind-desc { font-size: 12px; color: var(--text-secondary); }
+.key { display: inline-block; padding: 3px 7px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 4px; font-family: monospace; font-size: 11px; font-weight: bold; color: var(--accent-light); }
+.custom-list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; max-height: 120px; overflow-y: auto; padding: 6px; background: var(--bg); border-radius: 6px; }
+.custom-item { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; background: var(--accent); color: white; border-radius: 10px; font-size: 11px; }
+.custom-item-remove { cursor: pointer; font-weight: bold; opacity: 0.7; }
+.custom-item-remove:hover { opacity: 1; }
+
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text); padding: 10px 20px; border-radius: var(--radius-sm); font-size: 13px; z-index: 3000; opacity: 0; transition: all 0.3s; pointer-events: none; box-shadow: var(--shadow-lg); }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.filter-sidebar { position: fixed; top: 0; right: -300px; width: 300px; height: 100vh; background: var(--bg-elevated); border-left: 1px solid var(--border); box-shadow: var(--shadow-lg); z-index: 1500; padding: 20px; transition: right 0.3s; overflow-y: auto; }
+.filter-sidebar.active { right: 0; }
+.filter-sidebar h3 { margin-bottom: 15px; font-size: 16px; }
+.filter-section { margin-bottom: 20px; }
+.filter-section h4 { font-size: 11px; margin-bottom: 8px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.filter-option { display: flex; align-items: center; gap: 8px; padding: 6px; cursor: pointer; border-radius: 4px; font-size: 13px; color: var(--text-secondary); }
+.filter-option:hover { background: var(--bg-hover); }
+.filter-option input { width: auto; accent-color: var(--accent); }
+
+.bg-dot { background-color: var(--project-bg); background-image: var(--canvas-grid); background-size: 20px 20px; background-position: 0 0, 10px 10px; }
+.bg-graph { background-color: var(--project-bg); background-image: linear-gradient(var(--border-color) 1px, transparent 1px), linear-gradient(90deg, var(--border-color) 1px, transparent 1px); background-size: 20px 20px; }
+.bg-blank { background-color: var(--project-bg); background-image: none; }
+.bg-falling-stars { background-color: #000030; overflow: hidden; }
+.starfall { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.falling-star { width: 8px; height: 8px; background: #00d1b2; position: absolute; border-radius: 50%; opacity: 0.5; animation: starfall-anim linear infinite; }
+@keyframes starfall-anim { 0% { transform: translateY(-10vh); opacity: 0; } 10% { opacity: 0.8; box-shadow: 0 0 5px #fff; } 90% { opacity: 0.8; } 100% { transform: translateY(110vh); opacity: 0; } }
+.bg-shooting-stars { background: #000; overflow: hidden; position: relative; }
+.bg-shooting-stars canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+.bg-matrix { background: #000; overflow: hidden; }
+.bg-matrix canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+.bg-aurora { background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%); background-size: 400% 400%; animation: auroraBG 20s ease infinite; }
+@keyframes auroraBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+.bg-cyberpunk { background-color: #0a0015; background-image: linear-gradient(rgba(255,0,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,255,0.1) 1px, transparent 1px); background-size: 40px 40px; }
+.bg-paper { background-color: #faf8f3; }
+.bg-neon { background-color: #0a0a1a; background-image: linear-gradient(rgba(0,255,170,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,0,200,0.15) 1px, transparent 1px); background-size: 50px 50px; }
+.bg-pastel { background-color: #fdf6f0; }
+
+#whiteboard { display: none; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; overflow: hidden; z-index: 100; }
+#whiteboard.active { display: block; }
+#whiteboard.panning { cursor: grabbing !important; }
+#whiteboard.panning * { cursor: grabbing !important; }
+#whiteboard.selecting { cursor: crosshair !important; }
+.toolbar { position: fixed; top: 20px; left: 20px; z-index: 1000; background: var(--toolbar-bg); padding: 8px; border-radius: 8px; box-shadow: var(--shadow); display: flex; gap: 6px; border: 1px solid var(--border-color); flex-wrap: wrap; max-width: calc(100vw - 400px); }
+.toolbar-right { position: fixed; top: 20px; right: 20px; z-index: 1000; background: var(--toolbar-bg); padding: 8px; border-radius: 8px; box-shadow: var(--shadow); display: flex; gap: 6px; border: 1px solid var(--border-color); }
+.toolbar-bottom { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; background: var(--toolbar-bg); padding: 8px; border-radius: 8px; box-shadow: var(--shadow); display: flex; gap: 6px; border: 1px solid var(--border-color); }
+.note-menu-wrapper { position: relative; display: inline-block; }
+.note-menu { position: absolute; top: 100%; left: 0; margin-top: 4px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; box-shadow: var(--shadow); padding: 4px; min-width: 160px; display: none; z-index: 1001; }
+.note-menu.active { display: block; }
+.note-menu-item { padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 13px; display: flex; align-items: center; gap: 8px; color: var(--text); }
+.note-menu-item:hover { background: var(--bg-hover); }
+.world-widget { position: fixed; bottom: 20px; left: 20px; z-index: 999; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; box-shadow: var(--shadow); padding: 10px 14px; min-width: 220px; font-size: 12px; display: flex; flex-direction: column; gap: 6px; }
+.world-widget-row { display: flex; align-items: center; gap: 8px; }
+.world-widget-icon { font-size: 18px; }
+.world-widget-main { display: flex; align-items: center; gap: 10px; }
+.world-weather-temp { font-size: 22px; font-weight: bold; color: var(--text-primary); }
+.world-weather-desc { font-size: 11px; color: var(--text-muted); text-transform: capitalize; }
+.world-location { font-size: 10px; color: var(--text-muted); }
+.world-time { font-size: 14px; font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.world-date { font-size: 11px; color: var(--text-muted); }
+.world-quote { font-size: 11px; font-style: italic; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 6px; margin-top: 2px; line-height: 1.4; }
+.stats-bar { position: fixed; top: 80px; right: 20px; z-index: 999; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; box-shadow: var(--shadow); padding: 8px 12px; font-size: 11px; display: flex; gap: 12px; color: var(--text-muted); }
+.stat-item { display: flex; align-items: center; gap: 4px; }
+.stat-value { font-weight: 600; color: var(--text-primary); }
+.save-indicator { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 4px 12px; font-size: 11px; z-index: 1001; opacity: 0; transition: opacity 0.3s; pointer-events: none; box-shadow: var(--shadow); }
+.save-indicator.show { opacity: 1; }
+.save-indicator.saving { color: #f59e0b; }
+.save-indicator.saved { color: #10b981; }
+.pomodoro-widget { position: fixed; bottom: 20px; right: 320px; z-index: 999; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; box-shadow: var(--shadow); padding: 10px 14px; display: none; align-items: center; gap: 10px; font-size: 12px; }
+.pomodoro-widget.active { display: flex; }
+.pomodoro-time { font-size: 20px; font-weight: bold; color: var(--text-primary); font-variant-numeric: tabular-nums; min-width: 60px; text-align: center; }
+.pomodoro-mode { font-size: 10px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; }
+.pomodoro-btn { background: var(--primary); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 11px; }
+.pomodoro-btn:hover { opacity: 0.9; }
+.pomodoro-btn.secondary { background: var(--border-color); color: var(--text); }
+.minimap { position: fixed; bottom: 20px; right: 20px; width: 200px; height: 150px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; box-shadow: var(--shadow); z-index: 999; overflow: hidden; cursor: pointer; }
+.minimap.hidden { display: none; }
+.minimap-canvas { width: 100%; height: 100%; display: block; }
+.minimap-viewport { position: absolute; border: 2px solid var(--primary); background: rgba(108,92,231,0.15); pointer-events: none; }
+.minimap-toggle { position: fixed; bottom: 180px; right: 20px; z-index: 1000; background: var(--toolbar-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 6px 10px; cursor: pointer; font-size: 12px; box-shadow: var(--shadow); }
+.project-countdown-widget { position: fixed; bottom: 20px; left: 260px; z-index: 1000; background: var(--toolbar-bg); padding: 12px 16px; border-radius: 8px; box-shadow: var(--shadow); border: 1px solid var(--border-color); min-width: 200px; }
+.project-countdown-widget .countdown-title { font-size: 12px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.project-countdown-widget .countdown-display { display: flex; gap: 12px; align-items: center; }
+.project-countdown-widget .time-unit { display: flex; flex-direction: column; align-items: center; }
+.project-countdown-widget .time-value { font-size: 24px; font-weight: bold; color: var(--text-primary); line-height: 1; }
+.project-countdown-widget .time-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
+.project-countdown-widget.urgent .time-value { color: #f5576c; }
+.project-countdown-widget.expired { background: linear-gradient(135deg, #dc3545, #c82333); color: white; }
+.project-countdown-widget.expired .time-value, .project-countdown-widget.expired .time-label, .project-countdown-widget.expired .countdown-title { color: white; }
+#canvas-wrapper { width: 3000px; height: 3000px; position: relative; transform-origin: 0 0; transition: transform 0.05s ease-out; }
+#svg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+#svg-layer line { stroke: var(--text-muted); stroke-width: 2; pointer-events: auto; cursor: pointer; transition: stroke 0.2s; }
+#svg-layer line:hover { stroke: #dc3545; stroke-width: 3; }
+#svg-layer line.dependency { stroke: #f59e0b; stroke-dasharray: 5,5; }
+#svg-layer line.dependency:hover { stroke: #dc2626; }
+#svg-layer polygon { fill: var(--text-muted); pointer-events: none; }
+#svg-layer text.conn-label { fill: var(--text); font-size: 11px; pointer-events: auto; cursor: pointer; }
+.align-guide { position: absolute; background: #f59e0b; z-index: 50; pointer-events: none; }
+.align-guide.horizontal { height: 1px; width: 100%; left: 0; }
+.align-guide.vertical { width: 1px; height: 100%; top: 0; }
+.select-box { position: absolute; border: 2px dashed var(--primary); background: rgba(108,92,231,0.1); pointer-events: none; z-index: 100; }
+.gantt-container { position: absolute; background: transparent; overflow: visible; }
+.gantt-header { display: flex; position: sticky; top: 0; z-index: 20; }
+.gantt-header.horizontal { flex-direction: column; position: sticky; left: 0; }
+.gantt-day-header { padding: 10px 8px; border-right: 2px solid var(--project-primary); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; user-select: none; background: var(--card-bg); color: var(--text-primary); }
+.gantt-day-header.horizontal { border-right: none; border-bottom: 2px solid var(--project-primary); flex-direction: row; justify-content: flex-start; padding: 8px 12px; gap: 10px; }
+.gantt-day-header .day-name { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; color: var(--text-muted); }
+.gantt-day-header .day-number { font-size: 20px; font-weight: bold; line-height: 1; margin: 2px 0; color: var(--text-primary); }
+.gantt-day-header .day-month { font-size: 10px; opacity: 0.8; color: var(--text-muted); }
+.gantt-day-header.today { background: rgba(108,92,231,0.15); }
+.gantt-day-header.today .day-number { color: var(--project-primary); }
+.gantt-day-header.weekend { background: rgba(108,92,231,0.05); }
+.gantt-add-btn { position: absolute; bottom: 4px; right: 4px; width: 22px; height: 22px; border-radius: 50%; background: var(--project-primary); color: white; border: none; cursor: pointer; font-size: 16px; font-weight: bold; line-height: 1; display: flex; align-items: center; justify-content: center; opacity: 0.6; transition: opacity 0.2s, transform 0.1s; z-index: 5; padding: 0; }
+.gantt-add-btn:hover { opacity: 1; transform: scale(1.15); }
+.gantt-day-header.horizontal .gantt-add-btn { bottom: 50%; transform: translateY(50%); right: 8px; }
+.gantt-body { display: flex; position: relative; }
+.gantt-body.horizontal { flex-direction: column; }
+.gantt-column { border-right: 2px solid var(--project-primary); position: relative; min-height: 600px; background: transparent; transition: background 0.2s; }
+.gantt-column:last-child { border-right: none; }
+.gantt-column:hover { background: rgba(108,92,231,0.04); }
+.gantt-column.weekend { background: rgba(108,92,231,0.06); }
+.gantt-row { border-bottom: 2px solid var(--project-primary); position: relative; min-width: 800px; background: transparent; display: flex; align-items: stretch; transition: background 0.2s; }
+.gantt-row:last-child { border-bottom: none; }
+.gantt-row:hover { background: rgba(108,92,231,0.04); }
+.gantt-row.weekend { background: rgba(108,92,231,0.06); }
+.gantt-resize-handle { position: absolute; background: transparent; z-index: 25; transition: background 0.2s; }
+.gantt-resize-handle:hover, .gantt-resize-handle.active { background: var(--project-primary); opacity: 0.5; }
+.gantt-resize-handle.vertical { top: 0; width: 6px; height: 100%; cursor: col-resize; }
+.gantt-resize-handle.horizontal-handle { left: 0; height: 6px; width: 100%; cursor: row-resize; }
+.wb-element { position: absolute; cursor: grab; user-select: none; }
+.wb-element:active { cursor: grabbing; }
+.wb-element.selected { outline: 2px dashed var(--primary); outline-offset: 4px; }
+.wb-element.pinned::before { content: '📌'; position: absolute; top: -12px; left: -8px; font-size: 14px; z-index: 12; }
+.wb-element.locked { cursor: not-allowed; opacity: 0.95; }
+.wb-element.locked::after { content: '🔒'; position: absolute; top: -12px; right: -8px; font-size: 12px; z-index: 12; }
+.wb-element.search-match { outline: 3px solid #f59e0b !important; outline-offset: 4px; animation: pulse-match 1s ease-in-out infinite; }
+@keyframes pulse-match { 0%, 100% { outline-offset: 4px; } 50% { outline-offset: 8px; } }
+.wb-element.dimmed { opacity: 0.2; filter: grayscale(0.5); }
+.wb-element.idea-spawn { animation: idea-pop 0.5s ease-out; }
+@keyframes idea-pop { 0% { transform: scale(0) rotate(-180deg); opacity: 0; } 70% { transform: scale(1.1) rotate(10deg); } 100% { transform: scale(1) rotate(0); opacity: 1; } }
+.group-box { z-index: 5; background: rgba(108,92,231,0.1); border: 2px dashed var(--primary); border-radius: 12px; min-width: 200px; min-height: 150px; padding: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.sticky-note, .image-el { z-index: 10; }
+.sticky-note { min-height: 140px; min-width: 150px; border-radius: 4px; padding: 12px; box-shadow: 2px 4px 8px rgba(0,0,0,0.15); display: flex; flex-direction: column; border: 1px solid rgba(0,0,0,0.1); position: relative; }
+.sticky-note textarea { flex: 1; background: transparent; border: none; resize: none; outline: none; font-family: inherit; font-size: 14px; width: 100%; color: #222 !important; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; }
+.sticky-note textarea::-webkit-scrollbar { display: none; }
+.note-yellow { background: #fef3c7; }
+.note-blue { background: #dbeafe; }
+.note-green { background: #d1fae5; }
+.note-pink { background: #fce7f3; }
+.note-red { background: #fee2e2; }
+.sticky-note.urgent-glow { box-shadow: 0 0 12px 2px rgba(239,68,68,0.6), 2px 4px 8px rgba(0,0,0,0.15); }
+.color-picker { display: flex; gap: 6px; margin-top: 8px; justify-content: center; opacity: 0; transition: opacity 0.2s; }
+.wb-element:hover .color-picker { opacity: 1; }
+.color-dot { width: 16px; height: 16px; border-radius: 50%; cursor: pointer; border: 2px solid rgba(0,0,0,0.1); transition: transform 0.1s; }
+.color-dot:hover { transform: scale(1.2); }
+.color-dot.c-yellow { background: #fef3c7; }
+.color-dot.c-blue { background: #dbeafe; }
+.color-dot.c-green { background: #d1fae5; }
+.color-dot.c-pink { background: #fce7f3; }
+.color-dot.c-red { background: #fee2e2; }
+.note-tags { display: flex; gap: 3px; flex-wrap: wrap; margin-top: 6px; }
+.note-tag { font-size: 9px; padding: 1px 6px; border-radius: 8px; background: rgba(0,0,0,0.15); color: #222; cursor: pointer; }
+.note-tag:hover { background: rgba(0,0,0,0.25); }
+.progress-bar { height: 4px; background: rgba(0,0,0,0.1); border-radius: 2px; margin-top: 6px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--primary); transition: width 0.3s; }
+.progress-label { font-size: 9px; color: #555; margin-top: 2px; text-align: right; }
+.note-checkbox { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+.note-checkbox input { width: 16px; height: 16px; cursor: pointer; }
+.note-checkbox.done textarea { text-decoration: line-through; opacity: 0.6; }
+.delete-el { position: absolute; top: -8px; right: -8px; background: #dc3545; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 14px; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 11; }
+.wb-element:hover .delete-el { display: flex; }
+.pin-el { position: absolute; top: -8px; left: -8px; background: #f59e0b; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 12px; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 11; }
+.lock-el { position: absolute; top: -8px; left: 16px; background: #6b7280; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 12px; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 11; }
+.wb-element:hover .pin-el, .wb-element:hover .lock-el { display: flex; }
+.wb-element.pinned .pin-el { display: flex; background: #d97706; }
+.wb-element.locked .lock-el { display: flex; background: #4b5563; }
+.image-el { max-width: 300px; border-radius: 4px; box-shadow: 2px 4px 8px rgba(0,0,0,0.2); background: white; }
+.image-el img { width: 100%; height: auto; display: block; border-radius: 4px; pointer-events: none; }
+.group-title { font-weight: bold; font-size: 14px; margin-bottom: 8px; padding: 4px 8px; background: rgba(108,92,231,0.2); border-radius: 4px; text-align: center; }
+.group-title-input { background: transparent; border: none; outline: none; font-weight: bold; font-size: 14px; color: #fff !important; text-shadow: 0 1px 2px rgba(0,0,0,0.5); width: 100%; text-align: center; cursor: text; }
+.resize-handle { position: absolute; bottom: 0; right: 0; width: 20px; height: 20px; cursor: se-resize; background: linear-gradient(135deg, transparent 50%, var(--primary) 50%); border-bottom-right-radius: 8px; opacity: 0.6; z-index: 6; }
+.resize-handle:hover { opacity: 1; }
+.connect-mode-hint { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 10px 20px; border-radius: 20px; font-size: 14px; display: none; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+.pan-hint { position: fixed; bottom: 30px; right: 320px; background: rgba(0,0,0,0.7); color: white; padding: 6px 12px; border-radius: 12px; font-size: 11px; z-index: 999; pointer-events: none; opacity: 0.7; }
+.context-menu { position: fixed; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; box-shadow: var(--shadow); padding: 4px; z-index: 2000; min-width: 180px; display: none; }
+.context-menu.active { display: block; }
+.context-menu-item { padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+.context-menu-item:hover { background: var(--bg-color); }
+.context-menu-divider { height: 1px; background: var(--border-color); margin: 4px 0; }
+.idea-banner { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #f093fb, #f5576c); color: white; padding: 12px 24px; border-radius: 24px; box-shadow: var(--shadow); z-index: 1001; display: none; align-items: center; gap: 12px; font-size: 14px; animation: idea-slide 0.5s ease-out; }
+.idea-banner.active { display: flex; }
+@keyframes idea-slide { from { transform: translate(-50%, -50px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+#image-input, #import-input { display: none; }
+.radio-player { position: fixed; bottom: 20px; right: 20px; z-index: 1500; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: var(--shadow); display: flex; align-items: center; padding: 8px; gap: 12px; width: 52px; transition: width 0.3s ease; overflow: hidden; }
+.radio-player.expanded { width: 280px; padding: 12px 16px; }
+.radio-eq { width: 36px; height: 36px; display: flex; align-items: flex-end; justify-content: center; gap: 3px; cursor: pointer; flex-shrink: 0; background: rgba(128,128,128,0.1); border-radius: 8px; padding: 6px 0; }
+.radio-eq-bar { width: 4px; background: var(--text-muted); border-radius: 2px; height: 4px; transition: height 0.2s, background 0.2s; }
+.radio-player.playing .radio-eq-bar { background: var(--primary); }
+.radio-player.playing .radio-eq-bar:nth-child(1) { animation: eq 0.8s infinite ease-in-out; }
+.radio-player.playing .radio-eq-bar:nth-child(2) { animation: eq 0.6s infinite ease-in-out 0.1s; }
+.radio-player.playing .radio-eq-bar:nth-child(3) { animation: eq 0.9s infinite ease-in-out 0.2s; }
+.radio-player.playing .radio-eq-bar:nth-child(4) { animation: eq 0.7s infinite ease-in-out 0.3s; }
+@keyframes eq { 0%, 100% { height: 4px; } 50% { height: 20px; } }
+.radio-controls { display: none; flex-direction: column; gap: 8px; flex: 1; min-width: 0; }
+.radio-player.expanded .radio-controls { display: flex; }
+.radio-station-name { font-size: 13px; font-weight: 600; color: var(--text); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.radio-buttons { display: flex; justify-content: center; align-items: center; gap: 16px; }
+.radio-btn { background: none; border: none; cursor: pointer; color: var(--text); transition: transform 0.1s, color 0.1s; padding: 4px; display: flex; align-items: center; justify-content: center; }
+.radio-btn:hover { transform: scale(1.15); color: var(--primary); }
+.radio-btn.play-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--border-color); color: var(--text); transition: background 0.2s, color 0.2s, transform 0.1s; }
+.radio-btn.play-btn:hover { transform: scale(1.05); }
+.radio-player.playing .radio-btn.play-btn { background: var(--primary); color: #ffffff; }
+#radio-volume { width: 100%; cursor: pointer; accent-color: var(--primary); height: 4px; }
+#connect-btn.active, #gantt-toggle-btn.active, #snap-btn.active, #focus-btn.active, #dep-btn.active, #select-btn.active { background: var(--primary) !important; color: white !important; border-color: var(--primary) !important; box-shadow: 0 0 var(--button-blur-size) var(--button-blur) var(--primary); }
+</style>
+</head>
+<body>
+<div id="app-shell">
+<aside class="sidebar">
+<div class="sidebar-brand">
+<div class="sidebar-brand-icon">🎮</div>
+<div><h1>Studio</h1><span>Game Dev Workspace</span></div>
+</div>
+<nav class="sidebar-nav">
+<div class="nav-section">
+<div class="nav-section-label">Workspace</div>
+<div class="nav-item active" data-view="dashboard"><span class="icon">📊</span> Dashboard</div>
+<div class="nav-item" data-view="generator"><span class="icon">🎲</span> Generate Idea</div>
+</div>
+<div class="nav-section">
+<div class="nav-section-label">Library</div>
+<div class="nav-item" data-view="saved-ideas"><span class="icon">💾</span> Saved Ideas <span class="badge" id="saved-count">0</span></div>
+<div class="nav-item" data-view="favorites"><span class="icon">⭐</span> Favorites</div>
+</div>
+<div class="nav-section">
+<div class="nav-section-label">Progress</div>
+<div class="nav-item" data-view="achievements"><span class="icon">🏆</span> Achievements</div>
+</div>
+</nav>
+<div class="sidebar-footer">
+<div class="sidebar-footer-btn" onclick="openSettingsModal()">⚙️ Settings</div>
+<div class="sidebar-footer-btn" onclick="openKeybinds()">⌨️ Shortcuts</div>
+</div>
+</aside>
+
+<main class="main">
+<header class="main-header">
+<div class="main-header-title" id="header-title">Dashboard</div>
+<div class="main-header-search">
+<span class="search-icon">🔍</span>
+<input type="text" id="global-search" placeholder="Search projects, ideas..." oninput="searchAll(this.value)" onfocus="showSearchResults()" onblur="setTimeout(hideSearchResults,200)">
+<div class="search-results" id="search-results"></div>
+</div>
+<button class="btn btn-primary" onclick="openModal()">+ New Project</button>
+</header>
+
+<div class="main-content">
+<div id="view-dashboard" class="view active">
+<div class="dash-hero">
+<h2>Welcome back, Developer 👋</h2>
+<p>Generate a game idea, create a project, or jump back into your whiteboard.</p>
+<div class="dash-hero-actions">
+<button class="btn btn-accent" onclick="switchView('generator')">🎲 Generate New Idea</button>
+<button class="btn btn-primary" onclick="openModal()">+ New Project</button>
+<button class="btn btn-ghost" onclick="openTemplateModal()">📋 From Template</button>
+<button class="btn btn-ghost" onclick="document.getElementById('import-input').click()">📥 Import</button>
+<input type="file" id="import-input" accept=".json" onchange="handleImportFile(event)" style="display:none;">
+</div>
+</div>
+<div class="dash-stats">
+<div class="stat-card"><div class="stat-card-icon">📁</div><div class="stat-card-value" id="stat-projects">0</div><div class="stat-card-label">Projects</div></div>
+<div class="stat-card"><div class="stat-card-icon">💡</div><div class="stat-card-value" id="stat-generated">0</div><div class="stat-card-label">Ideas Generated</div></div>
+<div class="stat-card"><div class="stat-card-icon">💾</div><div class="stat-card-value" id="stat-saved">0</div><div class="stat-card-label">Saved Ideas</div></div>
+<div class="stat-card"><div class="stat-card-icon">✅</div><div class="stat-card-value" id="stat-completed">0</div><div class="stat-card-label">Completed</div></div>
+</div>
+<div class="dash-section-header">
+<div class="dash-section-title">Your Projects</div>
+<div class="dash-controls">
+<button class="sort-btn active" onclick="sortProjects('default')" id="sort-default">Recent</button>
+<button class="sort-btn" onclick="sortProjects('deadline')" id="sort-deadline">Due Date</button>
+<button class="sort-btn" onclick="sortProjects('name')" id="sort-name">Name</button>
+<button class="btn btn-ghost btn-sm" onclick="toggleFilterSidebar()">🔍 Filter</button>
+</div>
+</div>
+<div class="project-grid" id="project-list"></div>
+</div>
+
+<div id="view-generator" class="view">
+<div class="gen-container">
+<div class="gen-header">
+<h2>🎲 Game Idea Generator</h2>
+<p>Generate a concept, then create a project directly from it.</p>
+</div>
+<div class="gen-layout">
+<div class="gen-panel">
+<h3>⚙️ Settings</h3>
+<div class="form-group">
+<label class="form-label">Deadline</label>
+<div class="form-row">
+<input type="number" id="gen-deadline-value" class="form-input" value="2" min="1">
+<select id="gen-deadline-unit" class="form-select"><option value="hours">Hours</option><option value="days">Days</option><option value="weeks">Weeks</option></select>
+</div>
+<div id="difficulty-display"></div>
+</div>
+<div class="form-group">
+<label class="form-label">Team Size</label>
+<select id="gen-team-size" class="form-select"><option value="solo">Solo Developer</option><option value="small">2-4 People</option><option value="large">5+ People</option></select>
+</div>
+<div class="form-group">
+<label class="form-label">Style</label>
+<div class="checkbox-group">
+<label class="checkbox-item"><input type="checkbox" class="filter-style" value="2d"> 2D</label>
+<label class="checkbox-item"><input type="checkbox" class="filter-style" value="3d"> 3D</label>
+<label class="checkbox-item"><input type="checkbox" class="filter-style" value="single" checked> Single</label>
+<label class="checkbox-item"><input type="checkbox" class="filter-style" value="multi"> Multi</label>
+</div>
+</div>
+<div class="form-group">
+<label class="checkbox-item"><input type="checkbox" id="jam-mode" onchange="document.getElementById('jam-settings').style.display=this.checked?'block':'none'"> 🎯 Game Jam Mode</label>
+<div id="jam-settings" style="display:none;margin-top:8px;padding:10px;background:var(--bg);border-radius:6px;">
+<select id="jam-length" class="form-select" style="margin-bottom:6px;"><option value="24">24h</option><option value="48">48h</option><option value="168">1 Week</option></select>
+<label class="checkbox-item"><input type="checkbox" id="jam-replayable"> Replayable</label>
+<label class="checkbox-item"><input type="checkbox" id="jam-physics"> Physics</label>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Seed (optional)</label>
+<input type="text" id="gen-seed" class="form-input" placeholder="Random">
+</div>
+<button class="btn btn-accent" style="width:100%;padding:14px;" onclick="generateNewIdea()">✨ Generate Idea</button>
+</div>
+<div id="idea-result-container" style="display:none;">
+<div class="idea-result">
+<div class="idea-result-title" id="res-title"></div>
+<div class="idea-result-meta">
+<span class="idea-tag" id="res-difficulty"></span>
+<span class="idea-tag" id="res-seed" style="font-family:monospace;"></span>
+</div>
+<div class="idea-section"><div class="idea-label">Description</div><div class="idea-value" id="res-description"></div></div>
+<div class="idea-grid">
+<div class="idea-section"><div class="idea-label">Genre</div><div class="idea-value" id="res-genre"></div></div>
+<div class="idea-section"><div class="idea-label">Mechanic</div><div class="idea-value" id="res-mechanic"></div></div>
+<div class="idea-section"><div class="idea-label">Theme</div><div class="idea-value" id="res-theme"></div></div>
+<div class="idea-section"><div class="idea-label">Restriction</div><div class="idea-value" id="res-restriction"></div></div>
+</div>
+<div class="idea-section"><div class="idea-label">Core Loop</div><div class="idea-value" id="res-loop"></div></div>
+<div class="idea-section"><div class="idea-label">Dev Time</div><div class="idea-value" id="res-devtime"></div></div>
+<div class="idea-section"><div class="idea-label">Rate</div><div class="star-rating" id="rating-stars"><span class="star" onclick="setRating(1)">★</span><span class="star" onclick="setRating(2)">★</span><span class="star" onclick="setRating(3)">★</span><span class="star" onclick="setRating(4)">★</span><span class="star" onclick="setRating(5)">★</span></div></div>
+<div class="idea-actions">
+<button class="btn btn-primary" onclick="convertIdeaToProject()">📁 Create Project</button>
+<button class="btn btn-ghost" onclick="saveCurrentIdea()">💾 Save Idea</button>
+<button class="btn btn-ghost" onclick="improveCurrentIdea()">✨ Improve</button>
+<button class="btn btn-ghost" onclick="exportIdea('text')">📋 Copy</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="view-saved-ideas" class="view">
+<div class="dash-section-header"><div class="dash-section-title">💾 Saved Ideas</div>
+<input type="text" id="ideas-search" class="form-input" style="max-width:260px;" placeholder="Search..." oninput="renderSavedIdeas()"></div>
+<div class="tabs"><div class="tab active" onclick="switchIdeasTab('all',this)">All</div><div class="tab" onclick="switchIdeasTab('recent',this)">Recent</div><div class="tab" onclick="switchIdeasTab('top-rated',this)">Top Rated</div></div>
+<div id="saved-ideas-grid" class="ideas-grid"></div>
+</div>
+
+<div id="view-favorites" class="view">
+<div class="dash-section-header"><div class="dash-section-title">⭐ Favorites</div></div>
+<div id="favorites-grid" class="ideas-grid"></div>
+</div>
+
+<div id="view-achievements" class="view">
+<div class="dash-section-header"><div class="dash-section-title">🏆 Achievements</div></div>
+<div id="achievements-grid" class="achievements-grid"></div>
+</div>
+</div>
+</main>
+</div>
+
+<div id="whiteboard" class="bg-dot">
+<div class="toolbar">
+<button class="btn btn-icon" onclick="closeWhiteboard()" title="Back">←</button>
+<div class="note-menu-wrapper">
+<button class="btn" onclick="toggleNoteMenu(event)">+ Note ▾</button>
+<div class="note-menu" id="note-menu">
+<div class="note-menu-item" onclick="addStickyNote('blank')">📝 Blank Note</div>
+<div class="note-menu-item" onclick="addStickyNote('todo')">☑️ Todo</div>
+<div class="note-menu-item" onclick="addStickyNote('idea')">💡 Idea</div>
+<div class="note-menu-item" onclick="addStickyNote('question')">❓ Question</div>
+<div class="note-menu-item" onclick="addStickyNote('meeting')">👥 Meeting Notes</div>
+<div class="note-menu-item" onclick="addStickyNote('bug')">🐛 Bug Report</div>
+</div>
+</div>
+<button class="btn" onclick="addGroupBox()">+ Group</button>
+<button class="btn" onclick="document.getElementById('image-input').click()">🖼️</button>
+<input type="file" id="image-input" accept="image/*" onchange="handleImageSelect(event)">
+<button class="btn" id="connect-btn" onclick="toggleConnectMode()">🔗 Connect</button>
+<button class="btn" id="dep-btn" onclick="toggleDependencyMode()">⛓️ Dep</button>
+<button class="btn" id="select-btn" onclick="toggleSelectMode()" title="Drag Select">⬚ Select</button>
+<div style="width: 1px; background: var(--border-color); margin: 0 4px;"></div>
+<button class="btn" id="gantt-toggle-btn" onclick="toggleGanttView()">📊 Gantt</button>
+<button class="btn" id="gantt-orientation-btn" onclick="toggleGanttOrientation()" style="display:none;">↕</button>
+<div style="width: 1px; background: var(--border-color); margin: 0 4px;"></div>
+<button class="btn" id="snap-btn" onclick="toggleSnap()">🧲 Snap</button>
+<button class="btn" id="focus-btn" onclick="toggleFocusMode()">🎯 Focus</button>
+<button class="btn" onclick="openIdeaMode()">💡 Ideas</button>
+<button class="btn" onclick="togglePomodoro()">🍅 Pomodoro</button>
+<button class="btn btn-icon" onclick="openTrash()">🗑️</button>
+<button class="btn btn-icon" onclick="clearCanvas()">🧹</button>
+</div>
+<div class="toolbar-right">
+<button class="btn btn-icon" onclick="adjustZoom(-0.1)">−</button>
+<span id="zoom-level" style="display: flex; align-items: center; font-size: 13px; min-width: 40px; justify-content: center;">100%</span>
+<button class="btn btn-icon" onclick="adjustZoom(0.1)">+</button>
+<button class="btn btn-icon" onclick="resetView()">⟲</button>
+<button class="btn btn-icon" onclick="zoomToFit()" title="Zoom to fit">⊞</button>
+<div style="width: 1px; background: var(--border-color); margin: 0 4px;"></div>
+<button class="btn btn-icon" onclick="exportAsImage()" title="PNG">🖼️</button>
+<button class="btn btn-icon" onclick="exportAsMarkdown()" title="Markdown">📄</button>
+<button class="btn btn-icon" onclick="exportProject()" title="JSON">💾</button>
+<button class="btn btn-icon" onclick="openSettingsModal()">⚙️</button>
+<button class="btn btn-icon" onclick="openKeybinds()">⌨️</button>
+</div>
+<div class="toolbar-bottom" id="align-toolbar" style="display:none;">
+<button class="btn btn-icon" onclick="alignSelected('left')">⇤</button>
+<button class="btn btn-icon" onclick="alignSelected('center')">⇔</button>
+<button class="btn btn-icon" onclick="alignSelected('right')">⇥</button>
+<button class="btn btn-icon" onclick="alignSelected('top')">⤒</button>
+<button class="btn btn-icon" onclick="alignSelected('middle')">⇕</button>
+<button class="btn btn-icon" onclick="distributeSelected('horizontal')">⋯</button>
+<button class="btn btn-icon" onclick="distributeSelected('vertical')">⋮</button>
+</div>
+<div class="world-widget" id="world-widget">
+<div class="world-widget-main">
+<span class="world-widget-icon" id="world-weather-icon">🌤️</span>
+<div>
+<div class="world-weather-temp" id="world-weather-temp">--°</div>
+<div class="world-weather-desc" id="world-weather-desc">Loading...</div>
+</div>
+</div>
+<div class="world-location" id="world-location">Detecting location...</div>
+<div class="world-widget-row">
+<span class="world-widget-icon">🕐</span>
+<div>
+<div class="world-time" id="world-time">--:--</div>
+<div class="world-date" id="world-date">---</div>
+</div>
+</div>
+<div class="world-quote" id="world-quote">Loading inspiration...</div>
+</div>
+<div class="stats-bar" id="stats-bar">
+<div class="stat-item">📝 <span class="stat-value" id="stat-notes">0</span></div>
+<div class="stat-item">📦 <span class="stat-value" id="stat-groups">0</span></div>
+<div class="stat-item">🖼️ <span class="stat-value" id="stat-images">0</span></div>
+<div class="stat-item">🔗 <span class="stat-value" id="stat-connections">0</span></div>
+</div>
+<div class="save-indicator" id="save-indicator">💾 Saved</div>
+<div class="pomodoro-widget" id="pomodoro-widget">
+<div>
+<div class="pomodoro-mode" id="pomodoro-mode">Focus</div>
+<div class="pomodoro-time" id="pomodoro-time">25:00</div>
+</div>
+<button class="pomodoro-btn" id="pomodoro-toggle" onclick="togglePomodoroTimer()">▶</button>
+<button class="pomodoro-btn secondary" onclick="resetPomodoro()">↺</button>
+</div>
+<div class="project-countdown-widget" id="project-countdown-widget" style="display: none;">
+<div class="countdown-title">Time Remaining</div>
+<div class="countdown-display">
+<div class="time-unit"><span class="time-value" id="wb-days">00</span><span class="time-label">Days</span></div>
+<div class="time-unit"><span class="time-value" id="wb-hours">00</span><span class="time-label">Hours</span></div>
+<div class="time-unit"><span class="time-value" id="wb-minutes">00</span><span class="time-label">Mins</span></div>
+<div class="time-unit"><span class="time-value" id="wb-seconds">00</span><span class="time-label">Secs</span></div>
+</div>
+</div>
+<div class="minimap" id="minimap">
+<canvas class="minimap-canvas" id="minimap-canvas"></canvas>
+<div class="minimap-viewport" id="minimap-viewport"></div>
+</div>
+<button class="minimap-toggle" onclick="toggleMinimap()">🗺️</button>
+<div class="idea-banner" id="idea-banner">
+<span id="idea-prompt">💡 What if everything was simpler?</span>
+<button class="btn btn-secondary btn-small" onclick="spawnIdeaNote()">Spawn</button>
+<button class="btn btn-secondary btn-small" onclick="nextIdeaPrompt()">Next</button>
+<button class="btn btn-secondary btn-small" onclick="closeIdeaMode()">✕</button>
+</div>
+<div class="pan-hint">🖱️ Middle-click + drag to pan</div>
+<div class="connect-mode-hint" id="connect-hint">Click two elements to connect them. Press ESC to cancel.</div>
+<div id="canvas-wrapper" onpaste="handlePaste(event)">
+<svg id="svg-layer"></svg>
+</div>
+</div>
+
+<div class="context-menu" id="context-menu">
+<div class="context-menu-item" onclick="contextAction('duplicate')">📋 Duplicate</div>
+<div class="context-menu-item" onclick="contextAction('pin')">📌 Toggle Pin</div>
+<div class="context-menu-item" onclick="contextAction('lock')">🔒 Toggle Lock</div>
+<div class="context-menu-divider"></div>
+<div class="context-menu-item" onclick="contextAction('tags')">🏷️ Edit Tags</div>
+<div class="context-menu-item" onclick="contextAction('progress')">📈 Set Progress</div>
+<div class="context-menu-divider"></div>
+<div class="context-menu-item" onclick="contextAction('forward')">⬆️ Bring Forward</div>
+<div class="context-menu-item" onclick="contextAction('back')">⬇️ Send Back</div>
+<div class="context-menu-divider"></div>
+<div class="context-menu-item" onclick="contextAction('delete')" style="color: #dc3545;">🗑️ Delete</div>
+</div>
+
+<div class="modal-overlay" id="project-modal">
+<div class="modal">
+<h2 id="modal-title">New Project</h2>
+<div class="form-group-modal"><label>Project Name</label><input type="text" id="proj-name" placeholder="Enter name..."></div>
+<div class="form-group-modal"><label>Description</label><textarea id="proj-desc" placeholder="Enter description..."></textarea></div>
+<div class="form-group-modal"><label>Tags (press Enter to add)</label><div class="tags-input-container" id="proj-tags-container"><input type="text" class="tags-input" id="proj-tags-input" placeholder="Add tag..." onkeydown="handleTagInput(event, 'proj')"></div></div>
+<div class="deadline-section">
+<div class="deadline-toggle"><input type="checkbox" id="deadline-enabled" onchange="toggleDeadlineDates()"><label for="deadline-enabled" style="margin: 0; cursor: pointer;">Set Deadline (enables Gantt view)</label></div>
+<div class="deadline-dates" id="deadline-dates">
+<div class="form-group-modal" style="margin: 0;"><label>Start Date</label><input type="datetime-local" id="proj-start-date"></div>
+<div class="form-group-modal" style="margin: 0;"><label>End Date</label><input type="datetime-local" id="proj-end-date"></div>
+</div>
+</div>
+<div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('project-modal')">Cancel</button><button class="btn btn-primary" onclick="saveProject()">Save</button></div>
+</div>
+</div>
+
+<div class="modal-overlay" id="template-modal">
+<div class="modal wide">
+<h2>Start from Template</h2>
+<div class="templates-grid" id="templates-grid"></div>
+<div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('template-modal')">Cancel</button></div>
+</div>
+</div>
+
+<div class="modal-overlay" id="trash-modal">
+<div class="modal">
+<h2>🗑️ Trash</h2>
+<p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Deleted items kept temporarily.</p>
+<div class="trash-list" id="trash-list"></div>
+<div class="modal-actions"><button class="btn btn-danger btn-sm" onclick="clearTrash()">Empty Trash</button><button class="btn btn-ghost" onclick="closeModal('trash-modal')">Close</button></div>
+</div>
+</div>
+
+<div class="modal-overlay" id="tags-modal">
+<div class="modal">
+<h2>Edit Tags</h2>
+<div class="form-group-modal"><div class="tags-input-container" id="edit-tags-container"><input type="text" class="tags-input" id="edit-tags-input" placeholder="Add tag..." onkeydown="handleTagInput(event, 'edit')"></div></div>
+<div class="modal-actions"><button class="btn btn-primary" onclick="saveEditTags()">Save</button></div>
+</div>
+</div>
+
+<div class="modal-overlay" id="progress-modal">
+<div class="modal">
+<h2>Set Progress</h2>
+<div class="form-group-modal"><label>Progress: <span id="progress-value-label">0</span>%</label><input type="range" id="progress-slider" min="0" max="100" value="0" oninput="document.getElementById('progress-value-label').textContent = this.value"></div>
+<div class="modal-actions"><button class="btn btn-primary" onclick="saveProgress()">Save</button></div>
+</div>
+</div>
+
+<div class="modal-overlay" id="settings-modal">
+<div class="modal wide">
+<h2>Settings</h2>
+<div class="setting-row">
+<label>Background Style</label>
+<select id="setting-bg" onchange="applySettings()" class="form-select" style="width:180px;">
+<option value="bg-dot">Dot Grid</option>
+<option value="bg-graph">Graph Paper</option>
+<option value="bg-blank">Blank</option>
+<option value="bg-falling-stars">✨ Falling Stars</option>
+<option value="bg-shooting-stars">✨ Star Field</option>
+<option value="bg-aurora">🌈 Aurora</option>
+<option value="bg-cyberpunk">🌃 Cyberpunk</option>
+<option value="bg-paper">📜 Minimal Paper</option>
+<option value="bg-neon">💠 Dark Neon Grid</option>
+<option value="bg-pastel">🌸 Soft Pastel</option>
+</select>
+</div>
+<div class="setting-row">
+<label>Theme Preset</label>
+<div style="flex: 1;">
+<div class="theme-presets-grid">
+<div class="theme-preset default active" onclick="applyThemePreset('default')">Default</div>
+<div class="theme-preset cyberpunk" onclick="applyThemePreset('cyberpunk')">Cyberpunk</div>
+<div class="theme-preset paper" onclick="applyThemePreset('paper')">Minimal Paper</div>
+<div class="theme-preset neon" onclick="applyThemePreset('neon')">Dark Neon</div>
+<div class="theme-preset pastel" onclick="applyThemePreset('pastel')">Soft Pastel</div>
+</div>
+</div>
+</div>
+<div class="setting-row"><label>Snap Grid Size</label><input type="number" id="setting-grid-size" value="20" min="5" max="100" style="width: 100px;" onchange="saveGridSize()"></div>
+<div class="setting-row"><label>Urgent notes glow red</label><input type="checkbox" id="setting-urgent-glow" onchange="saveUrgentGlow()" style="width:auto;"></div>
+<div class="modal-actions">
+<button class="btn btn-ghost" onclick="clearAllData()">🗑️ Clear All Data</button>
+<button class="btn btn-primary" onclick="closeModal('settings-modal')">Done</button>
+</div>
+</div>
+</div>
+
+<div class="modal-overlay" id="keybinds-modal">
+<div class="modal">
+<h2>Keyboard Shortcuts</h2>
+<div class="keybinds-grid">
+<div class="keybind-item"><span class="keybind-desc">New Note</span><div class="keybind-keys"><span class="key">N</span></div></div>
+<div class="keybind-item"><span class="keybind-desc">New Group</span><div class="keybind-keys"><span class="key">G</span></div></div>
+<div class="keybind-item"><span class="keybind-desc">Connect</span><div class="keybind-keys"><span class="key">C</span></div></div>
+<div class="keybind-item"><span class="keybind-desc">Dependency</span><div class="keybind-keys"><span class="key">D</span></div></div>
+<div class="keybind-item"><span class="keybind-desc">Drag Select</span><div class="keybind-keys"><span class="key">Q</span></div></div>
+<div class="keybind-item"><span class="keybind-desc">Gantt</span><div class="keybind-keys"><span class="key">Tab</span></div></div>
+<div class="keybind-item"><span class="keybind-desc">Snap</span><div class="keybind-keys"><span class="key">S</span></div></div>
+<div class="keybind-item"><span class="keybind-desc">Focus</span><div class="keybind-keys"><span class="key">F</span></div></div>
+<div class="keybind-item"><span class="keybind-desc">Search</span><div class="keybind-keys"><span class="key">Ctrl</span><span class="key">F</span></div></div>
+<div class="keybind-item"><span class="keybind-desc">Undo</span><div class="keybind-keys"><span class="key">Ctrl</span><span class="key">Z</span></div></div>
+<div class="keybind-item"><span class="keybind-desc">Redo</span><div class="keybind-keys"><span class="key">Ctrl</span><span class="key">Y</span></div></div>
+<div class="keybind-item"><span class="keybind-desc">PNG</span><div class="keybind-keys"><span class="key">Ctrl</span><span class="key">E</span></div></div>
+<div class="keybind-item"><span class="keybind-desc">Markdown</span><div class="keybind-keys"><span class="key">Ctrl</span><span class="key">M</span></div></div>
+<div class="keybind-item"><span class="keybind-desc">JSON</span><div class="keybind-keys"><span class="key">Ctrl</span><span class="key">S</span></div></div>
+<div class="keybind-item"><span class="keybind-desc">Zoom</span><div class="keybind-keys"><span class="key">Ctrl</span><span class="key">+/-</span></div></div>
+<div class="keybind-item"><span class="keybind-desc">Fit View</span><div class="keybind-keys"><span class="key">Ctrl</span><span class="key">1</span></div></div>
+<div class="keybind-item"><span class="keybind-desc">Pan</span><div class="keybind-keys"><span class="key">Middle</span><span class="key">Drag</span></div></div>
+<div class="keybind-item"><span class="keybind-desc">Cancel</span><div class="keybind-keys"><span class="key">Esc</span></div></div>
+</div>
+<div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('keybinds-modal')">Close</button></div>
+</div>
+</div>
+
+<div class="filter-sidebar" id="filter-sidebar">
+<h3>Filter Projects</h3>
+<div class="filter-section"><h4>Tags</h4><div id="filter-tags-list"></div></div>
+<div class="filter-section">
+<h4>Status</h4>
+<label class="filter-option"><input type="checkbox" id="filter-has-deadline"> Has Deadline</label>
+<label class="filter-option"><input type="checkbox" id="filter-overdue"> Overdue</label>
+<label class="filter-option"><input type="checkbox" id="filter-urgent"> Urgent (&lt;24h)</label>
+</div>
+<div class="modal-actions">
+<button class="btn btn-secondary" onclick="clearFilters()">Clear</button>
+<button class="btn btn-primary" onclick="applyFilters(); toggleFilterSidebar()">Apply</button>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div id="radio-player" class="radio-player">
+<div class="radio-eq" onclick="toggleRadioExpand()"><div class="radio-eq-bar"></div><div class="radio-eq-bar"></div><div class="radio-eq-bar"></div><div class="radio-eq-bar"></div></div>
+<div class="radio-controls">
+<div class="radio-station-name" id="radio-station-name">Lofi Cafe</div>
+<div class="radio-buttons">
+<button class="radio-btn" onclick="prevStation()"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
+<button class="radio-btn play-btn" id="radio-play-btn" onclick="togglePlay()"><svg id="play-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+<button class="radio-btn" onclick="nextStation()"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></button>
+</div>
+<input type="range" id="radio-volume" min="0" max="1" step="0.05" value="0.5" oninput="changeVolume(this.value)">
+</div>
+</div>
+<audio id="radio-audio"></audio>
+
+<script>
+const DB_NAME = 'LocalWhiteboardDB';
+const DB_VERSION = 1;
+let db;
+let currentProject = null;
+let editingProjectId = null;
+let isConnectMode = false, isDependencyMode = false, isSelectMode = false;
+let connectSource = null;
+let dragItem = null, dragOffsetX = 0, dragOffsetY = 0;
+let currentZoom = 1, panX = 0, panY = 0;
+let isPanning = false, panStartX = 0, panStartY = 0, panStartPanX = 0, panStartPanY = 0;
+let isResizing = false, resizeItem = null;
+let currentSort = 'default';
+let selectedElements = [];
+let isGanttResizing = false, ganttResizeIndex = -1, ganttResizeOrientation = 'vertical', ganttResizeStart = 0, ganttResizeOriginalSize = 0;
+let snapEnabled = false, gridSize = 20;
+let focusMode = false, contextTarget = null, minimapVisible = true, ideaMode = false;
+let konamiProgress = 0;
+const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+let history = [], historyIndex = -1;
+const MAX_HISTORY = 100;
+let trash = [];
+let currentTagEditId = null, currentEditTags = [];
+let urgentGlowEnabled = false;
+let isDragSelecting = false, dragSelectStart = null, dragSelectBox = null;
+let pomodoroActive = false, pomodoroRunning = false, pomodoroTime = 25 * 60, pomodoroMode = 'focus', pomodoroInterval = null;
+const IDEA_PROMPTS = ["💡 What if everything was simpler?","💡 What would you build with unlimited time?","💡 What problem keeps coming back?","💡 What's the smallest version of this idea?","💡 Who would benefit most from this?","💡 What's the opposite approach?","💡 What would you remove first?","💡 What's the most fun version?","💡 What assumption are you making?","💡 What's the real problem underneath?","💡 If you had 1 day, what would you ship?","💡 What would make this delightful?"];
+let currentIdeaIndex = 0;
+const TEMPLATES = [
+{ name: "Brainstorm", description: "Central idea with radiating thoughts", elements: [
+{ type: 'note', x: 1400, y: 1400, width: 240, height: 180, content: '🎯 Main Idea', color: 'note-yellow' },
+{ type: 'note', x: 1100, y: 1200, width: 200, height: 140, content: 'Thought 1', color: 'note-blue' },
+{ type: 'note', x: 1700, y: 1200, width: 200, height: 140, content: 'Thought 2', color: 'note-green' },
+{ type: 'note', x: 1100, y: 1600, width: 200, height: 140, content: 'Thought 3', color: 'note-pink' },
+{ type: 'note', x: 1700, y: 1600, width: 200, height: 140, content: 'Thought 4', color: 'note-red' }
+]},
+{ name: "Sprint Planning", description: "To Do / Doing / Done columns", elements: [
+{ type: 'group', x: 200, y: 200, width: 400, height: 600, title: '📋 To Do' },
+{ type: 'group', x: 700, y: 200, width: 400, height: 600, title: '⚡ Doing' },
+{ type: 'group', x: 1200, y: 200, width: 400, height: 600, title: '✅ Done' }
+]},
+{ name: "Story Mapping", description: "User activities → tasks flow", elements: [
+{ type: 'note', x: 200, y: 200, width: 200, height: 100, content: '👤 Activity 1', color: 'note-yellow' },
+{ type: 'note', x: 450, y: 200, width: 200, height: 100, content: '👤 Activity 2', color: 'note-yellow' },
+{ type: 'note', x: 200, y: 350, width: 180, height: 100, content: 'Task 1.1', color: 'note-blue' },
+{ type: 'note', x: 400, y: 350, width: 180, height: 100, content: 'Task 1.2', color: 'note-blue' }
+]},
+{ name: "Personal Task Board", description: "Today / Week / Goals", elements: [
+{ type: 'group', x: 200, y: 200, width: 500, height: 700, title: '🌅 Today' },
+{ type: 'group', x: 800, y: 200, width: 500, height: 700, title: '📅 This Week' },
+{ type: 'group', x: 1400, y: 200, width: 500, height: 700, title: '🎯 Goals' }
+]},
+{ name: "Blank Canvas", description: "Start fresh", elements: [] }
+];
+const THEME_PRESETS = {
+default: { text: '#e4e6f0', primary: '#6c5ce7', toolbar: '#1a1e2b', card: '#1a1e2b', canvas: '#e5e5f7' },
+cyberpunk: { text: '#e0e0ff', primary: '#ff00ff', toolbar: '#1a0030', card: '#2d004d', canvas: '#0a0015' },
+paper: { text: '#3d3426', primary: '#8b7355', toolbar: '#faf8f3', card: '#ffffff', canvas: '#faf8f3' },
+neon: { text: '#e0ffe0', primary: '#00ffaa', toolbar: '#1a1a2e', card: '#16213e', canvas: '#0a0a1a' },
+pastel: { text: '#5a4a5a', primary: '#d4789c', toolbar: '#fdf6f0', card: '#ffffff', canvas: '#fdf6f0' }
+};
+const QUOTES = [
+"The best way to predict the future is to create it.",
+"Simplicity is the ultimate sophistication.",
+"Make it work, make it right, make it fast.",
+"Done is better than perfect.",
+"The details are not the details. They make the design.",
+"Good design is obvious. Great design is transparent.",
+"Less is more.",
+"Design is not just what it looks like. Design is how it works.",
+"First, solve the problem. Then, write the code.",
+"Code is like humor. When you have to explain it, it's bad."
+];
+
+const defaultGenres = ["Platformer","Roguelike","Top-down Shooter","Tower Defense","Puzzle","Metroidvania","RPG","Strategy","Stealth","Rhythm Game","Survival","Fighting","Racing","Visual Novel","Card Game","Simulation","Adventure","Hack and Slash"];
+const defaultMechanics = ["Dash","Grappling Hook","Wall Running","Time Rewind","Physics Manipulation","Crafting","Deck Building","Resource Management","Stealth","Bullet Reflection","Parry","Double Jump","Teleportation","Swinging","Mining","Combo System"];
+const defaultThemes = ["Pirates","Space","Haunted Mansion","Factory","Ancient Egypt","Cyberpunk","Deep Ocean","Robots","Food","Medieval","Post-Apocalyptic","Wild West","Underwater","Dream World","Steampunk","Neon City","Arctic"];
+const defaultRestrictions = ["One Button","No Jumping","One Life","Limited Vision","Friendly Fire","Everything Is Physics","Every Enemy Splits","No Combat","No UI","You Cannot Stop Moving","Single Screen","No Pausing","Permadeath","No Healing","Fixed Camera"];
+const defaultAchievements = [
+{id:"first_idea",name:"First Idea",desc:"Generate your first idea",icon:"💡"},
+{id:"idea_machine",name:"Idea Machine",desc:"Generate 50 ideas",icon:"🤖"},
+{id:"collector",name:"Collector",desc:"Save 10 ideas",icon:"📚"},
+{id:"developer",name:"Game Developer",desc:"Create a project from an idea",icon:"🎮"},
+{id:"experimental",name:"Experimental",desc:"Use 10 genres",icon:"🧪"},
+{id:"perfectionist",name:"Perfectionist",desc:"Rate an idea 5 stars",icon:"⭐"},
+{id:"project_master",name:"Project Master",desc:"Create 5 projects",icon:"🏆"}
+];
+
+let appData = {
+savedIdeas: [],
+stats: { generated: 0, saved: 0, completed: 0, notesSpawned: 0 },
+customCategories: { genres: [], mechanics: [], themes: [], restrictions: [] },
+achievements: {},
+genresUsed: [],
+settings: { background: 'bg-dot', gridSize: 20 }
+};
+let currentIdea = null, currentIdeasTab = 'all';
+
+function loadAppData() {
+const s = localStorage.getItem('studio_app_data');
+if (s) try { appData = { ...appData, ...JSON.parse(s) }; } catch(e) {}
+}
+function saveAppData() {
+localStorage.setItem('studio_app_data', JSON.stringify(appData));
+}
+function seededRandom(s) { const x = Math.sin(s++) * 10000; return x - Math.floor(x); }
+function getRandomItem(a, s = null) {
+if (s !== null) return a[Math.floor(seededRandom(s) * a.length)];
+return a[Math.floor(Math.random() * a.length)];
+}
+function calculateDifficulty() {
+const v = parseInt(document.getElementById("gen-deadline-value").value) || 2;
+const u = document.getElementById("gen-deadline-unit").value;
+let m = v;
+if (u === "hours") m = v * 60;
+if (u === "days") m = v * 60 * 24;
+if (u === "weeks") m = v * 60 * 24 * 7;
+if (m <= 60) return "extreme";
+if (m <= 240) return "hard";
+if (m <= 480) return "medium";
+return "easy";
+}
+function updateDifficultyDisplay() {
+const d = calculateDifficulty();
+const labels = { extreme: "⚫ Extreme", hard: "🔴 Hard", medium: "🟡 Medium", easy: "🟢 Easy" };
+document.getElementById("difficulty-display").innerHTML = `<div class="difficulty-badge difficulty-${d}">${labels[d]}</div>`;
+}
+function getDifficultyPools(diff, team) {
+let g = [...defaultGenres, ...appData.customCategories.genres];
+let m = [...defaultMechanics, ...appData.customCategories.mechanics];
+let t = [...defaultThemes, ...appData.customCategories.themes];
+let r = [...defaultRestrictions, ...appData.customCategories.restrictions];
+if (diff === "extreme" || team === "solo") {
+g = g.filter(x => ["Puzzle","Platformer","Card Game"].includes(x));
+m = m.filter(x => ["Dash","Parry","Double Jump"].includes(x));
+}
+return {
+genres: g.length ? g : defaultGenres,
+mechanics: m.length ? m : defaultMechanics,
+themes: t.length ? t : defaultThemes,
+restrictions: r.length ? r : defaultRestrictions
+};
+}
+function generatePitch(g, m, t, r, d) {
+const titles = [`${t} ${g}`, `Project: ${t}`, `The ${m} ${t}`, `${t} Protocol`, `Echoes of ${t}`];
+const descs = [
+`A ${d} ${g.toLowerCase()} set in a ${t.toLowerCase()} world. Use ${m.toLowerCase()} to overcome challenges under the ${r.toLowerCase()} constraint.`,
+`Navigate a ${t.toLowerCase()} world in this ${g.toLowerCase()}. Master ${m.toLowerCase()} while ${r.toLowerCase()} changes everything.`
+];
+const loops = [`Explore → ${m} → Overcome → Upgrade`, `Spawn → ${m} → Survive → Repeat`];
+const dev = { extreme: "Under 1 hour", hard: "1-4 hours", medium: "4-8 hours", easy: "Days to weeks" };
+return { title: getRandomItem(titles), description: getRandomItem(descs), loop: getRandomItem(loops), devTime: dev[d] };
+}
+function generateNewIdea() {
+const seedInput = document.getElementById("gen-seed").value;
+const seed = seedInput ? parseInt(seedInput) : Math.floor(Math.random() * 1000000);
+const diff = calculateDifficulty();
+const team = document.getElementById("gen-team-size").value;
+const pools = getDifficultyPools(diff, team);
+let genre = getRandomItem(pools.genres, seed);
+let mechanic = getRandomItem(pools.mechanics, seed + 1);
+let theme = getRandomItem(pools.themes, seed + 2);
+let restriction = getRandomItem(pools.restrictions, seed + 3);
+if (document.getElementById("jam-mode").checked) {
+if (document.getElementById("jam-physics").checked) mechanic = "Physics Manipulation";
+if (document.getElementById("jam-replayable").checked) restriction = "Procedural Generation";
+}
+if (!appData.genresUsed.includes(genre)) appData.genresUsed.push(genre);
+appData.stats.generated++;
+const pitch = generatePitch(genre, mechanic, theme, restriction, diff);
+currentIdea = {
+id: 'idea_' + Date.now(), seed, title: pitch.title, description: pitch.description,
+genre, mechanic, theme, restriction, difficulty: diff,
+loop: pitch.loop, devTime: pitch.devTime,
+rating: 0, favorite: false, createdAt: new Date().toISOString()
+};
+displayIdea(currentIdea);
+checkAchievements();
+saveAppData();
+updateDashboardStats();
+}
+function displayIdea(i) {
+document.getElementById("idea-result-container").style.display = "block";
+document.getElementById("res-title").textContent = i.title;
+const d = document.getElementById("res-difficulty");
+d.textContent = i.difficulty.toUpperCase();
+d.className = "idea-tag difficulty-" + i.difficulty;
+document.getElementById("res-seed").textContent = "Seed: " + i.seed;
+document.getElementById("res-description").textContent = i.description;
+document.getElementById("res-genre").textContent = i.genre;
+document.getElementById("res-mechanic").textContent = i.mechanic;
+document.getElementById("res-theme").textContent = i.theme;
+document.getElementById("res-restriction").textContent = i.restriction;
+document.getElementById("res-loop").textContent = i.loop;
+document.getElementById("res-devtime").textContent = i.devTime;
+updateStars(i.rating || 0);
+}
+function setRating(r) {
+if (!currentIdea) return;
+currentIdea.rating = r;
+updateStars(r);
+if (r === 5) checkAchievements();
+saveAppData();
+}
+function updateStars(r) {
+document.querySelectorAll("#rating-stars .star").forEach((s, i) => s.classList.toggle("active", i < r));
+}
+function improveCurrentIdea() {
+if (!currentIdea) return;
+currentIdea.title = currentIdea.title.replace("Project:", "The").replace("Protocol", "Chronicles");
+currentIdea.description = `An evolved ${currentIdea.difficulty} experience where ${currentIdea.mechanic.toLowerCase()} is the focus. Set in a ${currentIdea.theme.toLowerCase()} world with the ${currentIdea.restriction.toLowerCase()} constraint.`;
+displayIdea(currentIdea);
+showToast("✨ Improved!");
+}
+function saveCurrentIdea() {
+if (!currentIdea) return;
+if (!appData.savedIdeas.find(i => i.id === currentIdea.id)) {
+appData.savedIdeas.unshift({ ...currentIdea });
+appData.stats.saved++;
+checkAchievements();
+saveAppData();
+showToast("💾 Saved!");
+updateDashboardStats();
+renderSavedIdeas();
+renderFavorites();
+} else showToast("Already saved");
+}
+function convertIdeaToProject() {
+if (!currentIdea) return;
+const i = currentIdea;
+const project = {
+id: Date.now().toString(),
+name: i.title,
+description: i.description,
+tags: [i.genre, i.theme, i.difficulty],
+deadline: null,
+viewMode: 'freeform',
+ganttOrientation: 'vertical',
+ganttColumnSizes: [],
+elements: [
+{ id: 'el_' + Date.now() + '_1', type: 'note', x: 200, y: 200, width: 320, height: 180, content: `🎮 ${i.title}\n\n${i.description}`, color: 'note-yellow' },
+{ id: 'el_' + Date.now() + '_2', type: 'note', x: 560, y: 200, width: 220, height: 110, content: `🎯 Genre\n${i.genre}\n\n🔧 Mechanic\n${i.mechanic}`, color: 'note-blue' },
+{ id: 'el_' + Date.now() + '_3', type: 'note', x: 560, y: 330, width: 220, height: 110, content: `🌍 Theme\n${i.theme}\n\n🚧 Restriction\n${i.restriction}`, color: 'note-green' },
+{ id: 'el_' + Date.now() + '_4', type: 'note', x: 200, y: 420, width: 580, height: 100, content: `🔄 Core Loop: ${i.loop}\n\n⏱️ Estimated Dev Time: ${i.devTime}`, color: 'note-pink' },
+{ id: 'el_' + Date.now() + '_5', type: 'group', x: 200, y: 560, width: 580, height: 320, title: '📋 Development Tasks' }
+],
+connections: [],
+dependencies: [],
+theme: null,
+createdAt: new Date().toISOString(),
+sourceIdeaId: i.id
+};
+saveToDB(project).then(() => {
+saveCurrentIdea();
+const saved = appData.savedIdeas.find(x => x.id === currentIdea.id);
+if (saved) saved.convertedToProject = true;
+checkAchievements();
+saveAppData();
+switchView('dashboard');
+renderDashboard();
+showToast("📁 Project created!");
+setTimeout(() => openWhiteboard(project), 300);
+});
+}
+function exportIdea(f) {
+if (!currentIdea) return;
+const i = currentIdea;
+const t = `TITLE: ${i.title}\nGENRE: ${i.genre}\nMECHANIC: ${i.mechanic}\nTHEME: ${i.theme}\nRESTRICTION: ${i.restriction}\n\n${i.description}\n\nLOOP: ${i.loop}`;
+navigator.clipboard.writeText(t).then(() => showToast("📋 Copied!"));
+}
+function toggleFavoriteIdea(id) {
+const i = appData.savedIdeas.find(x => x.id === id);
+if (i) { i.favorite = !i.favorite; saveAppData(); renderSavedIdeas(); renderFavorites(); }
+}
+function deleteSavedIdea(id) {
+if (!confirm("Delete?")) return;
+appData.savedIdeas = appData.savedIdeas.filter(i => i.id !== id);
+saveAppData();
+renderSavedIdeas();
+renderFavorites();
+updateDashboardStats();
+}
+function loadIdea(id) {
+const i = appData.savedIdeas.find(x => x.id === id);
+if (i) { currentIdea = { ...i }; switchView('generator'); displayIdea(currentIdea); }
+}
+function convertSavedToProject(id) {
+const i = appData.savedIdeas.find(x => x.id === id);
+if (i) { currentIdea = i; convertIdeaToProject(); }
+}
+function switchIdeasTab(tab, el) {
+currentIdeasTab = tab;
+document.querySelectorAll('#view-saved-ideas .tab').forEach(t => t.classList.remove('active'));
+if (el) el.classList.add('active');
+renderSavedIdeas();
+}
+function renderSavedIdeas() {
+const grid = document.getElementById('saved-ideas-grid');
+const search = (document.getElementById('ideas-search')?.value || '').toLowerCase();
+let ideas = appData.savedIdeas.filter(i => !search || i.title.toLowerCase().includes(search) || i.genre.toLowerCase().includes(search));
+if (currentIdeasTab === 'recent') ideas = ideas.slice(0, 12);
+else if (currentIdeasTab === 'top-rated') ideas = ideas.filter(i => i.rating >= 4).sort((a,b) => b.rating - a.rating);
+if (!ideas.length) {
+grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">💡</div><h3>No saved ideas</h3><p>Generate and save ideas from the Generator.</p></div>';
+return;
+}
+grid.innerHTML = ideas.map(i => {
+const d = new Date(i.createdAt).toLocaleDateString();
+return `<div class="idea-card">
+<div class="idea-fav ${i.favorite?'active':''}" onclick="event.stopPropagation();toggleFavoriteIdea('${i.id}')">${i.favorite?'⭐':'☆'}</div>
+<div class="idea-card-title">${escapeHtml(i.title)}</div>
+<div class="idea-card-meta">${d} • <span class="difficulty-${i.difficulty}" style="font-weight:700;">${i.difficulty}</span> • ${'★'.repeat(i.rating||0)}</div>
+<div class="idea-card-tags">
+<span class="idea-card-tag">${escapeHtml(i.genre)}</span>
+<span class="idea-card-tag">${escapeHtml(i.theme)}</span>
+</div>
+<div class="idea-card-actions">
+<button class="idea-card-btn" onclick="loadIdea('${i.id}')">Open</button>
+<button class="idea-card-btn" onclick="convertSavedToProject('${i.id}')">📁 Project</button>
+<button class="idea-card-btn danger" onclick="deleteSavedIdea('${i.id}')">✕</button>
+</div>
+</div>`;
+}).join('');
+}
+function renderFavorites() {
+const grid = document.getElementById('favorites-grid');
+const favs = appData.savedIdeas.filter(i => i.favorite);
+if (!favs.length) {
+grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⭐</div><h3>No favorites</h3><p>Star ideas to see them here.</p></div>';
+return;
+}
+grid.innerHTML = favs.map(i => `<div class="idea-card">
+<div class="idea-fav active" onclick="toggleFavoriteIdea('${i.id}')">⭐</div>
+<div class="idea-card-title">${escapeHtml(i.title)}</div>
+<div class="idea-card-meta">${'★'.repeat(i.rating||0)}</div>
+<div class="idea-card-tags">
+<span class="idea-card-tag">${escapeHtml(i.genre)}</span>
+<span class="idea-card-tag">${escapeHtml(i.theme)}</span>
+</div>
+<div class="idea-card-actions">
+<button class="idea-card-btn" onclick="loadIdea('${i.id}')">Open</button>
+<button class="idea-card-btn" onclick="convertSavedToProject('${i.id}')">📁 Project</button>
+</div>
+</div>`).join('');
+}
+function renderAchievements() {
+document.getElementById('achievements-grid').innerHTML = defaultAchievements.map(a =>
+`<div class="achievement-card ${appData.achievements[a.id]?'unlocked':''}">
+<div class="achievement-icon">${a.icon}</div>
+<div>
+<div class="achievement-name">${a.name}</div>
+<div class="achievement-desc">${a.desc}</div>
+</div>
+</div>`
+).join('');
+}
+function checkAchievements() {
+let c = false;
+const checks = {
+first_idea: appData.stats.generated >= 1,
+idea_machine: appData.stats.generated >= 50,
+collector: appData.stats.saved >= 10,
+developer: appData.savedIdeas.some(i => i.convertedToProject),
+experimental: appData.genresUsed.length >= 10,
+perfectionist: appData.savedIdeas.some(i => i.rating === 5) || (currentIdea && currentIdea.rating === 5)
+};
+getAllFromDB().then(p => {
+checks.project_master = p.length >= 5;
+for (const [id, met] of Object.entries(checks)) {
+if (met && !appData.achievements[id]) {
+appData.achievements[id] = true;
+c = true;
+const a = defaultAchievements.find(x => x.id === id);
+if (a) showToast(`🏆 ${a.name}!`);
+}
+}
+if (c) { saveAppData(); renderAchievements(); }
+});
+}
+function updateDashboardStats() {
+document.getElementById('stat-generated').textContent = appData.stats.generated;
+document.getElementById('stat-saved').textContent = appData.savedIdeas.length;
+document.getElementById('saved-count').textContent = appData.savedIdeas.length;
+getAllFromDB().then(p => {
+document.getElementById('stat-projects').textContent = p.length;
+document.getElementById('stat-completed').textContent = p.filter(x => x.status === 'Completed').length;
+});
+}
+function switchView(viewId) {
+document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+const view = document.getElementById('view-' + viewId);
+if (view) view.classList.add('active');
+const nav = document.querySelector(`.nav-item[data-view="${viewId}"]`);
+if (nav) nav.classList.add('active');
+const titles = { dashboard: 'Dashboard', generator: 'Generate Idea', 'saved-ideas': 'Saved Ideas', favorites: 'Favorites', achievements: 'Achievements' };
+document.getElementById('header-title').textContent = titles[viewId] || 'Studio';
+if (viewId === 'dashboard') renderDashboard();
+if (viewId === 'saved-ideas') renderSavedIdeas();
+if (viewId === 'favorites') renderFavorites();
+if (viewId === 'achievements') renderAchievements();
+if (viewId === 'generator') updateDifficultyDisplay();
+}
+document.querySelectorAll('.nav-item[data-view]').forEach(item => item.addEventListener('click', () => switchView(item.dataset.view)));
+
+function initDB() {
+return new Promise((resolve, reject) => {
+const request = indexedDB.open(DB_NAME, DB_VERSION);
+request.onupgradeneeded = e => {
+db = e.target.result;
+if (!db.objectStoreNames.contains('projects')) db.createObjectStore('projects', { keyPath: 'id' });
+};
+request.onsuccess = e => { db = e.target.result; resolve(db); renderDashboard(); };
+request.onerror = e => reject(e);
+});
+}
+function saveToDB(project) {
+const tx = db.transaction(['projects'], 'readwrite');
+tx.objectStore('projects').put(project);
+return new Promise(r => tx.oncomplete = r);
+}
+function getAllFromDB() {
+return new Promise(r => {
+const tx = db.transaction(['projects'], 'readonly');
+const req = tx.objectStore('projects').getAll();
+req.onsuccess = () => r(req.result);
+});
+}
+function handleImportFile(e) {
+const file = e.target.files[0];
+if (!file) return;
+const reader = new FileReader();
+reader.onload = async ev => {
+try {
+const data = JSON.parse(ev.target.result);
+if (!data.name || !Array.isArray(data.elements)) { alert('❌ Invalid project file.'); return; }
+const existing = await new Promise(resolve => {
+const tx = db.transaction(['projects'], 'readonly');
+const req = tx.objectStore('projects').get(data.id);
+req.onsuccess = () => resolve(req.result);
+});
+let action = 'new';
+if (existing) {
+const choice = confirm(`Project "${existing.name}" exists.\nOK = OVERWRITE\nCancel = IMPORT AS NEW`);
+action = choice ? 'overwrite' : 'new';
+}
+if (action === 'new') {
+data.id = Date.now().toString();
+const idMap = {};
+if (data.elements) data.elements.forEach(el => {
+const newId = 'el_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+idMap[el.id] = newId; el.id = newId;
+});
+if (data.connections) data.connections.forEach(conn => {
+if (idMap[conn.from]) conn.from = idMap[conn.from];
+if (idMap[conn.to]) conn.to = idMap[conn.to];
+});
+if (data.dependencies) data.dependencies.forEach(dep => {
+if (idMap[dep.from]) dep.from = idMap[dep.from];
+if (idMap[dep.to]) dep.to = idMap[dep.to];
+});
+data.name = data.name + ' (imported)';
+}
+await saveToDB(data);
+renderDashboard();
+showToast(`✅ Imported: ${data.name}`);
+} catch (err) { alert('❌ Failed: ' + err.message); }
+};
+reader.readAsText(file);
+e.target.value = '';
+}
+function pushHistory() {
+if (!currentProject) return;
+history = history.slice(0, historyIndex + 1);
+history.push(JSON.parse(JSON.stringify({ elements: currentProject.elements, connections: currentProject.connections, dependencies: currentProject.dependencies || [] })));
+if (history.length > MAX_HISTORY) history.shift();
+historyIndex = history.length - 1;
+}
+function undo() {
+if (historyIndex <= 0) { showToast("Nothing to undo"); return; }
+historyIndex--;
+const s = JSON.parse(JSON.stringify(history[historyIndex]));
+currentProject.elements = s.elements;
+currentProject.connections = s.connections;
+currentProject.dependencies = s.dependencies || [];
+renderWhiteboard(); saveCurrentProjectState(); showToast("↩️ Undone");
+}
+function redo() {
+if (historyIndex >= history.length - 1) { showToast("Nothing to redo"); return; }
+historyIndex++;
+const s = JSON.parse(JSON.stringify(history[historyIndex]));
+currentProject.elements = s.elements;
+currentProject.connections = s.connections;
+currentProject.dependencies = s.dependencies || [];
+renderWhiteboard(); saveCurrentProjectState(); showToast("↪️ Redone");
+}
+
+let appSettings = { background: 'bg-dot' };
+function loadSettings() {
+const s = localStorage.getItem('wb_settings');
+if (s) appSettings = JSON.parse(s);
+document.getElementById('setting-bg').value = appSettings.background;
+document.getElementById('setting-grid-size').value = appSettings.gridSize || 20;
+gridSize = appSettings.gridSize || 20;
+urgentGlowEnabled = appSettings.urgentGlow || false;
+document.getElementById('setting-urgent-glow').checked = urgentGlowEnabled;
+applySettings();
+}
+function saveGridSize() {
+gridSize = parseInt(document.getElementById('setting-grid-size').value) || 20;
+appSettings.gridSize = gridSize;
+localStorage.setItem('wb_settings', JSON.stringify(appSettings));
+}
+function saveUrgentGlow() {
+urgentGlowEnabled = document.getElementById('setting-urgent-glow').checked;
+appSettings.urgentGlow = urgentGlowEnabled;
+localStorage.setItem('wb_settings', JSON.stringify(appSettings));
+renderWhiteboard();
+}
+function applyThemePreset(preset) {
+const t = THEME_PRESETS[preset];
+if (!t) return;
+document.documentElement.style.setProperty('--text', t.text);
+document.documentElement.style.setProperty('--text-primary', t.text);
+document.documentElement.style.setProperty('--primary', t.primary);
+document.documentElement.style.setProperty('--toolbar-bg', t.toolbar);
+document.documentElement.style.setProperty('--card-bg', t.card);
+document.documentElement.style.setProperty('--canvas-bg', t.canvas);
+document.querySelectorAll('.theme-preset').forEach(p => p.classList.remove('active'));
+document.querySelector(`.theme-preset.${preset}`)?.classList.add('active');
+showToast(`🎨 ${preset} theme`);
+}
+function applySettings() {
+appSettings.background = document.getElementById('setting-bg').value;
+localStorage.setItem('wb_settings', JSON.stringify(appSettings));
+const wb = document.getElementById('whiteboard');
+wb.className = '';
+wb.classList.add(appSettings.background);
+if (wb.classList.contains('active')) wb.classList.add('active');
+document.querySelectorAll('.starfall, .stars, .chase').forEach(el => el.remove());
+wb.querySelectorAll('canvas.bg-canvas').forEach(c => c.remove());
+if (appSettings.background === 'bg-falling-stars') {
+const container = document.createElement('div');
+container.className = 'starfall';
+for (let i = 0; i < 20; i++) {
+const star = document.createElement('div');
+star.className = 'falling-star';
+star.style.left = Math.random() * 100 + 'vw';
+star.style.animationDuration = (3 + Math.random() * 4) + 's';
+star.style.animationDelay = (Math.random() * 5) + 's';
+container.appendChild(star);
+}
+wb.appendChild(container);
+} else if (appSettings.background === 'bg-shooting-stars') {
+wb.style.position = 'relative';
+const canvas = document.createElement('canvas');
+canvas.className = 'bg-canvas';
+canvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;';
+wb.appendChild(canvas);
+const ctx = canvas.getContext('2d');
+let stars = [];
+function resizeCanvas() {
+canvas.width = wb.offsetWidth; canvas.height = wb.offsetHeight;
+if (stars.length === 0) {
+const starCount = Math.floor((canvas.width * canvas.height) / 5000);
+for (let i = 0; i < starCount; i++) {
+stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, radius: Math.random() * 1.5, opacity: Math.random() * 0.5 + 0.3, twinkleSpeed: Math.random() * 0.08 + 0.04, targetOpacity: Math.random() * 0.8 + 0.2, vx: (Math.random() - 0.5) * 0.05, vy: (Math.random() - 0.5) * 0.05, flickerChance: Math.random() * 0.05 + 0.02 });
+}
+}
+}
+function animateStars() {
+ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+stars.forEach(star => {
+star.opacity += (star.targetOpacity - star.opacity) * star.twinkleSpeed;
+if (Math.random() < star.flickerChance) star.targetOpacity = Math.random() * 0.8 + 0.2;
+star.x += star.vx; star.y += star.vy;
+if (star.x < 0) star.x = canvas.width; if (star.x > canvas.width) star.x = 0;
+if (star.y < 0) star.y = canvas.height; if (star.y > canvas.height) star.y = 0;
+ctx.fillStyle = `rgba(200, 220, 255, ${star.opacity})`;
+ctx.beginPath(); ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2); ctx.fill();
+});
+requestAnimationFrame(animateStars);
+}
+resizeCanvas(); animateStars();
+window.addEventListener('resize', resizeCanvas);
+} else if (appSettings.background === 'bg-matrix') {
+const canvas = document.createElement('canvas');
+canvas.className = 'bg-canvas';
+canvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;z-index:-1;';
+wb.appendChild(canvas);
+const ctx = canvas.getContext('2d');
+canvas.width = wb.offsetWidth; canvas.height = wb.offsetHeight;
+const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%";
+const fontSize = 14;
+const columns = canvas.width / fontSize;
+const drops = Array(Math.floor(columns)).fill(1);
+function drawMatrix() {
+ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+ctx.fillStyle = '#0F0';
+ctx.font = fontSize + 'px monospace';
+for (let i = 0; i < drops.length; i++) {
+const text = chars.charAt(Math.floor(Math.random() * chars.length));
+ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+drops[i]++;
+}
+requestAnimationFrame(drawMatrix);
+}
+drawMatrix();
+}
+}
+function openSettingsModal() { document.getElementById('settings-modal').classList.add('active'); }
+function openKeybinds() { document.getElementById('keybinds-modal').classList.add('active'); }
+function clearAllData() {
+if (!confirm("⚠️ Delete ALL data? This cannot be undone.")) return;
+if (!confirm("Are you absolutely sure?")) return;
+localStorage.removeItem('studio_app_data');
+localStorage.removeItem('wb_settings');
+const tx = db.transaction(['projects'], 'readwrite');
+tx.objectStore('projects').clear();
+tx.oncomplete = () => location.reload();
+}
+
+async function renderDashboard() {
+const projects = await getAllFromDB();
+const list = document.getElementById('project-list');
+list.innerHTML = '';
+updateDashboardStats();
+if (!projects.length) {
+list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📁</div><h3>No projects yet</h3><p>Generate a game idea and create your first project, or start from a template.</p><div style="display:flex;gap:10px;justify-content:center;"><button class="btn btn-accent" onclick="switchView(\'generator\')">🎲 Generate Idea</button><button class="btn btn-ghost" onclick="openTemplateModal()">📋 From Template</button></div></div>';
+return;
+}
+let sorted = [...projects];
+if (currentSort === 'deadline') sorted.sort((a,b) => { if (!a.deadline?.endDate) return 1; if (!b.deadline?.endDate) return -1; return new Date(a.deadline.endDate) - new Date(b.deadline.endDate); });
+else if (currentSort === 'name') sorted.sort((a,b) => a.name.localeCompare(b.name));
+sorted.forEach(proj => {
+const card = document.createElement('div');
+card.className = 'project-card';
+card.setAttribute('data-project-id', proj.id);
+let countdown = '';
+if (proj.deadline?.endDate) {
+const dist = new Date(proj.deadline.endDate).getTime() - Date.now();
+const days = Math.floor(dist / 864e5);
+const hrs = Math.floor((dist % 864e5) / 36e5);
+if (dist < 0) countdown = '<span class="project-card-countdown expired">Expired</span>';
+else if (dist < 864e5) countdown = `<span class="project-card-countdown urgent">${hrs}h left</span>`;
+else countdown = `<span class="project-card-countdown">${days}d left</span>`;
+}
+const status = proj.status || 'idea';
+const tags = (proj.tags || []).map(t => `<span class="project-card-tag">${escapeHtml(t)}</span>`).join('');
+const date = proj.createdAt ? new Date(proj.createdAt).toLocaleDateString() : '—';
+card.innerHTML = `
+<div class="project-card-actions">
+<button class="project-card-action" onclick="event.stopPropagation();openModal('${proj.id}')" title="Edit">✎</button>
+<button class="project-card-action" onclick="event.stopPropagation();deleteProject('${proj.id}')" title="Delete">✕</button>
+</div>
+<div class="project-card-header">
+<div class="project-card-title">${escapeHtml(proj.name)}</div>
+<span class="project-card-status status-${status.toLowerCase()}">${status}</span>
+</div>
+<div class="project-card-desc">${escapeHtml(proj.description || 'No description')}</div>
+${tags ? `<div class="project-card-tags">${tags}</div>` : ''}
+<div class="project-card-footer">
+<span class="project-card-date">${date}</span>
+${countdown}
+</div>`;
+list.appendChild(card);
+});
+}
+function sortProjects(s) {
+currentSort = s;
+document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+document.getElementById('sort-' + s)?.classList.add('active');
+renderDashboard();
+}
+async function deleteProject(id) {
+if (!confirm('Delete this project?')) return;
+const tx = db.transaction(['projects'], 'readwrite');
+tx.objectStore('projects').delete(id);
+tx.oncomplete = () => { renderDashboard(); showToast('🗑️ Deleted'); };
+}
+function toggleDeadlineDates() {
+const c = document.getElementById('deadline-enabled');
+document.getElementById('deadline-dates').classList.toggle('show', c.checked);
+}
+function handleTagInput(e, ctx) {
+if (e.key === 'Enter' && e.target.value.trim()) {
+e.preventDefault();
+const tag = e.target.value.trim();
+const container = document.getElementById(ctx === 'proj' ? 'proj-tags-container' : 'edit-tags-container');
+const chip = document.createElement('span');
+chip.className = 'tag-chip';
+chip.innerHTML = `${escapeHtml(tag)} <span class="tag-chip-remove" onclick="this.parentElement.remove()">×</span>`;
+chip.dataset.tag = tag;
+container.insertBefore(chip, e.target);
+e.target.value = '';
+}
+}
+function getTagsFromContainer(id) {
+return Array.from(document.getElementById(id).querySelectorAll('.tag-chip')).map(c => c.dataset.tag);
+}
+function openModal(projectId = null) {
+editingProjectId = projectId;
+document.getElementById('project-modal').classList.add('active');
+document.getElementById('modal-title').innerText = projectId ? 'Edit Project' : 'New Project';
+const container = document.getElementById('proj-tags-container');
+container.querySelectorAll('.tag-chip').forEach(c => c.remove());
+document.getElementById('proj-tags-input').value = '';
+if (projectId) {
+const tx = db.transaction(['projects'], 'readonly');
+const req = tx.objectStore('projects').get(projectId);
+req.onsuccess = () => {
+const p = req.result;
+document.getElementById('proj-name').value = p.name;
+document.getElementById('proj-desc').value = p.description || '';
+(p.tags || []).forEach(tag => {
+const chip = document.createElement('span');
+chip.className = 'tag-chip';
+chip.innerHTML = `${escapeHtml(tag)} <span class="tag-chip-remove" onclick="this.parentElement.remove()">×</span>`;
+chip.dataset.tag = tag;
+container.insertBefore(chip, document.getElementById('proj-tags-input'));
+});
+if (p.deadline?.endDate) {
+document.getElementById('deadline-enabled').checked = true;
+document.getElementById('deadline-dates').classList.add('show');
+if (p.deadline.startDate) document.getElementById('proj-start-date').value = p.deadline.startDate;
+document.getElementById('proj-end-date').value = p.deadline.endDate;
+} else {
+document.getElementById('deadline-enabled').checked = false;
+document.getElementById('deadline-dates').classList.remove('show');
+}
+};
+} else {
+document.getElementById('proj-name').value = '';
+document.getElementById('proj-desc').value = '';
+document.getElementById('deadline-enabled').checked = false;
+document.getElementById('deadline-dates').classList.remove('show');
+document.getElementById('proj-start-date').value = '';
+document.getElementById('proj-end-date').value = '';
+}
+}
+function closeModal(id) {
+document.getElementById(id).classList.remove('active');
+if (id === 'project-modal') editingProjectId = null;
+}
+async function saveProject() {
+const name = document.getElementById('proj-name').value.trim();
+if (!name) return alert('Name required');
+const project = {
+id: editingProjectId || Date.now().toString(),
+name,
+description: document.getElementById('proj-desc').value.trim(),
+tags: getTagsFromContainer('proj-tags-container'),
+deadline: document.getElementById('deadline-enabled').checked ? { startDate: document.getElementById('proj-start-date').value || null, endDate: document.getElementById('proj-end-date').value } : null,
+viewMode: editingProjectId ? (currentProject?.viewMode || 'freeform') : 'freeform',
+ganttOrientation: 'vertical',
+ganttColumnSizes: [],
+elements: editingProjectId ? (currentProject?.elements || []) : [],
+connections: editingProjectId ? (currentProject?.connections || []) : [],
+dependencies: editingProjectId ? (currentProject?.dependencies || []) : [],
+theme: null,
+createdAt: editingProjectId ? currentProject?.createdAt : new Date().toISOString()
+};
+await saveToDB(project);
+closeModal('project-modal');
+renderDashboard();
+showToast('✅ Saved');
+}
+
+function searchAll(q) {
+const r = document.getElementById('search-results');
+if (!q.trim()) { r.classList.remove('active'); return; }
+getAllFromDB().then(projects => {
+const lq = q.toLowerCase();
+const matches = [];
+projects.forEach(p => {
+if (p.name.toLowerCase().includes(lq)) matches.push({ type: 'project', name: p.name, projectId: p.id });
+(p.elements || []).forEach(el => {
+if (el.type === 'note' && el.content?.toLowerCase().includes(lq)) matches.push({ type: 'note', name: el.content.substring(0, 40), projectId: p.id, elId: el.id });
+});
+});
+r.innerHTML = matches.slice(0, 15).map(m => `<div class="search-result-item" onclick="jumpToResult('${m.projectId}','${m.elId||''}')"><span>${escapeHtml(m.name)}</span><span class="search-result-type">${m.type}</span></div>`).join('');
+r.classList.add('active');
+});
+}
+function showSearchResults() { const i = document.getElementById('global-search'); if (i.value.trim()) searchAll(i.value); }
+function hideSearchResults() { document.getElementById('search-results').classList.remove('active'); }
+async function jumpToResult(pid, elId) {
+hideSearchResults();
+const tx = db.transaction(['projects'], 'readonly');
+const req = tx.objectStore('projects').get(pid);
+req.onsuccess = () => {
+const p = req.result;
+if (!p) return;
+openWhiteboard(p);
+if (elId) setTimeout(() => {
+const el = document.getElementById(elId);
+if (el) {
+const x = parseFloat(el.style.left), y = parseFloat(el.style.top);
+panX = window.innerWidth / 2 - x * currentZoom - 100;
+panY = window.innerHeight / 2 - y * currentZoom - 70;
+applyZoom();
+el.classList.add('search-match');
+setTimeout(() => el.classList.remove('search-match'), 3000);
+}
+}, 100);
+};
+}
+function toggleFilterSidebar() {
+const s = document.getElementById('filter-sidebar');
+s.classList.toggle('active');
+if (s.classList.contains('active')) loadFilterTags();
+}
+async function loadFilterTags() {
+const projects = await getAllFromDB();
+const tags = new Set();
+projects.forEach(p => (p.tags || []).forEach(t => tags.add(t)));
+document.getElementById('filter-tags-list').innerHTML = Array.from(tags).map(t => `<label class="filter-option"><input type="checkbox" class="filter-tag" value="${escapeHtml(t)}"> ${escapeHtml(t)}</label>`).join('') || '<p style="font-size:12px;color:var(--text-muted);">No tags</p>';
+}
+function applyFilters() {
+const tags = Array.from(document.querySelectorAll('.filter-tag:checked')).map(c => c.value);
+const hasDeadline = document.getElementById('filter-has-deadline').checked;
+getAllFromDB().then(projects => {
+const filtered = projects.filter(p => {
+if (tags.length && !tags.every(t => (p.tags || []).includes(t))) return false;
+if (hasDeadline && !p.deadline?.endDate) return false;
+return true;
+});
+renderFilteredProjects(filtered);
+});
+}
+function renderFilteredProjects(projects) {
+const list = document.getElementById('project-list');
+list.innerHTML = '';
+if (!projects.length) { list.innerHTML = '<div class="empty-state"><h3>No matches</h3></div>'; return; }
+projects.forEach(p => {
+const card = document.createElement('div');
+card.className = 'project-card';
+card.setAttribute('data-project-id', p.id);
+card.innerHTML = `<div class="project-card-header"><div class="project-card-title">${escapeHtml(p.name)}</div></div><div class="project-card-desc">${escapeHtml(p.description || '')}</div>`;
+list.appendChild(card);
+});
+}
+function clearFilters() {
+document.querySelectorAll('.filter-tag').forEach(c => c.checked = false);
+document.getElementById('filter-has-deadline').checked = false;
+document.getElementById('filter-overdue').checked = false;
+document.getElementById('filter-urgent').checked = false;
+renderDashboard();
+}
+
+function openWhiteboard(project) {
+currentProject = project;
+if (!currentProject.viewMode) currentProject.viewMode = 'freeform';
+if (!currentProject.ganttOrientation) currentProject.ganttOrientation = 'vertical';
+if (!currentProject.ganttColumnSizes) currentProject.ganttColumnSizes = [];
+if (!currentProject.elements) currentProject.elements = [];
+if (!currentProject.connections) currentProject.connections = [];
+if (!currentProject.dependencies) currentProject.dependencies = [];
+document.getElementById('app-shell').style.display = 'none';
+const wb = document.getElementById('whiteboard');
+wb.classList.add('active');
+wb.style.display = 'block';
+applySettings();
+resetView();
+renderWhiteboard();
+updateProjectCountdownWidget();
+updateGanttToolbar();
+updateStats();
+history = [JSON.parse(JSON.stringify({ elements: currentProject.elements, connections: currentProject.connections, dependencies: currentProject.dependencies }))];
+historyIndex = 0;
+trash = [];
+}
+function closeWhiteboard() {
+saveCurrentProjectState();
+currentProject = null;
+document.getElementById('whiteboard').classList.remove('active');
+document.getElementById('whiteboard').style.display = 'none';
+document.getElementById('app-shell').style.display = 'flex';
+document.getElementById('project-countdown-widget').style.display = 'none';
+renderDashboard();
+}
+function updateProjectCountdownWidget() {
+const w = document.getElementById('project-countdown-widget');
+if (!currentProject?.deadline?.endDate) { w.style.display = 'none'; return; }
+w.style.display = 'block';
+const dist = new Date(currentProject.deadline.endDate).getTime() - Date.now();
+w.classList.remove('urgent', 'expired');
+if (dist < 0) {
+w.classList.add('expired');
+['wb-days','wb-hours','wb-minutes','wb-seconds'].forEach(id => document.getElementById(id).textContent = '00');
+w.querySelector('.countdown-title').textContent = 'Expired';
+} else {
+if (dist < 864e5) w.classList.add('urgent');
+const d = Math.floor(dist / 864e5), h = Math.floor((dist % 864e5) / 36e5), m = Math.floor((dist % 36e5) / 6e4), s = Math.floor((dist % 6e4) / 1e3);
+document.getElementById('wb-days').textContent = String(d).padStart(2, '0');
+document.getElementById('wb-hours').textContent = String(h).padStart(2, '0');
+document.getElementById('wb-minutes').textContent = String(m).padStart(2, '0');
+document.getElementById('wb-seconds').textContent = String(s).padStart(2, '0');
+w.querySelector('.countdown-title').textContent = 'Time Remaining';
+}
+}
+function renderWhiteboard() {
+if (currentProject?.viewMode === 'gantt') { renderGanttView(); updateMinimap(); return; }
+const wrapper = document.getElementById('canvas-wrapper');
+const svg = document.getElementById('svg-layer');
+wrapper.querySelectorAll('.wb-element,.gantt-container,.align-guide').forEach(el => el.remove());
+svg.innerHTML = '';
+if (!currentProject.elements) currentProject.elements = [];
+if (!currentProject.connections) currentProject.connections = [];
+currentProject.elements.forEach(el => {
+const div = document.createElement('div');
+div.id = el.id;
+div.style.left = (el.x || 100) + 'px';
+div.style.top = (el.y || 100) + 'px';
+if (el.pinned) div.classList.add('pinned');
+if (el.locked) div.classList.add('locked');
+buildElementContent(div, el);
+wrapper.appendChild(div);
+});
+renderConnections();
+updateMinimap();
+updateAlignToolbar();
+updateStats();
+}
+function updateAlignToolbar() {
+document.getElementById('align-toolbar').style.display = selectedElements.length >= 2 ? 'flex' : 'none';
+}
+function updateStats() {
+if (!currentProject) return;
+document.getElementById('stat-notes').textContent = currentProject.elements.filter(e => e.type === 'note').length;
+document.getElementById('stat-groups').textContent = currentProject.elements.filter(e => e.type === 'group').length;
+document.getElementById('stat-images').textContent = currentProject.elements.filter(e => e.type === 'image').length;
+document.getElementById('stat-connections').textContent = (currentProject.connections?.length || 0) + (currentProject.dependencies?.length || 0);
+}
+function toggleNoteMenu(e) {
+if (e) e.stopPropagation();
+document.getElementById('note-menu').classList.toggle('active');
+}
+document.addEventListener('click', e => {
+if (!e.target.closest('.note-menu-wrapper')) document.getElementById('note-menu').classList.remove('active');
+});
+function addStickyNote(template = 'blank') {
+if (!currentProject) return;
+pushHistory();
+document.getElementById('note-menu').classList.remove('active');
+const cx = (-panX + window.innerWidth / 2) / currentZoom - 100;
+const cy = (-panY + window.innerHeight / 2) / currentZoom - 70;
+const el = {
+id: 'el_' + Date.now(), type: 'note',
+x: snapEnabled ? Math.round(cx / gridSize) * gridSize : cx,
+y: snapEnabled ? Math.round(cy / gridSize) * gridSize : cy,
+width: 200, height: 140, content: '', color: 'note-yellow', template
+};
+if (template === 'todo') { el.content = 'New task'; el.color = 'note-green'; el.done = false; }
+else if (template === 'idea') { el.content = '💡 '; el.color = 'note-yellow'; }
+else if (template === 'question') { el.content = '❓ '; el.color = 'note-blue'; }
+else if (template === 'meeting') { el.content = 'Attendees:\nAgenda:\nNotes:'; el.color = 'note-pink'; el.height = 200; }
+else if (template === 'bug') { el.content = 'Steps:\nExpected:\nActual:'; el.color = 'note-red'; el.height = 180; }
+currentProject.elements.push(el);
+appData.stats.notesSpawned++;
+checkAchievements();
+saveAppData();
+renderWhiteboard();
+saveCurrentProjectState();
+setTimeout(() => { const ta = document.querySelector(`#${el.id} textarea`); if (ta) ta.focus(); }, 50);
+}
+function toggleTodo(id, checked) {
+const el = currentProject.elements.find(e => e.id === id);
+if (el) {
+el.done = checked;
+const div = document.getElementById(id);
+const cb = div.querySelector('.note-checkbox');
+if (cb) { if (checked) cb.classList.add('done'); else cb.classList.remove('done'); }
+saveCurrentProjectState();
+}
+}
+function addGroupBox() {
+if (!currentProject || currentProject.viewMode === 'gantt') return;
+pushHistory();
+const cx = (-panX + window.innerWidth / 2) / currentZoom - 150;
+const cy = (-panY + window.innerHeight / 2) / currentZoom - 125;
+currentProject.elements.push({ id: 'el_' + Date.now(), type: 'group', x: cx, y: cy, width: 300, height: 250, title: 'Group ' + (currentProject.elements.filter(e => e.type === 'group').length + 1) });
+renderWhiteboard();
+saveCurrentProjectState();
+}
+function updateGroupTitle(id, title) {
+const el = currentProject.elements.find(e => e.id === id);
+if (el) { el.title = title; saveCurrentProjectState(); }
+}
+function startResize(e, id) {
+e.stopPropagation(); e.preventDefault();
+const el = currentProject.elements.find(x => x.id === id);
+if (!el || el.locked) return;
+pushHistory();
+isResizing = true;
+resizeItem = el;
+const wr = document.getElementById('canvas-wrapper').getBoundingClientRect();
+resizeItem._iw = el.width || 200;
+resizeItem._ih = el.height || 140;
+resizeItem._sx = (e.clientX - wr.left) / currentZoom;
+resizeItem._sy = (e.clientY - wr.top) / currentZoom;
+document.addEventListener('mousemove', onResize);
+document.addEventListener('mouseup', stopResize);
+}
+function onResize(e) {
+if (!resizeItem) return;
+const wr = document.getElementById('canvas-wrapper').getBoundingClientRect();
+const dx = (e.clientX - wr.left) / currentZoom - resizeItem._sx;
+const dy = (e.clientY - wr.top) / currentZoom - resizeItem._sy;
+resizeItem.width = Math.max(150, resizeItem._iw + dx);
+resizeItem.height = Math.max(100, resizeItem._ih + dy);
+const d = document.getElementById(resizeItem.id);
+d.style.width = resizeItem.width + 'px';
+d.style.height = resizeItem.height + 'px';
+}
+function stopResize() {
+if (resizeItem) {
+delete resizeItem._iw; delete resizeItem._ih; delete resizeItem._sx; delete resizeItem._sy;
+saveCurrentProjectState();
+}
+isResizing = false; resizeItem = null;
+document.removeEventListener('mousemove', onResize);
+document.removeEventListener('mouseup', stopResize);
+}
+function updateElementContent(id, content) {
+const el = currentProject.elements.find(e => e.id === id);
+if (el) { el.content = content; saveCurrentProjectState(); }
+}
+function changeNoteColor(id, c) {
+pushHistory();
+const el = currentProject.elements.find(e => e.id === id);
+if (el) {
+el.color = c;
+const d = document.getElementById(id);
+d.className = `wb-element sticky-note ${c}`;
+if (el.pinned) d.classList.add('pinned');
+if (el.locked) d.classList.add('locked');
+saveCurrentProjectState();
+}
+}
+function togglePin(id) {
+const el = currentProject.elements.find(e => e.id === id);
+if (el) {
+el.pinned = !el.pinned;
+document.getElementById(id).classList.toggle('pinned', el.pinned);
+saveCurrentProjectState();
+showToast(el.pinned ? '📌 Pinned' : 'Unpinned');
+}
+}
+function toggleLock(id) {
+const el = currentProject.elements.find(e => e.id === id);
+if (el) {
+el.locked = !el.locked;
+document.getElementById(id).classList.toggle('locked', el.locked);
+saveCurrentProjectState();
+showToast(el.locked ? '🔒 Locked' : 'Unlocked');
+}
+}
+function deleteElement(id) {
+pushHistory();
+const el = currentProject.elements.find(e => e.id === id);
+if (el) trash.push({ ...el, deletedAt: Date.now() });
+currentProject.elements = currentProject.elements.filter(e => e.id !== id);
+currentProject.connections = currentProject.connections.filter(c => c.from !== id && c.to !== id);
+if (currentProject.dependencies) currentProject.dependencies = currentProject.dependencies.filter(d => d.from !== id && d.to !== id);
+renderWhiteboard();
+saveCurrentProjectState();
+showToast('🗑️ Moved to trash');
+}
+function clearCanvas() {
+if (confirm('Delete ALL?')) {
+pushHistory();
+currentProject.elements.forEach(el => trash.push({ ...el, deletedAt: Date.now() }));
+currentProject.elements = [];
+currentProject.connections = [];
+currentProject.dependencies = [];
+renderWhiteboard();
+saveCurrentProjectState();
+}
+}
+function buildElementContent(div, el) {
+if (el.type === 'group') {
+div.className = 'wb-element group-box';
+div.style.width = (el.width || 300) + 'px';
+div.style.height = (el.height || 250) + 'px';
+div.innerHTML = `<button class="pin-el" onclick="event.stopPropagation();togglePin('${el.id}')">📌</button><button class="lock-el" onclick="event.stopPropagation();toggleLock('${el.id}')">🔒</button><div class="group-title"><input type="text" class="group-title-input" value="${escapeHtml(el.title || 'Group')}" onchange="updateGroupTitle('${el.id}',this.value)"></div><div class="resize-handle" onmousedown="startResize(event,'${el.id}')"></div><button class="delete-el" onclick="deleteElement('${el.id}')">×</button>`;
+div.addEventListener('mousedown', e => {
+if (el.locked) return;
+if (e.target.tagName !== 'INPUT' && !e.target.classList.contains('resize-handle') && !e.target.classList.contains('delete-el') && !e.target.classList.contains('pin-el') && !e.target.classList.contains('lock-el')) startDrag(e, el.id);
+});
+} else if (el.type === 'image') {
+div.className = 'wb-element image-el';
+div.innerHTML = `<button class="delete-el" onclick="deleteElement('${el.id}')">×</button><img src="${el.content}" draggable="false">`;
+div.addEventListener('mousedown', e => { if (!el.locked) startDrag(e, el.id); });
+div.addEventListener('click', e => handleConnectClick(e, el.id));
+div.addEventListener('contextmenu', e => showContextMenu(e, el.id));
+} else {
+const cc = el.color || 'note-yellow';
+div.className = `wb-element sticky-note ${cc}`;
+div.style.width = (el.width || 200) + 'px';
+div.style.height = (el.height || 140) + 'px';
+if (urgentGlowEnabled && el.tags?.some(t => t.toLowerCase() === 'urgent')) div.classList.add('urgent-glow');
+let tHTML = '';
+if (el.template === 'todo') {
+const checked = el.done ? 'checked' : '';
+const doneClass = el.done ? 'done' : '';
+tHTML = `<div class="note-checkbox ${doneClass}"><input type="checkbox" ${checked} onchange="toggleTodo('${el.id}',this.checked)"><span style="font-size:11px;color:#666;">Task</span></div>`;
+} else if (el.template === 'idea') tHTML = '<div style="font-size:11px;color:#666;margin-bottom:4px;">💡 Idea</div>';
+else if (el.template === 'question') tHTML = '<div style="font-size:11px;color:#666;margin-bottom:4px;">❓ Question</div>';
+else if (el.template === 'meeting') tHTML = `<div style="font-size:11px;color:#666;margin-bottom:4px;">👥 Meeting • ${new Date().toLocaleDateString()}</div>`;
+else if (el.template === 'bug') {
+const sev = el.severity || 'medium';
+tHTML = `<div style="font-size:11px;color:#666;margin-bottom:4px;">🐛 Bug • ${sev}</div>`;
+}
+let pHTML = el.progress > 0 ? `<div class="progress-bar"><div class="progress-fill" style="width:${el.progress}%;"></div></div>` : '';
+let tagsHTML = (el.tags || []).length ? '<div class="note-tags">' + el.tags.map(t => `<span class="note-tag">${escapeHtml(t)}</span>`).join('') + '</div>' : '';
+div.innerHTML = `<button class="pin-el" onclick="event.stopPropagation();togglePin('${el.id}')">📌</button><button class="lock-el" onclick="event.stopPropagation();toggleLock('${el.id}')">🔒</button><button class="delete-el" onclick="deleteElement('${el.id}')">×</button>${tHTML}<textarea oninput="updateElementContent('${el.id}',this.value)" placeholder="Type here...">${el.content || ''}</textarea>${tagsHTML}${pHTML}<div class="color-picker"><div class="color-dot c-yellow" onclick="changeNoteColor('${el.id}','note-yellow')"></div><div class="color-dot c-blue" onclick="changeNoteColor('${el.id}','note-blue')"></div><div class="color-dot c-green" onclick="changeNoteColor('${el.id}','note-green')"></div><div class="color-dot c-pink" onclick="changeNoteColor('${el.id}','note-pink')"></div><div class="color-dot c-red" onclick="changeNoteColor('${el.id}','note-red')"></div></div><div class="resize-handle" onmousedown="startResize(event,'${el.id}')"></div>`;
+div.addEventListener('mousedown', e => { if (!el.locked) startDrag(e, el.id); });
+div.addEventListener('click', e => handleConnectClick(e, el.id));
+div.addEventListener('contextmenu', e => showContextMenu(e, el.id));
+div.addEventListener('dblclick', e => { const ta = div.querySelector('textarea'); if (ta) ta.focus(); });
+}
+}
+function startDrag(e, id) {
+if (isConnectMode || isDependencyMode || isSelectMode || isResizing || isGanttResizing || isPanning || isDragSelecting || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT' || e.target.classList.contains('delete-el') || e.target.classList.contains('color-dot') || e.target.classList.contains('resize-handle') || e.target.classList.contains('pin-el') || e.target.classList.contains('lock-el') || e.target.classList.contains('note-tag')) return;
+const el = currentProject.elements.find(x => x.id === id);
+if (el?.locked) return;
+e.preventDefault();
+dragItem = el;
+const wr = document.getElementById('canvas-wrapper').getBoundingClientRect();
+dragOffsetX = (e.clientX - wr.left) / currentZoom - dragItem.x;
+dragOffsetY = (e.clientY - wr.top) / currentZoom - dragItem.y;
+if (e.shiftKey) { if (!selectedElements.includes(id)) selectedElements.push(id); }
+else if (!selectedElements.includes(id)) selectedElements = [id];
+pushHistory();
+document.addEventListener('mousemove', onDrag);
+document.addEventListener('mouseup', stopDrag);
+}
+function onDrag(e) {
+if (!dragItem || isResizing || isPanning) return;
+const wr = document.getElementById('canvas-wrapper').getBoundingClientRect();
+let nx = ((e.clientX - wr.left) / currentZoom) - dragOffsetX;
+let ny = ((e.clientY - wr.top) / currentZoom) - dragOffsetY;
+if (snapEnabled) { nx = Math.round(nx / gridSize) * gridSize; ny = Math.round(ny / gridSize) * gridSize; }
+if (currentProject.viewMode === 'gantt') {
+const days = getGanttDays();
+const orient = currentProject.ganttOrientation || 'vertical';
+const hS = 80, tO = 90, lO = 30;
+if (orient === 'vertical') {
+let xO = lO;
+for (let i = 0; i < days.length; i++) {
+const cw = getGanttColumnSize(i);
+if (nx >= xO && nx < xO + cw) {
+dragItem.ganttDay = i;
+dragItem.ganttOffsetX = Math.max(5, nx - xO);
+dragItem.ganttOffsetY = Math.max(5, ny - (tO + hS));
+break;
+}
+xO += cw;
+}
+}
+dragItem.x = nx; dragItem.y = ny;
+} else {
+dragItem.x = nx; dragItem.y = ny;
+showAlignmentGuides(dragItem);
+}
+const d = document.getElementById(dragItem.id);
+d.style.left = dragItem.x + 'px';
+d.style.top = dragItem.y + 'px';
+renderConnections();
+}
+function stopDrag() {
+if (dragItem) saveCurrentProjectState();
+dragItem = null;
+document.querySelectorAll('.align-guide').forEach(g => g.remove());
+document.removeEventListener('mousemove', onDrag);
+document.removeEventListener('mouseup', stopDrag);
+}
+function showAlignmentGuides(d) {
+document.querySelectorAll('.align-guide').forEach(g => g.remove());
+const th = 5;
+const dx = d.x, dy = d.y, dw = d.width || 200, dh = d.height || 140;
+currentProject.elements.forEach(el => {
+if (el.id === d.id) return;
+const ex = el.x, ey = el.y, ew = el.width || 200, eh = el.height || 140;
+if (Math.abs(dx - ex) < th) createGuide('vertical', ex);
+if (Math.abs(dx - (ex + ew/2)) < th) createGuide('vertical', ex + ew/2);
+if (Math.abs(dy - ey) < th) createGuide('horizontal', ey);
+if (Math.abs(dy - (ey + eh/2)) < th) createGuide('horizontal', ey + eh/2);
+});
+}
+function createGuide(t, p) {
+const g = document.createElement('div');
+g.className = `align-guide ${t}`;
+if (t === 'vertical') g.style.left = p + 'px';
+else g.style.top = p + 'px';
+document.getElementById('canvas-wrapper').appendChild(g);
+}
+function alignSelected(dir) {
+if (selectedElements.length < 2) return;
+pushHistory();
+const els = selectedElements.map(id => currentProject.elements.find(e => e.id === id)).filter(Boolean);
+if (dir === 'left') { const m = Math.min(...els.map(e => e.x)); els.forEach(e => e.x = m); }
+else if (dir === 'center') { const a = els.reduce((s,e) => s + e.x + (e.width||200)/2, 0) / els.length; els.forEach(e => e.x = a - (e.width||200)/2); }
+else if (dir === 'top') { const m = Math.min(...els.map(e => e.y)); els.forEach(e => e.y = m); }
+else if (dir === 'middle') { const a = els.reduce((s,e) => s + e.y + (e.height||140)/2, 0) / els.length; els.forEach(e => e.y = a - (e.height||140)/2); }
+renderWhiteboard();
+saveCurrentProjectState();
+}
+function distributeSelected(dir) {
+if (selectedElements.length < 3) { showToast("Need 3+ elements"); return; }
+pushHistory();
+const els = selectedElements.map(id => currentProject.elements.find(e => e.id === id)).filter(Boolean);
+if (dir === 'horizontal') {
+els.sort((a,b) => a.x - b.x);
+const minX = els[0].x, maxX = els[els.length-1].x;
+const step = (maxX - minX) / (els.length - 1);
+els.forEach((e, i) => e.x = minX + step * i);
+} else {
+els.sort((a,b) => a.y - b.y);
+const minY = els[0].y, maxY = els[els.length-1].y;
+const step = (maxY - minY) / (els.length - 1);
+els.forEach((e, i) => e.y = minY + step * i);
+}
+renderWhiteboard();
+saveCurrentProjectState();
+}
+function handleImageSelect(e) {
+const file = e.target.files[0];
+if (!file) return;
+pushHistory();
+const reader = new FileReader();
+reader.onload = ev => {
+const cx = (-panX + window.innerWidth / 2) / currentZoom - 150;
+const cy = (-panY + window.innerHeight / 2) / currentZoom - 150;
+currentProject.elements.push({ id: 'el_' + Date.now(), type: 'image', x: cx, y: cy, content: ev.target.result });
+renderWhiteboard();
+saveCurrentProjectState();
+};
+reader.readAsDataURL(file);
+e.target.value = '';
+}
+function handlePaste(e) {
+if (!document.getElementById('whiteboard').classList.contains('active') || e.target.tagName === 'TEXTAREA') return;
+e.preventDefault();
+for (let i = 0; i < e.clipboardData.items.length; i++) {
+if (e.clipboardData.items[i].type.indexOf('image') !== -1) {
+pushHistory();
+const blob = e.clipboardData.items[i].getAsFile();
+const reader = new FileReader();
+reader.onload = ev => {
+const cx = (-panX + window.innerWidth / 2) / currentZoom - 150;
+const cy = (-panY + window.innerHeight / 2) / currentZoom - 150;
+currentProject.elements.push({ id: 'el_' + Date.now(), type: 'image', x: cx, y: cy, content: ev.target.result });
+renderWhiteboard();
+saveCurrentProjectState();
+};
+reader.readAsDataURL(blob);
+}
+}
+}
+function toggleConnectMode() {
+isConnectMode = !isConnectMode;
+if (isConnectMode) { isDependencyMode = false; isSelectMode = false; }
+connectSource = null;
+document.getElementById('connect-btn').classList.toggle('active', isConnectMode);
+document.getElementById('dep-btn').classList.remove('active');
+document.getElementById('select-btn').classList.remove('active');
+document.getElementById('connect-hint').style.display = isConnectMode ? 'block' : 'none';
+document.getElementById('connect-hint').textContent = 'Click two elements to connect. ESC to cancel.';
+document.querySelectorAll('.wb-element').forEach(el => el.classList.remove('selected'));
+}
+function toggleDependencyMode() {
+isDependencyMode = !isDependencyMode;
+if (isDependencyMode) { isConnectMode = false; isSelectMode = false; }
+connectSource = null;
+document.getElementById('dep-btn').classList.toggle('active', isDependencyMode);
+document.getElementById('connect-btn').classList.remove('active');
+document.getElementById('connect-hint').style.display = isDependencyMode ? 'block' : 'none';
+document.getElementById('connect-hint').textContent = 'Click source, then dependent. ESC to cancel.';
+document.querySelectorAll('.wb-element').forEach(el => el.classList.remove('selected'));
+}
+function toggleSelectMode() {
+isSelectMode = !isSelectMode;
+if (isSelectMode) { isConnectMode = false; isDependencyMode = false; }
+document.getElementById('select-btn').classList.toggle('active', isSelectMode);
+document.getElementById('connect-hint').style.display = isSelectMode ? 'block' : 'none';
+document.getElementById('connect-hint').textContent = 'Drag on empty canvas to select. Shift+click to add.';
+document.getElementById('whiteboard').classList.toggle('selecting', isSelectMode);
+}
+function handleConnectClick(e, id) {
+if (isConnectMode) {
+e.stopPropagation();
+if (!connectSource) { connectSource = id; document.getElementById(id).classList.add('selected'); }
+else {
+if (connectSource !== id && !currentProject.connections.some(c => (c.from === connectSource && c.to === id) || (c.from === id && c.to === connectSource))) {
+pushHistory();
+currentProject.connections.push({ from: connectSource, to: id, label: '' });
+saveCurrentProjectState();
+}
+document.querySelectorAll('.wb-element').forEach(el => el.classList.remove('selected'));
+connectSource = null;
+renderConnections();
+}
+} else if (isDependencyMode) {
+e.stopPropagation();
+if (!connectSource) { connectSource = id; document.getElementById(id).classList.add('selected'); }
+else {
+if (connectSource !== id) {
+if (!currentProject.dependencies) currentProject.dependencies = [];
+if (!currentProject.dependencies.some(d => d.from === connectSource && d.to === id)) {
+pushHistory();
+currentProject.dependencies.push({ from: connectSource, to: id });
+saveCurrentProjectState();
+}
+}
+document.querySelectorAll('.wb-element').forEach(el => el.classList.remove('selected'));
+connectSource = null;
+renderConnections();
+}
+}
+}
+function renderConnections() {
+const svg = document.getElementById('svg-layer');
+svg.innerHTML = '';
+const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+const mk = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+mk.setAttribute('id', 'ah');
+mk.setAttribute('markerWidth', '10'); mk.setAttribute('markerHeight', '7');
+mk.setAttribute('refX', '9'); mk.setAttribute('refY', '3.5'); mk.setAttribute('orient', 'auto');
+const pg = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+pg.setAttribute('points', '0 0, 10 3.5, 0 7');
+pg.setAttribute('fill', 'var(--text-muted)');
+mk.appendChild(pg);
+defs.appendChild(mk);
+const dm = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+dm.setAttribute('id', 'dah');
+dm.setAttribute('markerWidth', '10'); dm.setAttribute('markerHeight', '7');
+dm.setAttribute('refX', '9'); dm.setAttribute('refY', '3.5'); dm.setAttribute('orient', 'auto');
+const dp = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+dp.setAttribute('points', '0 0, 10 3.5, 0 7');
+dp.setAttribute('fill', '#f59e0b');
+dm.appendChild(dp);
+defs.appendChild(dm);
+svg.appendChild(defs);
+const wr = document.getElementById('canvas-wrapper').getBoundingClientRect();
+currentProject.connections.forEach(conn => {
+const e1 = document.getElementById(conn.from), e2 = document.getElementById(conn.to);
+if (!e1 || !e2) return;
+const r1 = e1.getBoundingClientRect(), r2 = e2.getBoundingClientRect();
+const x1 = (r1.left + r1.width/2 - wr.left) / currentZoom;
+const y1 = (r1.top + r1.height/2 - wr.top) / currentZoom;
+const x2 = (r2.left + r2.width/2 - wr.left) / currentZoom;
+const y2 = (r2.top + r2.height/2 - wr.top) / currentZoom;
+const a = Math.atan2(y2 - y1, x2 - x1);
+const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+line.setAttribute('x2', x2 - 15 * Math.cos(a)); line.setAttribute('y2', y2 - 15 * Math.sin(a));
+line.setAttribute('marker-end', 'url(#ah)');
+line.style.pointerEvents = 'auto'; line.style.cursor = 'pointer';
+line.addEventListener('click', () => { pushHistory(); currentProject.connections = currentProject.connections.filter(c => c !== conn); renderConnections(); saveCurrentProjectState(); });
+line.addEventListener('dblclick', e => {
+e.stopPropagation();
+const label = prompt('Connection label:', conn.label || '');
+if (label !== null) { conn.label = label; renderConnections(); saveCurrentProjectState(); }
+});
+svg.appendChild(line);
+if (conn.label) {
+const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+text.setAttribute('x', (x1 + x2) / 2);
+text.setAttribute('y', (y1 + y2) / 2 - 5);
+text.setAttribute('text-anchor', 'middle');
+text.setAttribute('class', 'conn-label');
+text.textContent = conn.label;
+svg.appendChild(text);
+}
+});
+if (currentProject.dependencies) {
+currentProject.dependencies.forEach(dep => {
+const e1 = document.getElementById(dep.from), e2 = document.getElementById(dep.to);
+if (!e1 || !e2) return;
+const r1 = e1.getBoundingClientRect(), r2 = e2.getBoundingClientRect();
+const x1 = (r1.left + r1.width/2 - wr.left) / currentZoom;
+const y1 = (r1.top + r1.height/2 - wr.top) / currentZoom;
+const x2 = (r2.left + r2.width/2 - wr.left) / currentZoom;
+const y2 = (r2.top + r2.height/2 - wr.top) / currentZoom;
+const a = Math.atan2(y2 - y1, x2 - x1);
+const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+line.setAttribute('x2', x2 - 15 * Math.cos(a)); line.setAttribute('y2', y2 - 15 * Math.sin(a));
+line.setAttribute('marker-end', 'url(#dah)');
+line.classList.add('dependency');
+line.style.pointerEvents = 'auto';
+line.addEventListener('click', () => { pushHistory(); currentProject.dependencies = currentProject.dependencies.filter(d => d !== dep); renderConnections(); saveCurrentProjectState(); });
+svg.appendChild(line);
+});
+}
+}
+function adjustZoom(d) {
+const oz = currentZoom;
+currentZoom = Math.max(0.2, Math.min(2, currentZoom + d));
+const cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+const s = currentZoom / oz;
+panX = cx - (cx - panX) * s;
+panY = cy - (cy - panY) * s;
+applyZoom();
+}
+function resetView() { currentZoom = 1; panX = 0; panY = 0; applyZoom(); }
+function zoomToFit() {
+if (!currentProject?.elements.length) { resetView(); return; }
+let mnX = Infinity, mnY = Infinity, mxX = -Infinity, mxY = -Infinity;
+currentProject.elements.forEach(el => {
+const x = el.x || 0, y = el.y || 0;
+mnX = Math.min(mnX, x); mnY = Math.min(mnY, y);
+mxX = Math.max(mxX, x + (el.width || 200)); mxY = Math.max(mxY, y + (el.height || 140));
+});
+const p = 100, cw = mxX - mnX + p*2, ch = mxY - mnY + p*2;
+currentZoom = Math.min(window.innerWidth / cw, window.innerHeight / ch, 2);
+currentZoom = Math.max(0.2, currentZoom);
+panX = window.innerWidth / 2 - (mnX + mxX) / 2 * currentZoom;
+panY = window.innerHeight / 2 - (mnY + mxY) / 2 * currentZoom;
+applyZoom();
+showToast('⊞ Zoomed to fit');
+}
+function applyZoom() {
+document.getElementById('canvas-wrapper').style.transform = `translate(${panX}px, ${panY}px) scale(${currentZoom})`;
+document.getElementById('zoom-level').innerText = Math.round(currentZoom * 100) + '%';
+updateMinimap();
+}
+function saveCurrentProjectState() {
+if (!currentProject) return;
+const ind = document.getElementById('save-indicator');
+ind.textContent = '💾 Saving...';
+ind.className = 'save-indicator show saving';
+saveToDB(currentProject).then(() => {
+ind.textContent = '✓ Saved';
+ind.className = 'save-indicator show saved';
+clearTimeout(ind._t);
+ind._t = setTimeout(() => ind.classList.remove('show'), 1500);
+});
+}
+function exportProject() {
+saveCurrentProjectState();
+const a = document.createElement('a');
+a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentProject));
+a.download = currentProject.name.replace(/\s+/g, '_') + '.json';
+a.click();
+showToast("💾 Exported");
+}
+function exportAsImage() {
+showToast("📸 Preparing image...");
+const canvas = document.createElement('canvas');
+canvas.width = 3000; canvas.height = 3000;
+const ctx = canvas.getContext('2d');
+ctx.fillStyle = '#e5e5f7';
+ctx.fillRect(0, 0, 3000, 3000);
+currentProject.elements.forEach(el => {
+const x = el.x || 0, y = el.y || 0, w = el.width || 200, h = el.height || 140;
+if (el.type === 'note') {
+const cm = { 'note-yellow': '#fef3c7', 'note-blue': '#dbeafe', 'note-green': '#d1fae5', 'note-pink': '#fce7f3', 'note-red': '#fee2e2' };
+ctx.fillStyle = cm[el.color] || '#fef3c7';
+ctx.fillRect(x, y, w, h);
+ctx.fillStyle = '#222'; ctx.font = '14px sans-serif';
+wrapText(ctx, el.content || '', x + 12, y + 24, w - 24, 18);
+} else if (el.type === 'group') {
+ctx.fillStyle = 'rgba(108,92,231,0.1)';
+ctx.fillRect(x, y, w, h);
+ctx.fillStyle = '#222'; ctx.font = 'bold 14px sans-serif';
+ctx.fillText(el.title || 'Group', x + 10, y + 20);
+}
+});
+ctx.strokeStyle = '#666'; ctx.lineWidth = 2;
+currentProject.connections.forEach(conn => {
+const el1 = currentProject.elements.find(e => e.id === conn.from);
+const el2 = currentProject.elements.find(e => e.id === conn.to);
+if (!el1 || !el2) return;
+const x1 = (el1.x || 0) + (el1.width || 200) / 2, y1 = (el1.y || 0) + (el1.height || 140) / 2;
+const x2 = (el2.x || 0) + (el2.width || 200) / 2, y2 = (el2.y || 0) + (el2.height || 140) / 2;
+ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+});
+canvas.toBlob(blob => {
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url; a.download = currentProject.name + '.png';
+a.click(); URL.revokeObjectURL(url);
+showToast("🖼️ Exported");
+});
+}
+function exportAsMarkdown() {
+let md = `# ${currentProject.name}\n\n${currentProject.description || ''}\n\n---\n\n`;
+currentProject.elements.filter(e => e.type === 'note').forEach(n => { md += `- ${n.content || '(empty)'}\n`; });
+const blob = new Blob([md], { type: 'text/markdown' });
+const a = document.createElement('a');
+a.href = URL.createObjectURL(blob);
+a.download = currentProject.name + '.md';
+a.click();
+showToast("📄 Exported");
+}
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+const words = text.split(' ');
+let line = '', currentY = y;
+for (let n = 0; n < words.length; n++) {
+const testLine = line + words[n] + ' ';
+if (ctx.measureText(testLine).width > maxWidth && n > 0) {
+ctx.fillText(line, x, currentY);
+line = words[n] + ' '; currentY += lineHeight;
+} else line = testLine;
+}
+ctx.fillText(line, x, currentY);
+}
+function escapeHtml(t) {
+if (!t) return '';
+return t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+function showContextMenu(e, id) {
+e.preventDefault(); e.stopPropagation();
+contextTarget = id;
+const m = document.getElementById('context-menu');
+m.style.left = e.clientX + 'px';
+m.style.top = e.clientY + 'px';
+m.classList.add('active');
+}
+document.addEventListener('click', () => document.getElementById('context-menu').classList.remove('active'));
+function contextAction(a) {
+if (!contextTarget) return;
+const el = currentProject.elements.find(e => e.id === contextTarget);
+if (!el) return;
+if (a === 'duplicate') {
+pushHistory();
+const n = JSON.parse(JSON.stringify(el));
+n.id = 'el_' + Date.now();
+n.x = (el.x || 0) + 20; n.y = (el.y || 0) + 20;
+if (n.ganttOffsetX) n.ganttOffsetX += 20;
+if (n.ganttOffsetY) n.ganttOffsetY += 20;
+currentProject.elements.push(n);
+renderWhiteboard(); saveCurrentProjectState();
+showToast('📋 Duplicated');
+} else if (a === 'pin') togglePin(contextTarget);
+else if (a === 'lock') toggleLock(contextTarget);
+else if (a === 'tags') {
+currentTagEditId = contextTarget;
+currentEditTags = [...(el.tags || [])];
+const c = document.getElementById('edit-tags-container');
+c.querySelectorAll('.tag-chip').forEach(x => x.remove());
+currentEditTags.forEach(t => {
+const chip = document.createElement('span');
+chip.className = 'tag-chip';
+chip.innerHTML = `${escapeHtml(t)} <span class="tag-chip-remove" onclick="this.parentElement.remove()">×</span>`;
+chip.dataset.tag = t;
+c.insertBefore(chip, document.getElementById('edit-tags-input'));
+});
+document.getElementById('tags-modal').classList.add('active');
+} else if (a === 'progress') {
+currentTagEditId = contextTarget;
+document.getElementById('progress-slider').value = el.progress || 0;
+document.getElementById('progress-value-label').textContent = el.progress || 0;
+document.getElementById('progress-modal').classList.add('active');
+} else if (a === 'forward') {
+pushHistory();
+const idx = currentProject.elements.findIndex(e => e.id === contextTarget);
+if (idx < currentProject.elements.length - 1) {
+const temp = currentProject.elements[idx];
+currentProject.elements[idx] = currentProject.elements[idx + 1];
+currentProject.elements[idx + 1] = temp;
+renderWhiteboard(); saveCurrentProjectState();
+}
+} else if (a === 'back') {
+pushHistory();
+const idx = currentProject.elements.findIndex(e => e.id === contextTarget);
+if (idx > 0) {
+const temp = currentProject.elements[idx];
+currentProject.elements[idx] = currentProject.elements[idx - 1];
+currentProject.elements[idx - 1] = temp;
+renderWhiteboard(); saveCurrentProjectState();
+}
+} else if (a === 'delete') deleteElement(contextTarget);
+contextTarget = null;
+}
+function saveEditTags() {
+const el = currentProject.elements.find(e => e.id === currentTagEditId);
+if (el) { pushHistory(); el.tags = getTagsFromContainer('edit-tags-container'); renderWhiteboard(); saveCurrentProjectState(); }
+closeModal('tags-modal');
+}
+function saveProgress() {
+const el = currentProject.elements.find(e => e.id === currentTagEditId);
+if (el) { pushHistory(); el.progress = parseInt(document.getElementById('progress-slider').value); renderWhiteboard(); saveCurrentProjectState(); }
+closeModal('progress-modal');
+}
+function openTrash() {
+document.getElementById('trash-list').innerHTML = trash.length ? trash.map((item, i) => `<div class="trash-item"><span>${escapeHtml((item.content || item.title || '').substring(0, 30))}</span><button class="btn btn-sm btn-ghost" onclick="restoreFromTrash(${i})">Restore</button></div>`).join('') : '<p style="padding:20px;text-align:center;color:var(--text-muted);">Empty</p>';
+document.getElementById('trash-modal').classList.add('active');
+}
+function restoreFromTrash(i) {
+pushHistory();
+const item = trash[i];
+delete item.deletedAt;
+currentProject.elements.push(item);
+trash.splice(i, 1);
+renderWhiteboard(); openTrash(); saveCurrentProjectState();
+showToast('✅ Restored');
+}
+function clearTrash() { trash = []; openTrash(); }
+function toggleSnap() { snapEnabled = !snapEnabled; document.getElementById('snap-btn').classList.toggle('active', snapEnabled); showToast(snapEnabled ? '🧲 Snap ON' : 'Snap OFF'); }
+function toggleFocusMode() {
+focusMode = !focusMode;
+document.getElementById('focus-btn').classList.toggle('active', focusMode);
+document.querySelectorAll('.wb-element').forEach(el => {
+if (focusMode) { if (!el.classList.contains('selected') && !el.querySelector(':focus')) el.classList.add('dimmed'); }
+else el.classList.remove('dimmed');
+});
+showToast(focusMode ? '🎯 Focus ON' : 'Focus OFF');
+}
+function openIdeaMode() {
+ideaMode = true;
+currentIdeaIndex = Math.floor(Math.random() * IDEA_PROMPTS.length);
+document.getElementById('idea-prompt').textContent = IDEA_PROMPTS[currentIdeaIndex];
+document.getElementById('idea-banner').classList.add('active');
+}
+function closeIdeaMode() { ideaMode = false; document.getElementById('idea-banner').classList.remove('active'); }
+function nextIdeaPrompt() { currentIdeaIndex = (currentIdeaIndex + 1) % IDEA_PROMPTS.length; document.getElementById('idea-prompt').textContent = IDEA_PROMPTS[currentIdeaIndex]; }
+function spawnIdeaNote() {
+if (!currentProject) return;
+pushHistory();
+const cx = (-panX + window.innerWidth / 2) / currentZoom - 100;
+const cy = (-panY + window.innerHeight / 2) / currentZoom - 70;
+currentProject.elements.push({ id: 'el_' + Date.now(), type: 'note', x: cx, y: cy, width: 220, height: 160, content: IDEA_PROMPTS[currentIdeaIndex].replace('💡 ', ''), color: ['note-yellow','note-blue','note-green','note-pink'][Math.floor(Math.random() * 4)], template: 'idea' });
+renderWhiteboard(); saveCurrentProjectState();
+const domEl = document.getElementById(currentProject.elements[currentProject.elements.length - 1].id);
+if (domEl) domEl.classList.add('idea-spawn');
+nextIdeaPrompt();
+showToast('💡 Idea spawned!');
+}
+function openTemplateModal() {
+document.getElementById('templates-grid').innerHTML = TEMPLATES.map((t, i) => `<div class="template-card" onclick="createFromTemplate(${i})"><h4>${t.name}</h4><p>${t.description}</p></div>`).join('');
+document.getElementById('template-modal').classList.add('active');
+}
+async function createFromTemplate(idx) {
+const t = TEMPLATES[idx];
+const p = {
+id: Date.now().toString(), name: t.name + ' Project',
+description: 'From template: ' + t.name,
+tags: ['template'], deadline: null, viewMode: 'freeform',
+ganttOrientation: 'vertical', ganttColumnSizes: [],
+elements: t.elements.map((el, i) => ({ ...el, id: 'el_' + Date.now() + '_' + i })),
+connections: [], dependencies: [], createdAt: new Date().toISOString()
+};
+await saveToDB(p);
+closeModal('template-modal');
+renderDashboard();
+showToast('✨ Created');
+}
+function toggleMinimap() { minimapVisible = !minimapVisible; document.getElementById('minimap').classList.toggle('hidden', !minimapVisible); }
+function updateMinimap() {
+if (!minimapVisible || !currentProject) return;
+const c = document.getElementById('minimap-canvas');
+const ctx = c.getContext('2d');
+c.width = 200; c.height = 150;
+ctx.fillStyle = '#f4f4f9';
+ctx.fillRect(0, 0, 200, 150);
+const s = 0.05;
+currentProject.elements.forEach(el => {
+const cm = { 'note-yellow': '#fef3c7', 'note-blue': '#dbeafe', 'note-green': '#d1fae5', 'note-pink': '#fce7f3', 'note-red': '#fee2e2' };
+ctx.fillStyle = el.type === 'note' ? (cm[el.color] || '#fef3c7') : 'rgba(108,92,231,0.3)';
+ctx.fillRect((el.x || 0) * s, (el.y || 0) * s, (el.width || 200) * s, (el.height || 140) * s);
+});
+const vp = document.getElementById('minimap-viewport');
+vp.style.width = (window.innerWidth / currentZoom) * s + 'px';
+vp.style.height = (window.innerHeight / currentZoom) * s + 'px';
+vp.style.left = (-panX / currentZoom) * s + 'px';
+vp.style.top = (-panY / currentZoom) * s + 'px';
+}
+document.getElementById('minimap').addEventListener('click', e => {
+const r = e.currentTarget.getBoundingClientRect();
+const s = 0.05;
+panX = window.innerWidth / 2 - (e.clientX - r.left) / s * currentZoom;
+panY = window.innerHeight / 2 - (e.clientY - r.top) / s * currentZoom;
+applyZoom();
+});
+function togglePomodoro() { document.getElementById('pomodoro-widget').classList.toggle('active'); }
+function togglePomodoroTimer() {
+if (pomodoroRunning) {
+clearInterval(pomodoroInterval);
+pomodoroRunning = false;
+document.getElementById('pomodoro-toggle').textContent = '▶';
+} else {
+pomodoroRunning = true;
+document.getElementById('pomodoro-toggle').textContent = '⏸';
+pomodoroInterval = setInterval(() => {
+pomodoroTime--;
+if (pomodoroTime <= 0) {
+clearInterval(pomodoroInterval);
+pomodoroRunning = false;
+document.getElementById('pomodoro-toggle').textContent = '▶';
+pomodoroMode = pomodoroMode === 'focus' ? 'break' : 'focus';
+pomodoroTime = pomodoroMode === 'focus' ? 25 * 60 : 5 * 60;
+document.getElementById('pomodoro-mode').textContent = pomodoroMode === 'focus' ? 'Focus' : 'Break';
+showToast(pomodoroMode === 'focus' ? '⏰ Back to focus!' : '🎉 Take a break!');
+}
+const m = Math.floor(pomodoroTime / 60), s = pomodoroTime % 60;
+document.getElementById('pomodoro-time').textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}, 1000);
+}
+}
+function resetPomodoro() {
+clearInterval(pomodoroInterval);
+pomodoroRunning = false;
+pomodoroMode = 'focus';
+pomodoroTime = 25 * 60;
+document.getElementById('pomodoro-toggle').textContent = '▶';
+document.getElementById('pomodoro-mode').textContent = 'Focus';
+document.getElementById('pomodoro-time').textContent = '25:00';
+}
+let userLocation = null;
+async function initWorldWidget() {
+updateWorldTime();
+setInterval(updateWorldTime, 1000);
+document.getElementById('world-quote').textContent = `"${QUOTES[Math.floor(Math.random() * QUOTES.length)]}"`;
+setInterval(() => { document.getElementById('world-quote').textContent = `"${QUOTES[Math.floor(Math.random() * QUOTES.length)]}"`; }, 60000);
+if (navigator.geolocation) {
+navigator.geolocation.getCurrentPosition(async pos => {
+userLocation = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+await fetchWeather();
+await fetchLocationName();
+}, async () => {
+userLocation = { lat: 51.5, lon: -0.12 };
+document.getElementById('world-location').textContent = '📍 London';
+await fetchWeather();
+});
+} else {
+userLocation = { lat: 51.5, lon: -0.12 };
+await fetchWeather();
+}
+}
+async function fetchWeather() {
+if (!userLocation) return;
+try {
+const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${userLocation.lat}&longitude=${userLocation.lon}&current_weather=true`);
+const d = await r.json();
+if (d.current_weather) {
+const w = d.current_weather;
+document.getElementById('world-weather-temp').textContent = `${Math.round(w.temperature)}°C`;
+const codes = { 0: ['☀️','Clear'], 1: ['🌤️','Clear'], 2: ['⛅','Cloudy'], 3: ['☁️','Overcast'], 61: ['🌧️','Rain'], 71: ['🌨️','Snow'], 95: ['⛈️','Storm'] };
+const [ic, ds] = codes[w.weathercode] || ['🌡️','Unknown'];
+document.getElementById('world-weather-icon').textContent = ic;
+document.getElementById('world-weather-desc').textContent = ds;
+}
+} catch (e) { document.getElementById('world-weather-desc').textContent = 'Unavailable'; }
+}
+async function fetchLocationName() {
+if (!userLocation) return;
+try {
+const r = await fetch(`https://geocoding-api.open-meteo.com/v1/reverse?latitude=${userLocation.lat}&longitude=${userLocation.lon}`);
+const d = await r.json();
+if (d.results?.[0]) document.getElementById('world-location').textContent = `📍 ${d.results[0].name}`;
+} catch (e) {}
+}
+function updateWorldTime() {
+const n = new Date();
+document.getElementById('world-time').textContent = n.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+document.getElementById('world-date').textContent = n.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
+}
+const canvasWrapper = document.getElementById('canvas-wrapper');
+canvasWrapper.addEventListener('mousedown', e => {
+if (!isSelectMode || (e.target !== canvasWrapper && e.target.id !== 'svg-layer')) return;
+e.preventDefault();
+isDragSelecting = true;
+const wr = canvasWrapper.getBoundingClientRect();
+dragSelectStart = { x: (e.clientX - wr.left) / currentZoom, y: (e.clientY - wr.top) / currentZoom };
+dragSelectBox = document.createElement('div');
+dragSelectBox.className = 'select-box';
+dragSelectBox.style.left = dragSelectStart.x + 'px';
+dragSelectBox.style.top = dragSelectStart.y + 'px';
+canvasWrapper.appendChild(dragSelectBox);
+if (!e.shiftKey) selectedElements = [];
+document.addEventListener('mousemove', onDragSelect);
+document.addEventListener('mouseup', stopDragSelect);
+});
+function onDragSelect(e) {
+if (!isDragSelecting) return;
+const wr = canvasWrapper.getBoundingClientRect();
+const cx = (e.clientX - wr.left) / currentZoom;
+const cy = (e.clientY - wr.top) / currentZoom;
+const x = Math.min(dragSelectStart.x, cx);
+const y = Math.min(dragSelectStart.y, cy);
+const w = Math.abs(cx - dragSelectStart.x);
+const h = Math.abs(cy - dragSelectStart.y);
+dragSelectBox.style.left = x + 'px';
+dragSelectBox.style.top = y + 'px';
+dragSelectBox.style.width = w + 'px';
+dragSelectBox.style.height = h + 'px';
+document.querySelectorAll('.wb-element').forEach(el => el.classList.remove('selected'));
+selectedElements = [];
+currentProject.elements.forEach(el => {
+const ex = el.x || 0, ey = el.y || 0;
+if (ex + (el.width || 200) > x && ex < x + w && ey + (el.height || 140) > y && ey < y + h) {
+selectedElements.push(el.id);
+document.getElementById(el.id).classList.add('selected');
+}
+});
+updateAlignToolbar();
+}
+function stopDragSelect() {
+isDragSelecting = false;
+if (dragSelectBox) { dragSelectBox.remove(); dragSelectBox = null; }
+document.removeEventListener('mousemove', onDragSelect);
+document.removeEventListener('mouseup', stopDragSelect);
+}
+let toastTimeout;
+function showToast(msg) {
+const t = document.getElementById('toast');
+t.textContent = msg;
+t.classList.add('show');
+clearTimeout(toastTimeout);
+toastTimeout = setTimeout(() => t.classList.remove('show'), 2000);
+}
+const whiteboard = document.getElementById('whiteboard');
+whiteboard.addEventListener('mousedown', e => {
+if (e.button === 1) {
+e.preventDefault();
+isPanning = true;
+panStartX = e.clientX; panStartY = e.clientY;
+panStartPanX = panX; panStartPanY = panY;
+whiteboard.classList.add('panning');
+}
+});
+document.addEventListener('mousemove', e => {
+if (isPanning) {
+panX = panStartPanX + (e.clientX - panStartX);
+panY = panStartPanY + (e.clientY - panStartY);
+applyZoom();
+}
+});
+document.addEventListener('mouseup', e => {
+if (e.button === 1 && isPanning) { isPanning = false; whiteboard.classList.remove('panning'); }
+});
+whiteboard.addEventListener('auxclick', e => { if (e.button === 1) e.preventDefault(); });
+document.addEventListener('mousedown', e => {
+if (e.button === 1 && document.getElementById('whiteboard').classList.contains('active')) e.preventDefault();
+}, true);
+document.addEventListener('keydown', e => {
+if (e.key === KONAMI[konamiProgress]) {
+konamiProgress++;
+if (konamiProgress === KONAMI.length) {
+konamiProgress = 0;
+appSettings.background = 'bg-matrix';
+applySettings();
+showToast('🎮 MATRIX MODE');
+}
+} else konamiProgress = 0;
+if (e.key === 'Escape') {
+if (isConnectMode) toggleConnectMode();
+if (isDependencyMode) toggleDependencyMode();
+if (isSelectMode) toggleSelectMode();
+document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+if (ideaMode) closeIdeaMode();
+selectedElements = [];
+if (focusMode) toggleFocusMode();
+return;
+}
+if (document.querySelector('.modal-overlay.active')) return;
+if (document.getElementById('whiteboard').classList.contains('active')) {
+if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') {
+if (!e.ctrlKey && !e.metaKey) return;
+}
+if (e.key === 'n' || e.key === 'N') addStickyNote('blank');
+if (e.key === 'g' || e.key === 'G') addGroupBox();
+if (e.key === 'c' || e.key === 'C') toggleConnectMode();
+if (e.key === 'd' || e.key === 'D') toggleDependencyMode();
+if (e.key === 'q' || e.key === 'Q') toggleSelectMode();
+if (e.key === 's' && !e.ctrlKey && !e.metaKey) toggleSnap();
+if (e.key === 'f' && !e.ctrlKey && !e.metaKey) toggleFocusMode();
+if (e.key === 'Tab') { e.preventDefault(); toggleGanttView(); }
+if (['1','2','3','4','5'].includes(e.key)) {
+const colors = ['note-yellow', 'note-blue', 'note-green', 'note-pink', 'note-red'];
+const ci = parseInt(e.key) - 1;
+if (selectedElements.length > 0) {
+selectedElements.forEach(id => { const el = currentProject.elements.find(e => e.id === id); if (el && el.type === 'note') changeNoteColor(id, colors[ci]); });
+} else if (currentProject.elements.length > 0) {
+const lastNote = currentProject.elements[currentProject.elements.length - 1];
+if (lastNote.type === 'note') changeNoteColor(lastNote.id, colors[ci]);
+}
+}
+}
+if (e.ctrlKey || e.metaKey) {
+if (e.key === '+' || e.key === '=') { e.preventDefault(); adjustZoom(0.1); }
+if (e.key === '-') { e.preventDefault(); adjustZoom(-0.1); }
+if (e.key === '0') { e.preventDefault(); resetView(); }
+if (e.key === '1') { e.preventDefault(); zoomToFit(); }
+if (e.key === 's') { e.preventDefault(); if (currentProject) exportProject(); }
+if (e.key === 'e') { e.preventDefault(); if (currentProject) exportAsImage(); }
+if (e.key === 'm') { e.preventDefault(); if (currentProject) exportAsMarkdown(); }
+if (e.key === 'z') { e.preventDefault(); undo(); }
+if (e.key === 'y') { e.preventDefault(); redo(); }
+if (e.key === 'f') {
+e.preventDefault();
+if (currentProject) {
+const q = prompt('Search:');
+if (q) searchInWhiteboard(q);
+} else document.getElementById('global-search').focus();
+}
+}
+});
+document.getElementById('project-list').addEventListener('click', e => {
+const card = e.target.closest('.project-card');
+if (card && !e.target.closest('.project-card-action')) {
+const pid = card.getAttribute('data-project-id');
+if (pid) {
+const tx = db.transaction(['projects'], 'readonly');
+const req = tx.objectStore('projects').get(pid);
+req.onsuccess = () => { if (req.result) openWhiteboard(req.result); };
+}
+}
+});
+function searchInWhiteboard(q) {
+if (!currentProject) return;
+document.querySelectorAll('.wb-element').forEach(el => el.classList.remove('search-match'));
+if (!q.trim()) return;
+const lq = q.toLowerCase();
+currentProject.elements.forEach(el => {
+if ((el.content || el.title || '').toLowerCase().includes(lq)) {
+const d = document.getElementById(el.id);
+if (d) d.classList.add('search-match');
+}
+});
+}
+function updateAllCountdowns() {
+if (currentProject && document.getElementById('whiteboard').classList.contains('active')) updateProjectCountdownWidget();
+}
+setInterval(updateAllCountdowns, 1000);
+function toggleGanttView() {
+if (!currentProject) return;
+if (!currentProject.deadline?.startDate || !currentProject.deadline?.endDate) { alert('Set dates first'); return; }
+currentProject.viewMode = currentProject.viewMode === 'gantt' ? 'freeform' : 'gantt';
+if (!currentProject.ganttOrientation) currentProject.ganttOrientation = 'vertical';
+if (!currentProject.ganttColumnSizes) currentProject.ganttColumnSizes = [];
+saveCurrentProjectState();
+renderWhiteboard();
+updateGanttToolbar();
+}
+function toggleGanttOrientation() {
+if (!currentProject || currentProject.viewMode !== 'gantt') return;
+currentProject.ganttOrientation = currentProject.ganttOrientation === 'vertical' ? 'horizontal' : 'vertical';
+saveCurrentProjectState();
+renderWhiteboard();
+updateGanttToolbar();
+}
+function updateGanttToolbar() {
+const b = document.getElementById('gantt-toggle-btn');
+const o = document.getElementById('gantt-orientation-btn');
+if (currentProject?.viewMode === 'gantt') {
+b.classList.add('active');
+o.style.display = 'inline-flex';
+o.textContent = currentProject.ganttOrientation === 'vertical' ? '↕' : '↔';
+} else {
+b.classList.remove('active');
+o.style.display = 'none';
+}
+}
+function getGanttDays() {
+if (!currentProject?.deadline?.startDate) return [];
+const s = new Date(currentProject.deadline.startDate);
+const e = new Date(currentProject.deadline.endDate);
+s.setHours(0,0,0,0); e.setHours(0,0,0,0);
+const days = [];
+const c = new Date(s);
+while (c <= e) { days.push(new Date(c)); c.setDate(c.getDate() + 1); }
+return days;
+}
+function getGanttColumnSize(i) {
+return currentProject.ganttColumnSizes?.[i] || 180;
+}
+function isWeekend(d) { const day = d.getDay(); return day === 0 || day === 6; }
+function isToday(d) { const t = new Date(); return d.getDate() === t.getDate() && d.getMonth() === t.getMonth() && d.getFullYear() === t.getFullYear(); }
+function renderGanttView() {
+const wrapper = document.getElementById('canvas-wrapper');
+const svg = document.getElementById('svg-layer');
+wrapper.querySelectorAll('.wb-element,.gantt-container').forEach(el => el.remove());
+svg.innerHTML = '';
+const days = getGanttDays();
+if (!days.length) return;
+const orient = currentProject.ganttOrientation || 'vertical';
+const hS = 80, tO = 90, lO = 30;
+const container = document.createElement('div');
+container.className = 'gantt-container';
+container.style.top = tO + 'px';
+container.style.left = lO + 'px';
+if (orient === 'vertical') {
+let tw = 0;
+for (let i = 0; i < days.length; i++) tw += getGanttColumnSize(i);
+container.style.width = tw + 'px';
+container.style.height = '700px';
+const header = document.createElement('div');
+header.className = 'gantt-header';
+header.style.height = hS + 'px';
+days.forEach((d, i) => {
+const cw = getGanttColumnSize(i);
+const dh = document.createElement('div');
+dh.className = 'gantt-day-header';
+if (isToday(d)) dh.classList.add('today');
+if (isWeekend(d)) dh.classList.add('weekend');
+dh.style.width = cw + 'px';
+dh.innerHTML = `<div class="day-name">${d.toLocaleDateString('en-US', { weekday: 'short' })}</div><div class="day-number">${d.getDate()}</div><div class="day-month">${d.toLocaleDateString('en-US', { month: 'short' })}</div><button class="gantt-add-btn" onclick="handleGanttColumnClick(event,${i})">+</button>`;
+header.appendChild(dh);
+});
+container.appendChild(header);
+const body = document.createElement('div');
+body.className = 'gantt-body';
+body.style.height = '620px';
+days.forEach((d, i) => {
+const cw = getGanttColumnSize(i);
+const col = document.createElement('div');
+col.className = 'gantt-column';
+if (isWeekend(d)) col.classList.add('weekend');
+col.style.width = cw + 'px';
+body.appendChild(col);
+});
+container.appendChild(body);
+}
+wrapper.insertBefore(container, svg);
+renderGanttElements();
+renderConnections();
+}
+function renderGanttElements() {
+if (!currentProject?.elements) return;
+const orient = currentProject.ganttOrientation || 'vertical';
+const hS = 80, tO = 90, lO = 30;
+currentProject.elements.forEach(el => {
+const div = document.createElement('div');
+div.id = el.id;
+let x = 0, y = 0;
+if (el.ganttDay !== undefined) {
+if (orient === 'vertical') {
+let xO = lO;
+for (let i = 0; i < el.ganttDay; i++) xO += getGanttColumnSize(i);
+x = xO + (el.ganttOffsetX || 10);
+y = tO + hS + (el.ganttOffsetY || 10);
+} else { x = el.x || 100; y = el.y || 100; }
+} else { x = el.x || 100; y = el.y || 100; }
+div.style.left = x + 'px';
+div.style.top = y + 'px';
+if (el.pinned) div.classList.add('pinned');
+if (el.locked) div.classList.add('locked');
+buildElementContent(div, el);
+document.getElementById('canvas-wrapper').appendChild(div);
+});
+}
+function handleGanttColumnClick(e, dayIndex) {
+if (e) { e.preventDefault(); e.stopPropagation(); }
+pushHistory();
+const els = currentProject.elements.filter(el => el.ganttDay === dayIndex);
+let maxB = 0;
+els.forEach(el => { maxB = Math.max(maxB, (el.ganttOffsetY || 10) + (el.height || 140)); });
+currentProject.elements.push({ id: 'el_' + Date.now(), type: 'note', ganttDay: dayIndex, ganttOffsetX: 10, ganttOffsetY: maxB + 10, x: 0, y: 0, width: 200, height: 140, content: '', color: 'note-yellow' });
+renderWhiteboard();
+saveCurrentProjectState();
+}
+const radioStations = [
+{ name: "Lofi Cafe", url: "https://radio.loficafe.net/listen/chilling/radio.mp3" },
+{ name: "Hotmix LoFi", url: "https://streaming.hotmixradio.com/hotmix-lofi-en-mp3" },
+{ name: "StreamAfrica", url: "https://play.streamafrica.net/lofiradio" },
+{ name: "Box Lofi", url: "https://stream.zeno.fm/tabzverz0fctv" },
+{ name: "24/7 Lofi", url: "http://ec3.yesstreaming.net:3750/stream" }
+];
+let currentStationIndex = 0;
+const radioAudio = document.getElementById('radio-audio');
+const playIcon = document.getElementById('play-icon');
+function toggleRadioExpand() { document.getElementById('radio-player').classList.toggle('expanded'); }
+function loadStation(i) {
+currentStationIndex = i;
+radioAudio.src = radioStations[i].url;
+document.getElementById('radio-station-name').innerText = radioStations[i].name;
+if (!radioAudio.paused) radioAudio.play().catch(() => {});
+}
+function togglePlay() {
+if (radioAudio.paused) { if (!radioAudio.src) loadStation(currentStationIndex); radioAudio.play().catch(() => {}); }
+else radioAudio.pause();
+}
+function nextStation() { loadStation((currentStationIndex + 1) % radioStations.length); }
+function prevStation() { loadStation((currentStationIndex - 1 + radioStations.length) % radioStations.length); }
+function changeVolume(v) { radioAudio.volume = v; }
+radioAudio.addEventListener('play', () => { document.getElementById('radio-player').classList.add('playing'); playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; });
+radioAudio.addEventListener('pause', () => { document.getElementById('radio-player').classList.remove('playing'); playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>'; });
+radioAudio.volume = 0.5;
+window.onload = () => {
+loadAppData();
+initDB().then(() => {
+loadSettings();
+initWorldWidget();
+updateDashboardStats();
+renderSavedIdeas();
+renderFavorites();
+renderAchievements();
+updateDifficultyDisplay();
+});
+};
+document.getElementById('gen-deadline-value').addEventListener('input', updateDifficultyDisplay);
+document.getElementById('gen-deadline-unit').addEventListener('change', updateDifficultyDisplay);
+</script>
+</body>
+</html>
