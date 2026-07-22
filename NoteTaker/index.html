@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Studio — Game Dev Workspace</title>
+  <link rel="icon" type="image/x-icon" href="../images/PageIcon.ico">
 <style>
 :root {
 --bg: #0c0e14;
@@ -495,8 +496,13 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
 </div>
 </nav>
 <div class="sidebar-footer">
-<div class="sidebar-footer-btn" onclick="openSettingsModal()">⚙️ Settings</div>
-<div class="sidebar-footer-btn" onclick="openKeybinds()">⌨️ Shortcuts</div>
+  <!-- NEW: Back to Portfolio Button -->
+  <a href="../index.html" class="sidebar-footer-btn" style="text-decoration: none; color: var(--accent-light); border: 1px solid var(--border); margin-bottom: 8px; justify-content: center;">
+    <span style="font-size: 16px;">←</span> Back to Portfolio
+  </a>
+  
+  <div class="sidebar-footer-btn" onclick="openSettingsModal()">⚙️ Settings</div>
+  <div class="sidebar-footer-btn" onclick="openKeybinds()">⌨️ Shortcuts</div>
 </div>
 </aside>
 
