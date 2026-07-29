@@ -646,8 +646,32 @@
     }
 
     // Initialize watchlist on load
+    // Initialize watchlist and auto-highlight active sidebar link
     document.addEventListener('DOMContentLoaded', () => {
+        // 1. Render the watchlist content
         renderWatchlist();
+
+        // 2. 🦖 AUTO-HIGHLIGHT ACTIVE NAV LINK 🦖
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.sidebar .nav-item');
+        
+        navLinks.forEach(link => {
+            // Remove any hardcoded 'active' classes first
+            link.classList.remove('active');
+            
+            const linkHref = link.getAttribute('href');
+            
+            if (linkHref) {
+                // Match the end of the URL
+                if (currentPath.endsWith(linkHref)) {
+                    link.classList.add('active');
+                }
+                // Special case for root domain
+                else if ((currentPath === '/' || currentPath === '') && linkHref === 'index.html') {
+                    link.classList.add('active');
+                }
+            }
+        });
     });
 </script>
 </body>
