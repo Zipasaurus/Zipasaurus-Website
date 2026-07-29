@@ -336,11 +336,11 @@
         <h2 class="retro-font">🎬 Watchlist</h2>
         
         <!-- Tabs -->
-        <div class="watchlist-tabs">
-            <button class="watchlist-tab active" onclick="switchWatchlistTab('movies')">Movies</button>
-            <button class="watchlist-tab" onclick="switchWatchlistTab('series')">Series</button>
-            <button class="watchlist-tab" onclick="switchWatchlistTab('animations')">Animations</button>
-        </div>
+<div class="watchlist-tabs">
+    <button class="watchlist-tab active" data-tab="movies" onclick="switchWatchlistTab('movies')">Movies</button>
+    <button class="watchlist-tab" data-tab="series" onclick="switchWatchlistTab('series')">Series</button>
+    <button class="watchlist-tab" data-tab="animations" onclick="switchWatchlistTab('animations')">Animations</button>
+</div>
 
         <!-- Content Grid -->
         <div id="watchlist-content" class="watchlist-grid">
@@ -457,6 +457,164 @@
             e.target !== hamburger) {
             sidebar.classList.remove('active');
         }
+    });
+        // ===== WATCHLIST DATA & FUNCTIONS =====
+    const watchlistData = {
+        movies: [
+            {
+                title: "Dune: Part Two",
+                year: 2024,
+                rating: "9/10",
+                image: "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
+                review: "Denis Villeneuve outdid himself. The sandworm riding sequence alone is worth the price of admission. Hans Zimmer's score hits different in IMAX."
+            },
+            {
+                title: "Spider-Man: Across the Spider-Verse",
+                year: 2023,
+                rating: "10/10",
+                image: "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
+                review: "Revolutionary animation. Every frame is a painting. The way each universe has its own animation style is absolute genius."
+            },
+            {
+                title: "Oppenheimer",
+                year: 2023,
+                rating: "9.5/10",
+                image: "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
+                review: "Nolan's masterpiece. Cillian Murphy disappears into the role. The Trinity test sequence had me holding my breath."
+            }
+        ],
+        series: [
+            {
+                title: "The Last of Us",
+                year: 2023,
+                rating: "9.5/10",
+                image: "https://image.tmdb.org/t/p/w500/uKvVjHNqB5VmOraxqAt9FfJ4J81.jpg",
+                review: "Best video game adaptation ever made, period. Pedro Pascal IS Joel. Episode 3 made me cry like a baby."
+            },
+            {
+                title: "Severance",
+                year: 2022,
+                rating: "9/10",
+                image: "https://image.tmdb.org/t/p/w500/lFf6LLrQWglqlj55C6Cg5vAANqV.jpg",
+                review: "The most unsettling show I've watched in years. That season finale had me pacing my room. Perfect corporate horror aesthetic."
+            },
+            {
+                title: "Arcane",
+                year: 2021,
+                rating: "10/10",
+                image: "https://image.tmdb.org/t/p/w500/fqldf2t8ztc95wn3pfWq5PjRWHZ.jpg",
+                review: "You don't need to know anything about League of Legends. The storytelling, animation, and music are absolutely flawless."
+            }
+        ],
+        animations: [
+            {
+                title: "Spirited Away",
+                year: 2001,
+                rating: "10/10",
+                image: "https://image.tmdb.org/t/p/w500/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
+                review: "Miyazaki's magnum opus. I've watched it probably 15 times and I still notice new details. The bathhouse world-building is unmatched."
+            },
+            {
+                title: "The Boy and the Heron",
+                year: 2023,
+                rating: "8.5/10",
+                image: "https://image.tmdb.org/t/p/w500/f4oZTcfGrVTXKTWg157AwikXqmP.jpg",
+                review: "Miyazaki's most personal and abstract film. It's confusing on first watch but hits deep once it clicks. Insane hand-drawn animation."
+            },
+            {
+                title: "Perfect Blue",
+                year: 1997,
+                rating: "9.5/10",
+                image: "https://image.tmdb.org/t/p/w500/6WTiOCfD78E5fU0qE5F5Z5qE5F5.jpg",
+                review: "A psychological thriller masterpiece by Satoshi Kon. The editing and blurring of reality is decades ahead of its time."
+            }
+        ]
+    };
+
+    let currentWatchlistTab = 'movies';
+
+    function switchWatchlistTab(tab) {
+        currentWatchlistTab = tab;
+        
+        // Update active tab UI
+        document.querySelectorAll('.watchlist-tab').forEach(t => {
+            t.classList.remove('active');
+            if (t.getAttribute('data-tab') === tab) {
+                t.classList.add('active');
+            }
+        });
+        
+        renderWatchlist();
+    }
+
+    function renderWatchlist() {
+        const container = document.getElementById('watchlist-content');
+        const items = watchlistData[currentWatchlistTab];
+        
+        if (!items || items.length === 0) {
+            container.innerHTML = `<div style="grid-column: 1/-1; padding: 3rem; text-align: center; color: var(--text-muted);">
+                <p>No items in this category yet. 🍿</p>
+            </div>`;
+            return;
+        }
+        
+        container.innerHTML = items.map((item, index) => `
+            <div class="watchlist-item" onclick="showReview('${currentWatchlistTab}', ${index})">
+                <img src="${item.image}" alt="${item.title}" class="watchlist-image" onerror="this.src='https://via.placeholder.com/400x600/0a0f0a/00ff41?text=${encodeURIComponent(item.title)}'">
+                <div class="watchlist-info">
+                    <h3 class="watchlist-title">${item.title}</h3>
+                    <div class="watchlist-meta">
+                        <span class="watchlist-year">📅 ${item.year}</span>
+                        <span class="watchlist-rating">⭐ ${item.rating}</span>
+                    </div>
+                    <div class="watchlist-review-hint">Click for personal review</div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function showReview(tab, index) {
+        const item = watchlistData[tab][index];
+        
+        // Create modal dynamically
+        const modal = document.createElement('div');
+        modal.className = 'wl-modal-overlay active';
+        modal.innerHTML = `
+            <div class="wl-modal">
+                <button class="wl-modal-close" onclick="this.closest('.wl-modal-overlay').remove(); document.body.style.overflow = '';">×</button>
+                <div class="wl-modal-img-wrap">
+                    <img src="${item.image}" alt="${item.title}" onerror="this.style.display='none'">
+                </div>
+                <div class="wl-modal-body">
+                    <h3>${item.title}</h3>
+                    <div class="wl-modal-meta">
+                        <span>📅 ${item.year}</span>
+                        <span>⭐ ${item.rating}</span>
+                        <span>🎬 ${tab.charAt(0).toUpperCase() + tab.slice(1)}</span>
+                    </div>
+                    <div class="wl-modal-review">
+                        <h4>📝 Personal Review</h4>
+                        <p>${item.review || "Review coming soon..."}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Close on background click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.remove();
+                document.body.style.overflow = '';
+            }
+        });
+        
+        document.body.appendChild(modal);
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+
+    // Initialize watchlist on load
+    document.addEventListener('DOMContentLoaded', () => {
+        renderWatchlist();
     });
 </script>
 </body>
