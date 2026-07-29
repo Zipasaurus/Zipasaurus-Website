@@ -9,6 +9,9 @@
    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Press+Start+2P&amp;display=swap" rel="stylesheet">
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
    
     <style>
         :root {
@@ -235,18 +238,103 @@
             line-height: 1.5;
         }
 
-        .asset-hint {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            font-style: italic;
+        .asset-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
             border-top: 1px solid rgba(0, 255, 65, 0.15);
-            padding-top: 0.8rem;
-            margin-top: auto;
-            padding-top: 0.8rem;
         }
 
-        .asset-hint::before {
-            content: "🖱️ ";
+        .asset-btn {
+            flex: 1;
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--accent);
+            background: transparent;
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .asset-btn:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        /* Wireframe Modal */
+        .wireframe-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .wireframe-modal.active {
+            display: flex;
+        }
+
+        .wireframe-container {
+            width: 90%;
+            max-width: 900px;
+            height: 80vh;
+            background: var(--surface);
+            border: 2px solid var(--accent);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wireframe-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 1.5rem;
+            background: rgba(10, 15, 10, 0.95);
+            border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .wireframe-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .wireframe-close {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .wireframe-close:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        #wireframe-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
         }
 
         /* Mobile */
@@ -307,6 +395,7 @@
             .assets-grid { grid-template-columns: 1fr; }
             .asset-card model-viewer { height: 280px; }
             .hero-content h1 { font-size: 2.5rem; }
+            .wireframe-container { width: 95%; height: 70vh; }
         }
     </style>
 </head>
@@ -353,69 +442,35 @@
                     <!-- ASSET 1 -->
                     <div class="asset-card">
                         <model-viewer
-                            src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-                            alt="Astronaut Model"
+                            src="models/Tree.glb"
+                            alt="Tree"
                             auto-rotate
                             camera-controls
                             shadow-intensity="1"
                             interaction-prompt="none">
                         </model-viewer>
                         <div class="asset-info">
-                            <h3 class="asset-title">Astronaut</h3>
-                            <p class="asset-desc">A detailed astronaut model with reflective visor and suit details. Created for a space exploration game concept.</p>
-                            <div class="asset-hint">Drag to rotate, scroll to zoom</div>
+                            <h3 class="asset-title">Tree</h3>
+                            <p class="asset-desc">TestTree</p>
+                            <div class="asset-actions">
+                                <button class="asset-btn" onclick="openWireframe('models/Tree.glb', 'Tree')">🔺 Wireframe</button>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- ASSET 2 -->
-                    <div class="asset-card">
-                        <model-viewer
-                            src="https://modelviewer.dev/shared-assets/models/RobotExpressive.glb"
-                            alt="Robot Model"
-                            auto-rotate
-                            camera-controls
-                            shadow-intensity="1"
-                            interaction-prompt="none">
-                        </model-viewer>
-                        <div class="asset-info">
-                            <h3 class="asset-title">Expressive Robot</h3>
-                            <p class="asset-desc">A friendly robot character with animated expressions. Designed as an NPC companion for an adventure game.</p>
-                            <div class="asset-hint">Drag to rotate, scroll to zoom</div>
-                        </div>
-                    </div>
-
-                    <!-- ASSET 3 -->
-                    <div class="asset-card">
-                        <model-viewer
-                            src="https://modelviewer.dev/shared-assets/models/Horse.glb"
-                            alt="Horse Model"
-                            auto-rotate
-                            camera-controls
-                            shadow-intensity="1"
-                            interaction-prompt="none">
-                        </model-viewer>
-                        <div class="asset-info">
-                            <h3 class="asset-title">Horse</h3>
-                            <p class="asset-desc">A low-poly horse model with smooth animations. Perfect for open-world or medieval game environments.</p>
-                            <div class="asset-hint">Drag to rotate, scroll to zoom</div>
-                        </div>
-                    </div>
-
-                    <!-- 
-                        🔽 HOW TO ADD YOUR OWN BLENDER MODELS 🔽
-                        
-                        1. In Blender: File > Export > glTF 2.0 (.glb)
-                        2. Save to your website folder: /models/your-model.glb
-                        3. Copy one of the asset-card blocks above
-                        4. Change the src="..." to src="models/your-model.glb"
-                        5. Update the title and description
-                        6. Done! It will auto-rotate and be fully interactive.
-                    -->
-
-                </div>
-            </div>
         </div>
     </main>
+
+    <!-- Wireframe Modal -->
+    <div class="wireframe-modal" id="wireframe-modal">
+        <div class="wireframe-container">
+            <div class="wireframe-header">
+                <div class="wireframe-title" id="wireframe-title">Wireframe View</div>
+                <button class="wireframe-close" onclick="closeWireframe()">×</button>
+            </div>
+            <canvas id="wireframe-canvas"></canvas>
+        </div>
+    </div>
 
 <script>
     // Mobile hamburger
@@ -431,6 +486,127 @@
             !sidebar.contains(e.target) && 
             e.target !== hamburger) {
             sidebar.classList.remove('active');
+        }
+    });
+
+    // Wireframe Viewer
+    let wireframeScene, wireframeCamera, wireframeRenderer, wireframeControls;
+    let wireframeAnimationId;
+
+    function openWireframe(modelUrl, modelName) {
+        document.getElementById('wireframe-modal').classList.add('active');
+        document.getElementById('wireframe-title').textContent = modelName + ' - Wireframe';
+        document.body.style.overflow = 'hidden';
+
+        const canvas = document.getElementById('wireframe-canvas');
+        const container = canvas.parentElement;
+
+        // Setup Three.js
+        wireframeScene = new THREE.Scene();
+        wireframeScene.background = new THREE.Color(0x0a0f0a);
+
+        wireframeCamera = new THREE.PerspectiveCamera(
+            45,
+            container.clientWidth / container.clientHeight,
+            0.1,
+            1000
+        );
+        wireframeCamera.position.set(3, 2, 5);
+
+        wireframeRenderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+        wireframeRenderer.setSize(container.clientWidth, container.clientHeight);
+        wireframeRenderer.setPixelRatio(window.devicePixelRatio);
+
+        // Controls
+        wireframeControls = new THREE.OrbitControls(wireframeCamera, wireframeRenderer.domElement);
+        wireframeControls.enableDamping = true;
+        wireframeControls.dampingFactor = 0.05;
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        wireframeScene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0x00ff41, 1);
+        dirLight.position.set(5, 10, 7);
+        wireframeScene.add(dirLight);
+
+        // Grid
+        const gridHelper = new THREE.GridHelper(20, 20, 0x00ff41, 0x1a251a);
+        wireframeScene.add(gridHelper);
+
+        // Load model
+        const loader = new THREE.GLTFLoader();
+        loader.load(modelUrl, function(gltf) {
+            const model = gltf.scene;
+            
+            // Auto-center and scale
+            const box = new THREE.Box3().setFromObject(model);
+            const center = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
+            
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const scale = 3 / maxDim;
+            model.scale.setScalar(scale);
+            model.position.sub(center.multiplyScalar(scale));
+            model.position.y += (size.y * scale) / 2;
+
+            // Apply wireframe material to all meshes
+            model.traverse((child) => {
+                if (child.isMesh) {
+                    child.material = new THREE.MeshBasicMaterial({
+                        color: 0x00ff41,
+                        wireframe: true
+                    });
+                }
+            });
+
+            wireframeScene.add(model);
+        });
+
+        // Animation loop
+        function animate() {
+            wireframeAnimationId = requestAnimationFrame(animate);
+            wireframeControls.update();
+            wireframeRenderer.render(wireframeScene, wireframeCamera);
+        }
+        animate();
+
+        // Handle resize
+        window.addEventListener('resize', handleWireframeResize);
+    }
+
+    function handleWireframeResize() {
+        if (!wireframeRenderer) return;
+        const container = document.getElementById('wireframe-canvas').parentElement;
+        wireframeCamera.aspect = container.clientWidth / container.clientHeight;
+        wireframeCamera.updateProjectionMatrix();
+        wireframeRenderer.setSize(container.clientWidth, container.clientHeight);
+    }
+
+    function closeWireframe() {
+        document.getElementById('wireframe-modal').classList.remove('active');
+        document.body.style.overflow = '';
+        
+        if (wireframeAnimationId) {
+            cancelAnimationFrame(wireframeAnimationId);
+        }
+        
+        if (wireframeRenderer) {
+            wireframeRenderer.dispose();
+        }
+        
+        window.removeEventListener('resize', handleWireframeResize);
+        
+        wireframeScene = null;
+        wireframeCamera = null;
+        wireframeRenderer = null;
+        wireframeControls = null;
+    }
+
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && document.getElementById('wireframe-modal').classList.contains('active')) {
+            closeWireframe();
         }
     });
 </script>
