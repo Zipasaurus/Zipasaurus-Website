@@ -290,7 +290,8 @@
                 <li><a href="Gallery.html" class="nav-item">Gallery</a></li>
                 <li><a href="dj.html" class="nav-item">DJ Zone</a></li>
                 <li><a href="GDD.html" class="nav-item">GDD</a></li>
-                <li><a href="NoteTaker/index.html" class="nav-item">Gameidea-Gen + Planner </a></li>
+                <li><a href="#" class="nav-item" data-page="watchlist">Watchlist</a></li>
+                <li><a href="NoteTaker/index.html" class="nav-item">GameideaGen + Planner </a></li>
 
             </ul>
         </nav>
@@ -330,6 +331,23 @@
             <div id="socials" class="page"></div>
             <div id="gallery" class="page"></div>
             <div id="adventures" class="page"></div>
+            <div id="watchlist" class="page">
+    <div class="card">
+        <h2 class="retro-font">🎬 Watchlist</h2>
+        
+        <!-- Tabs -->
+        <div class="watchlist-tabs">
+            <button class="watchlist-tab active" onclick="switchWatchlistTab('movies')">Movies</button>
+            <button class="watchlist-tab" onclick="switchWatchlistTab('series')">Series</button>
+            <button class="watchlist-tab" onclick="switchWatchlistTab('animations')">Animations</button>
+        </div>
+
+        <!-- Content Grid -->
+        <div id="watchlist-content" class="watchlist-grid">
+            <!-- Content will be dynamically loaded -->
+        </div>
+    </div>
+</div>
         </div>
 
         <footer>
