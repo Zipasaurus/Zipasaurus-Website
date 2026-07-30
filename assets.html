@@ -609,6 +609,31 @@
             closeWireframe();
         }
     });
+           // Close on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && document.getElementById('wireframe-modal').classList.contains('active')) {
+            closeWireframe();
+        }
+    });
+
+    // 🦖 AUTO-HIGHLIGHT ACTIVE NAV LINK 🦖
+    document.addEventListener('DOMContentLoaded', () => {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.sidebar .nav-item');
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active'); // Start fresh
+            const linkHref = link.getAttribute('href');
+            
+            if (linkHref) {
+                if (currentPath.endsWith(linkHref)) {
+                    link.classList.add('active');
+                } else if ((currentPath === '/' || currentPath === '') && linkHref === 'index.html') {
+                    link.classList.add('active');
+                }
+            }
+        });
+    });
 </script>
 </body>
 </html>
