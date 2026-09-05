@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Zipasaurus 3D Assets - Blender models and 3D artwork">
+  <link rel="icon" type="image/x-icon" href="/images/PageIcon.ico">
+  <title>3D Assets • Zipasaurus 🦖</title>
+  
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- 3D Viewer Scripts -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+  <style>
+    /* --- ASSETS PAGE SPECIFIC STYLES --- */
+    model-viewer {
+      width: 100%;
+      height: 300px;
+      background: #1d2021; /* Gruvbox dark background for viewer */
+      border-radius: 4px;
+      --poster-color: transparent;
+    }
+    model-viewer::part(default-progress-bar) {
+      background-color: var(--accent);
+      height: 3px;
+    }
+    
+    .asset-actions {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border);
+    }
+    
+    .asset-btn {
+      display: inline-block;
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-family: var(--font);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .asset-btn:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    /* Wireframe Modal */
+    .wireframe-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(40, 40, 40, 0.95);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+    .wireframe-modal.active {
+      display: flex;
+    }
+    .wireframe-container {
+      width: 90%;
+      max-width: 900px;
+      height: 70vh;
+      background: var(--bg);
+      border: 2px solid var(--accent);
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .wireframe-header {
+      padding: 12px 20px;
+      background: rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .wireframe-title {
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--accent);
+      font-family: var(--font);
+    }
+    .wireframe-close {
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      font-family: var(--font);
+    }
+    .wireframe-close:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+    #wireframe-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      flex-grow: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Navigation -->
+    <div class="top-bar">
+      <div class="logo">zipasaurus@portfolio:~$</div>
+      <nav class="nav-links">
+        <a href="index.html">./about</a>
+        <a href="Projects.html">./projects</a>
+        <a href="Setup.html">./setup</a>
+        <a href="Socials.html">./socials</a>
+        <a href="Gallery.html">./gallery</a>
+        <a href="dj.html">./dj-zone</a>
+        <a href="GDD.html">./gdd</a>
+        <a href="assets.html" class="active">./3d-assets</a>
+        <a href="watchlist.html">./watchlist</a>
+        <a href="NoteTaker/index.html">./planner</a>
+      </nav>
+    </div>
+
+    <!-- Intro Section -->
+    <section>
+      <div class="prompt">ls ./3d-assets --models<span class="cursor"></span></div>
+      <h1>3D ASSETS 🧊</h1>
+      <p class="muted">Interactive 3D models created in Blender. Drag to rotate, scroll to zoom.</p>
+    </section>
+
+    <!-- Models Grid -->
+    <section>
+      <div class="prompt">cat ./3d-assets/library.json</div>
+      <h2>My Models</h2>
+      
+      <div class="grid">
+        <!-- ASSET 1 -->
+        <div class="grid-item">
+          <model-viewer
+            src="models/Tree.glb"
+            alt="Tree"
+            auto-rotate
+            camera-controls
+            shadow-intensity="1"
+            interaction-prompt="none">
+          </model-viewer>
+          
+          <div style="padding: 15px;">
+            <h3>🌳 Tree</h3>
+            <p class="muted">TestTree</p>
+            
+            <div class="asset-actions">
+              <button class="asset-btn" onclick="openWireframe('models/Tree.glb', 'Tree')">🔺 Wireframe View</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add more asset cards here following the same structure -->
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>Coded with Qwen Studio</p>
+      <p>System status: <span class="accent">Online</span> | Last commit: Sept 2026</p>
+    </footer>
+
+  </div>
+
+  <!-- Wireframe Modal -->
+  <div class="wireframe-modal" id="wireframe-modal" onclick="if(event.target === this) closeWireframe()">
+    <div class="wireframe-container" onclick="event.stopPropagation()">
+      <div class="wireframe-header">
+        <div class="wireframe-title" id="wireframe-title">Wireframe View</div>
+        <button class="wireframe-close" onclick="closeWireframe()">×</button>
+      </div>
+      <canvas id="wireframe-canvas"></canvas>
+    </div>
+  </div>
+
+  <script>
+    // Wireframe Viewer Logic
+    let wireframeScene, wireframeCamera, wireframeRenderer, wireframeControls;
+    let wireframeAnimationId;
+
+    function openWireframe(modelUrl, modelName) {
+      document.getElementById('wireframe-modal').classList.add('active');
+      document.getElementById('wireframe-title').textContent = modelName + ' - Wireframe';
+      document.body.style.overflow = 'hidden';
+
+      const canvas = document.getElementById('wireframe-canvas');
+      const container = canvas.parentElement;
+
+      // Setup Three.js
+      wireframeScene = new THREE.Scene();
+      wireframeScene.background = new THREE.Color(0x282828); // Gruvbox bg
+
+      wireframeCamera = new THREE.PerspectiveCamera(
+        45,
+        container.clientWidth / container.clientHeight,
+        0.1,
+        1000
+      );
+      wireframeCamera.position.set(3, 2, 5);
+
+      wireframeRenderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+      wireframeRenderer.setSize(container.clientWidth, container.clientHeight);
+      wireframeRenderer.setPixelRatio(window.devicePixelRatio);
+
+      // Controls
+      wireframeControls = new THREE.OrbitControls(wireframeCamera, wireframeRenderer.domElement);
+      wireframeControls.enableDamping = true;
+      wireframeControls.dampingFactor = 0.05;
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      wireframeScene.add(ambientLight);
+
+      const dirLight = new THREE.DirectionalLight(0xb8bb26, 1); // Gruvbox green accent
+      dirLight.position.set(5, 10, 7);
+      wireframeScene.add(dirLight);
+
+      // Grid
+      const gridHelper = new THREE.GridHelper(20, 20, 0xb8bb26, 0x504945);
+      wireframeScene.add(gridHelper);
+
+      // Load model
+      const loader = new THREE.GLTFLoader();
+      loader.load(modelUrl, function(gltf) {
+        const model = gltf.scene;
+        
+        // Auto-center and scale
+        const box = new THREE.Box3().setFromObject(model);
+        const center = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+        
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const scale = 3 / maxDim;
+        model.scale.setScalar(scale);
+        model.position.sub(center.multiplyScalar(scale));
+        model.position.y += (size.y * scale) / 2;
+
+        // Apply wireframe material to all meshes
+        model.traverse((child) => {
+          if (child.isMesh) {
+            child.material = new THREE.MeshBasicMaterial({
+              color: 0xb8bb26, // Gruvbox green
+              wireframe: true
+            });
+          }
+        });
+
+        wireframeScene.add(model);
+      });
+
+      // Animation loop
+      function animate() {
+        wireframeAnimationId = requestAnimationFrame(animate);
+        wireframeControls.update();
+        wireframeRenderer.render(wireframeScene, wireframeCamera);
+      }
+      animate();
+
+      // Handle resize
+      window.addEventListener('resize', handleWireframeResize);
+    }
+
+    function handleWireframeResize() {
+      if (!wireframeRenderer) return;
+      const container = document.getElementById('wireframe-canvas').parentElement;
+      wireframeCamera.aspect = container.clientWidth / container.clientHeight;
+      wireframeCamera.updateProjectionMatrix();
+      wireframeRenderer.setSize(container.clientWidth, container.clientHeight);
+    }
+
+    function closeWireframe() {
+      document.getElementById('wireframe-modal').classList.remove('active');
+      document.body.style.overflow = '';
+      
+      if (wireframeAnimationId) {
+        cancelAnimationFrame(wireframeAnimationId);
+      }
+      
+      if (wireframeRenderer) {
+        wireframeRenderer.dispose();
+      }
+      
+      window.removeEventListener('resize', handleWireframeResize);
+      
+      wireframeScene = null;
+      wireframeCamera = null;
+      wireframeRenderer = null;
+      wireframeControls = null;
+    }
+
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.getElementById('wireframe-modal').classList.contains('active')) {
+        closeWireframe();
+      }
+    });
+
+    // Auto-highlight active nav link
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentPath = window.location.pathname;
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.classList.remove('active');
+        const linkHref = link.getAttribute('href');
+        if (linkHref && (currentPath.endsWith(linkHref) || (currentPath === '/' && linkHref === 'index.html'))) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

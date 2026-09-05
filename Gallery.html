@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery • Zipasaurus 🦖</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* --- MASONRY LAYOUT FIX --- */
+    .gallery-grid {
+      /* Switch from Grid to Columns */
+      column-count: 3; 
+      column-gap: 20px;
+      width: 100%;
+    }
+
+    /* Responsive columns */
+    @media (max-width: 900px) {
+      .gallery-grid { column-count: 2; }
+    }
+    @media (max-width: 600px) {
+      .gallery-grid { column-count: 1; }
+    }
+
+    .grid-item {
+      /* CRITICAL: Prevents images from being cut in half across columns */
+      break-inside: avoid; 
+      margin-bottom: 20px;
+      
+      border: 1px solid var(--border);
+      background: var(--bg);
+      display: block; /* Reset flex/grid behaviors */
+      
+      /* Ensure the box is only as big as the content */
+      height: auto;
+      min-height: auto;
+    }
+    
+    .grid-item:hover {
+      border-color: var(--accent);
+    }
+
+    /* Images keep their natural aspect ratio */
+    .grid-item img, 
+    .grid-item video {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    .media-caption {
+      padding: 10px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid var(--border);
+      background: rgba(0,0,0,0.1);
+    }
+
+    /* Videos span full width of their column, not the whole page */
+    .video-container {
+      grid-column: auto; 
+    }
+
+    /* --- LIGHTBOX --- */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(40, 40, 40, 0.95);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .lightbox-content {
+      max-width: 90%;
+      max-height: 90vh;
+      text-align: center;
+      position: relative;
+    }
+    .lightbox-content img, .lightbox-content video {
+      max-width: 100%;
+      max-height: 80vh;
+      border: 2px solid var(--accent);
+      border-radius: 4px;
+    }
+    .lightbox-caption {
+      margin-top: 15px;
+      font-size: 1.1rem;
+      color: var(--accent);
+      font-family: var(--font);
+    }
+    .close-btn {
+      position: absolute;
+      top: -15px;
+      right: -15px;
+      background: var(--bg);
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      width: 40px;
+      height: 40px;
+      border-radius: 4px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .close-btn:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+    .media-item {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <div class="top-bar">
+      <div class="logo">zipasaurus@portfolio:~$</div>
+      <nav class="nav-links">
+        <a href="index.html">./about</a>
+        <a href="Projects.html">./projects</a>
+        <a href="Setup.html">./setup</a>
+        <a href="Socials.html">./socials</a>
+        <a href="Gallery.html" class="active">./gallery</a>
+        <a href="dj.html">./dj-zone</a>
+        <a href="GDD.html">./gdd</a>
+        <a href="assets.html">./3d-assets</a>
+        <a href="watchlist.html">./watchlist</a>
+        <a href="NoteTaker/index.html">./planner</a>
+      </nav>
+    </div>
+
+    <section>
+      <div class="prompt">ls ./gallery --media<span class="cursor"></span></div>
+      <h1>GALLERY</h1>
+      <p class="muted">Cars • Audio Builds • Random Shots</p>
+    </section>
+
+    <section>
+      <div class="prompt">cat ./gallery/cars-together.txt</div>
+      <h2>Cars Together</h2>
+      <div class="gallery-grid">
+        <div class="grid-item media-item" onclick="openLightbox('images/Car\'s together/MG F + TF.jpg', 'MG F + TF Together')">
+          <img src="images/Car's together/MG F + TF.jpg" alt="MG F + TF Together">
+          <div class="media-caption">MG F + TF Together</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="prompt">ls ./gallery/fathers-car</div>
+      <h2>Father's 2002 MG ZR 160</h2>
+      <div class="gallery-grid">
+        <div class="grid-item media-item" onclick="openLightbox('images/FathersCar/WhatsApp Image 2026-04-15 at 01.26.38.jpeg', 'Fathers Car - Featured')"><img src="images/FathersCar/WhatsApp Image 2026-04-15 at 01.26.38.jpeg" alt="Fathers Car"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/FathersCar/WhatsApp awd2026-04-15 at 01.26.38.jpeg', 'Fathers Car - Side Shot')"><img src="images/FathersCar/WhatsApp awd2026-04-15 at 01.26.38.jpeg" alt="Side Shot"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/FathersCar/WhatsApp Image wd2026-04-15 at 01.26.38.jpeg', 'Fathers Car - Rear Shot')"><img src="images/FathersCar/WhatsApp Image wd2026-04-15 at 01.26.38.jpeg" alt="Rear Shot"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/FathersCar/EngineDadsCar2.jpeg', 'Fathers Car - Engine 2')"><img src="images/FathersCar/EngineDadsCar2.jpeg" alt="Engine 2"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/FathersCar/EngineDadsCar.jpeg', 'Fathers Car - Engine')"><img src="images/FathersCar/EngineDadsCar.jpeg" alt="Engine"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/FathersCar/RightDadsCar.jpeg', 'Fathers Car - Right Shot')"><img src="images/FathersCar/RightDadsCar.jpeg" alt="Right Shot"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/FathersCar/RollCage2.jpeg', 'Fathers Car - Roll Cage 2')"><img src="images/FathersCar/RollCage2.jpeg" alt="Roll Cage 2"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/FathersCar/RollCage1.jpeg', 'Fathers Car - Roll Cage 1')"><img src="images/FathersCar/RollCage1.jpeg" alt="Roll Cage 1"></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="prompt">ls ./gallery/mg-zr-105</div>
+      <h2>My 2002 MG ZR 105</h2>
+      <div class="gallery-grid">
+        <div class="grid-item media-item" onclick="openLightbox('images/MG ZR 105 Images/MyCarAtGarage.jpeg', 'My Car At Garage')"><img src="images/MG ZR 105 Images/MyCarAtGarage.jpeg" alt="Garage"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG ZR 105 Images/EmptyBonnetView2.jpg', 'Empty Bonnet View')"><img src="images/MG ZR 105 Images/EmptyBonnetView2.jpg" alt="Empty Bonnet"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG ZR 105 Images/GasStationBehind2.png', 'Gas Station Behind')"><img src="images/MG ZR 105 Images/GasStationBehind2.png" alt="Gas Station"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG ZR 105 Images/my roof.png', 'My Roof')"><img src="images/MG ZR 105 Images/my roof.png" alt="Roof"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG ZR 105 Images/OpenBonnetDriveWay2.jpg', 'Open Bonnet Driveway')"><img src="images/MG ZR 105 Images/OpenBonnetDriveWay2.jpg" alt="Driveway Bonnet"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG ZR 105 Images/Subwoofer.jpg', 'Subwoofer Install')"><img src="images/MG ZR 105 Images/Subwoofer.jpg" alt="Subwoofer"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG ZR 105 Images/wdwad.jpeg', 'WDWDW Shot')"><img src="images/MG ZR 105 Images/wdwad.jpeg" alt="WDWDW"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG ZR 105 Images/WhatsApp Image 2026-04-15 at 01.23.01.jpeg', 'WhatsApp Image 1')"><img src="images/MG ZR 105 Images/WhatsApp Image 2026-04-15 at 01.23.01.jpeg" alt="WhatsApp 1"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG ZR 105 Images/WhatsApp Image 2026-04-15 at 01.23.02.jpeg', 'WhatsApp Image 2')"><img src="images/MG ZR 105 Images/WhatsApp Image 2026-04-15 at 01.23.02.jpeg" alt="WhatsApp 2"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG ZR 105 Images/BonnetOpenView.jpg', 'Bonnet Open View')"><img src="images/MG ZR 105 Images/BonnetOpenView.jpg" alt="Bonnet Open"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG ZR 105 Images/Dash closeup.jpg', 'Dash Close Up')"><img src="images/MG ZR 105 Images/Dash closeup.jpg" alt="Dash Closeup"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG ZR 105 Images/Ext - at dash.jpg', 'Exterior at Dash')"><img src="images/MG ZR 105 Images/Ext - at dash.jpg" alt="Ext at Dash"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG ZR 105 Images/Int - Point at roof.jpg', 'Interior Roof Point')"><img src="images/MG ZR 105 Images/Int - Point at roof.jpg" alt="Int Roof Point"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG ZR 105 Images/int - Back seat.jpg', 'Interior Back Seat')"><img src="images/MG ZR 105 Images/int - Back seat.jpg" alt="Back Seat"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG ZR 105 Images/int - Door closed front right of car.jpg', 'Interior Door Closed Front Right')"><img src="images/MG ZR 105 Images/int - Door closed front right of car.jpg" alt="Door Closed"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG ZR 105 Images/Int bottom right looking up.jpg', 'Interior Bottom Right Looking Up')"><img src="images/MG ZR 105 Images/Int bottom right looking up.jpg" alt="Bottom Right Up"></div>
+        
+        <div class="grid-item video-container">
+          <video controls>
+            <source src="images/MG ZR 105 Images/My MG ZR Doing pops n bangs.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <div class="media-caption">Pops N' Bangs from my 1.4T Engine</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="prompt">ls ./gallery/mg-f</div>
+      <h2>My 2002 MG F</h2>
+      <div class="gallery-grid">
+        <div class="grid-item media-item" onclick="openLightbox('images/MG F/Side Left view.jpg', 'MG F - Side Left View')"><img src="images/MG F/Side Left view.jpg" alt="Side Left"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG F/Back Left.jpg', 'MG F - Back Left')"><img src="images/MG F/Back Left.jpg" alt="Back Left"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG F/Back Right roof up.jpg', 'MG F - Back Right Roof Up')"><img src="images/MG F/Back Right roof up.jpg" alt="Back Right Roof"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG F/Front Left Roof up.jpg', 'MG F - Front Left Roof Up')"><img src="images/MG F/Front Left Roof up.jpg" alt="Front Left Roof"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG F/Front Left.jpg', 'MG F - Front Left')"><img src="images/MG F/Front Left.jpg" alt="Front Left"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG F/Front Right hard roof up.jpg', 'MG F - Front Right Hard Roof Up')"><img src="images/MG F/Front Right hard roof up.jpg" alt="Front Right Hard Roof"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG F/Front Right.jpg', 'MG F - Front Right')"><img src="images/MG F/Front Right.jpg" alt="Front Right"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG F/Front.jpg', 'MG F - Front')"><img src="images/MG F/Front.jpg" alt="Front"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG F/Interior.jpg', 'MG F - Interior')"><img src="images/MG F/Interior.jpg" alt="Interior"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG F/MG F - In the Hedge.jpg', 'MG F - In the Hedge')"><img src="images/MG F/MG F - In the Hedge.jpg" alt="In the Hedge"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG F/Side view Landscape.png', 'MG F - Side View Landscape')"><img src="images/MG F/Side view Landscape.png" alt="Side Landscape"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG F/Side view.jpg', 'MG F - Side View')"><img src="images/MG F/Side view.jpg" alt="Side View"></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="prompt">ls ./gallery/mg-tf</div>
+      <h2>My 2003 MG TF</h2>
+      <div class="gallery-grid">
+        <div class="grid-item media-item" onclick="openLightbox('images/MG TF/Front Right.jpg', 'MG TF - Front Right')"><img src="images/MG TF/Front Right.jpg" alt="Front Right"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG TF/Back Left.jpg', 'MG TF - Back Left')"><img src="images/MG TF/Back Left.jpg" alt="Back Left"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG TF/Back Right.jpg', 'MG TF - Back Right')"><img src="images/MG TF/Back Right.jpg" alt="Back Right"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG TF/Far away interior.jpg', 'MG TF - Far Away Interior')"><img src="images/MG TF/Far away interior.jpg" alt="Far Away Interior"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG TF/Front Left.jpg', 'MG TF - Front Left')"><img src="images/MG TF/Front Left.jpg" alt="Front Left"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/MG TF/Front View.jpg', 'MG TF - Front View')"><img src="images/MG TF/Front View.jpg" alt="Front View"></div>
+        
+        <div class="grid-item video-container">
+          <video controls>
+            <source src="images/MG TF/Pops n Bangs video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <div class="media-caption">Pops n Bangs Video</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="prompt">ls ./gallery/orange-zr</div>
+      <h2>My Orange 1.8 ZR</h2>
+      <div class="gallery-grid">
+        <div class="grid-item media-item" onclick="openLightbox('images/Orange 1.8 ZR/Side view.png', 'Orange ZR - Side View')"><img src="images/Orange 1.8 ZR/Side view.png" alt="Side View"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/Orange 1.8 ZR/Interior.jpg', 'Orange ZR - Interior')"><img src="images/Orange 1.8 ZR/Interior.jpg" alt="Interior"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/Orange 1.8 ZR/Back right view.jpg', 'Orange ZR - Back Right View')"><img src="images/Orange 1.8 ZR/Back right view.jpg" alt="Back Right"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/Orange 1.8 ZR/Front left.jpg', 'Orange ZR - Front Left')"><img src="images/Orange 1.8 ZR/Front left.jpg" alt="Front Left"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/Orange 1.8 ZR/Front Right.jpg', 'Orange ZR - Front Right')"><img src="images/Orange 1.8 ZR/Front Right.jpg" alt="Front Right"></div>
+        <div class="grid-item media-item" onclick="openLightbox('images/Orange 1.8 ZR/No Engine Front view.jpg', 'Orange ZR - No Engine Front View')"><img src="images/Orange 1.8 ZR/No Engine Front view.jpg" alt="No Engine"></div>
+        
+        <div class="grid-item video-container">
+          <video controls>
+            <source src="images/Orange 1.8 ZR/Her Running - No exhuast.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <div class="media-caption">Her Running - No Exhaust Video</div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Coded with Qwen Studio</p>
+      <p>System status: <span class="accent">Online</span> | Last commit: Sept 2026</p>
+    </footer>
+
+  </div>
+
+  <div id="lightbox" class="lightbox" onclick="if(event.target === this) closeLightbox()">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+      <span class="close-btn" onclick="closeLightbox()">×</span>
+      <img id="lightbox-image" src="" alt="">
+      <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <script>
+    function openLightbox(imageSrc, caption) {
+      document.getElementById('lightbox-image').src = imageSrc;
+      document.getElementById('lightbox-caption').textContent = caption;
+      document.getElementById('lightbox').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === "Escape") {
+        closeLightbox();
+      }
+    });
+  </script>
+
+</body>
+</html>

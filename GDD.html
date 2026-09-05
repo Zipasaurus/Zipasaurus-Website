@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nightmare – GDD • Zipasaurus 🦖</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* GDD Specific Styles */
+    .slides-container {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      margin-top: 20px;
+    }
+    .slide-img {
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      display: block;
+      background: #111;
+    }
+    .loading-terminal {
+      font-family: var(--font);
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px dashed var(--border);
+      background: rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Navigation -->
+    <div class="top-bar">
+      <div class="logo">zipasaurus@portfolio:~$</div>
+      <nav class="nav-links">
+        <a href="index.html">./about</a>
+        <a href="Projects.html">./projects</a>
+        <a href="Setup.html">./setup</a>
+        <a href="Socials.html">./socials</a>
+        <a href="Gallery.html">./gallery</a>
+        <a href="dj.html">./dj-zone</a>
+        <a href="GDD.html" class="active">./gdd</a>
+        <a href="assets.html">./3d-assets</a>
+        <a href="watchlist.html">./watchlist</a>
+        <a href="NoteTaker/index.html">./planner</a>
+      </nav>
+    </div>
+
+    <!-- Intro Section -->
+    <section>
+      <div class="prompt">cat ./gdd/nightmare.txt<span class="cursor"></span></div>
+      <h1>NIGHTMARE</h1>
+      <p class="muted">A horror game built around echolocation — navigate a world you cannot see, where sound is your only sense of safety.</p>
+    </section>
+
+    <!-- Slides Section -->
+    <section>
+      <div class="prompt">ls ./gdd/slides --all</div>
+      <h2>GDD Presentation Slides</h2>
+      
+      <div id="loading" class="loading-terminal">
+        > Loading slides... <span id="progress">0</span>/20
+      </div>
+      
+      <div id="slides" class="slides-container">
+        <!-- Slides will be injected here by JavaScript -->
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>Coded with Qwen Studio</p>
+      <p>System status: <span class="accent">Online</span> | Last commit: Sept 2026</p>
+    </footer>
+
+  </div>
+
+  <script>
+    const slidesPath = 'images/Nightmare-Powerpoint-Slides/';
+    const totalSlides = 14;
+    const extension = '.png';
+
+    const slidesContainer = document.getElementById('slides');
+    const loadingEl = document.getElementById('loading');
+    const progressEl = document.getElementById('progress');
+
+    let loadedCount = 0;
+
+    function updateProgress() {
+      progressEl.textContent = loadedCount;
+    }
+
+    // Small delay to ensure DOM is ready
+    setTimeout(() => {
+      for (let i = 1; i <= totalSlides; i++) {
+        const img = document.createElement('img');
+        img.src = `${slidesPath}/${i}${extension}`;
+        img.alt = `Slide ${i}`;
+        img.className = 'slide-img';
+
+        img.onload = () => {
+          loadedCount++;
+          updateProgress();
+          if (loadedCount >= totalSlides) {
+            loadingEl.style.display = 'none';
+          }
+        };
+
+        img.onerror = () => {
+          console.error(`Failed to load slide ${i} → ${img.src}`);
+          // Create a placeholder for missing slides
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'loading-terminal';
+          errorDiv.style.color = '#fb4934'; // Gruvbox red
+          errorDiv.textContent = `❌ MISSING SLIDE ${i}: ${img.src}`;
+          slidesContainer.appendChild(errorDiv);
+          
+          loadedCount++;
+          updateProgress();
+          if (loadedCount >= totalSlides) {
+            loadingEl.style.display = 'none';
+          }
+        };
+
+        slidesContainer.appendChild(img);
+      }
+      updateProgress();
+    }, 500);
+  </script>
+
+</body>
+</html>
