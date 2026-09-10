@@ -1,98 +1,264 @@
 <!DOCTYPE html>
+
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Projects • Zipasaurus </title>
-  <link rel="stylesheet" href="style.css">
-</head>
+
+<head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Projects • Zipasaurus</title> <link rel="stylesheet" href="style.css"> </head>
+
 <body>
 
-  <div class="container">
-    
-    <!-- Navigation -->
-    <div class="top-bar">
-      <div class="logo">zipasaurus@portfolio:~$</div>
-      <nav class="nav-links">
-        <a href="index.html">./about</a>
-        <a href="Projects.html" class="active">./projects</a>
-        <a href="Setup.html">./setup</a>
-        <a href="Socials.html">./socials</a>
-        <a href="Gallery.html">./gallery</a>
-        <a href="dj.html">./dj-zone</a>
-        <a href="GDD.html">./gdd</a>
-        <a href="assets.html">./3d-assets</a>
-        <a href="watchlist.html">./watchlist</a>
-        <a href="NoteTaker/index.html">./planner</a>
-      </nav>
+<div class="container">
+
+<!-- Navigation -->
+<div class="top-bar">
+  <div class="logo">zipasaurus@portfolio:~$</div>
+
+  <nav class="nav-links">
+    <a href="index.html">./about</a>
+    <a href="Projects.html" class="active">./projects</a>
+    <a href="Setup.html">./setup</a>
+    <a href="Socials.html">./socials</a>
+    <a href="Gallery.html">./gallery</a>
+    <a href="dj.html">./dj-zone</a>
+    <a href="GDD.html">./gdd</a>
+    <a href="assets.html">./3d-assets</a>
+    <a href="watchlist.html">./watchlist</a>
+    <a href="NoteTaker/index.html">./planner</a>
+  </nav>
+</div>
+
+
+<!-- Introduction -->
+<section>
+  <div class="prompt">
+    cat ./projects/README.md<span class="cursor"></span>
+  </div>
+
+  <h1>MY PROJECTS</h1>
+
+  <p class="muted">
+    Games, prototypes and experiments I've built while learning game development.
+  </p>
+</section>
+
+
+<!-- Featured Project -->
+<section>
+
+  <div class="prompt">
+    cat ./projects/featured.txt
+  </div>
+
+  <h2>Featured Project</h2>
+
+  <div class="block">
+
+    <div class="block-header">
+      <span>nagukab/</span>
+      <span>[3D • Adventure • Game Jam]</span>
     </div>
 
-    <!-- Intro Section -->
-    <section>
-      <div class="prompt">cat ./projects/README.md<span class="cursor"></span></div>
-      <h1>MY PROJECTS</h1>
-      <p class="muted">Game jams, prototypes, and passion projects made with Unity.</p>
-    </section>
+    <h3>
+      <a href="https://zipasaurus.itch.io/nagukab">
+        Nagukab
+      </a>
+    </h3>
 
-    <!-- Featured Project -->
-    <section>
-      <div class="prompt">cat ./projects/featured.txt</div>
-      <h2>Featured Project</h2>
-      <div class="block">
-        <div class="block-header">
-          <span>pleasant-present/</span>
-          <span>[Rhythm • Anthology • Collaborative]</span>
-        </div>
-        <h3><a href="https://zipasaurus.itch.io/pleasant-present">Pleasant Present</a></h3>
-        <p>80s-inspired rhythm experience blending coming-of-age vibes, cosmic horror, and pure joy. Part of the Solace & Joy anthology.</p>
-        <div class="tags">
-          <span class="tag">Unity</span>
-          <span class="tag">Rhythm</span>
-          <span class="tag">Collaborative</span>
-        </div>
-      </div>
-    </section>
+    <p>
+      A short 3D adventure game built around the theme
+      <strong>“Less Is More.”</strong>
+      You play as a robot with limited energy, forcing you to carefully
+      manage your resources while dealing with enemies, harvesting energy
+      from crates and repairing doors.
+    </p>
 
-    <!-- Other Projects Grid -->
-    <section>
-      <div class="prompt">ls ./projects --recent</div>
-      <h2>Recent Projects</h2>
-      <div class="grid">
-        <div class="grid-item">
-          <h3><a href="https://zipasaurus.itch.io/dungeons-with-a-pinch-of-magic">Dungeons with a Pinch of Magic</a></h3>
-          <p class="muted">Shooter • Game Jam</p>
-          <p>Fast-paced dungeon shooter where you blast ghosts and survive the chaos. Made during The Soapbox Jam.</p>
-          <div class="tags">
-            <span class="tag">Unity</span>
-            <span class="tag">HTML5</span>
-          </div>
-        </div>
-        
-        <div class="grid-item">
-          <h3><a href="https://zipasaurus.itch.io/will-of-the-wizard">Will of the Wizard</a></h3>
-          <p class="muted">Platformer • College Game Jam</p>
-          <p>You are a wizard apprentice clearing a dangerous dungeon. Created in under 48 hours for a college jam.</p>
-          <div class="tags">
-            <span class="tag">Unity</span>
-            <span class="tag">Platformer</span>
-          </div>
-        </div>
-      </div>
-    </section>
+    <p class="muted">
+      All of the game's assets and animations were made by me.
+      Coding was assisted by Qwen 3.7, while the sound effects were sourced
+      from Pixabay under free-use licensing.
+    </p>
 
-    <!-- External Link -->
-    <section>
-      <div class="prompt">open https://zipasaurus.itch.io/</div>
-      <p><a href="https://zipasaurus.itch.io/">-> Visit My Full itch.io Page</a></p>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-      <p>Coded with Qwen Studio</p>
-      <p>System status: <span class="accent">Online</span> | Last commit: Sept 2026</p>
-    </footer>
+    <div class="tags">
+      <span class="tag">Unity</span>
+      <span class="tag">3D</span>
+      <span class="tag">Adventure</span>
+      <span class="tag">Game Jam</span>
+    </div>
 
   </div>
 
-</body>
-</html>
+</section>
+
+
+<!-- Projects -->
+<section>
+
+  <div class="prompt">
+    ls ./projects
+  </div>
+
+  <h2>Projects</h2>
+
+  <div class="grid">
+
+
+    <!-- Snorlax Cookie Clicker -->
+    <div class="grid-item">
+
+      <h3>
+        <a href="https://zipasaurus.itch.io/snorlax-cookie-clicker">
+          Snorlax Cookie Clicker
+        </a>
+      </h3>
+
+      <p class="muted">
+        Incremental • Browser Game
+      </p>
+
+      <p>
+        A Snorlax-themed cookie-clicker game created as a small
+        browser-based project. Click your way through a simple
+        incremental gameplay loop.
+      </p>
+
+      <div class="tags">
+        <span class="tag">Unity</span>
+        <span class="tag">HTML5</span>
+        <span class="tag">AI Assisted</span>
+      </div>
+
+    </div>
+
+
+    <!-- Will of the Wizard -->
+    <div class="grid-item">
+
+      <h3>
+        <a href="https://zipasaurus.itch.io/will-of-the-wizard">
+          Will of the Wizard
+        </a>
+      </h3>
+
+      <p class="muted">
+        Platformer • College Game Jam
+      </p>
+
+      <p>
+        A platformer following a wizard in training as they attempt
+        to complete a dangerous dungeon. Created during the second
+        New College game jam.
+      </p>
+
+      <div class="tags">
+        <span class="tag">Unity</span>
+        <span class="tag">Platformer</span>
+        <span class="tag">Game Jam</span>
+      </div>
+
+    </div>
+
+
+    <!-- Dungeons with a Pinch of Magic -->
+    <div class="grid-item">
+
+      <h3>
+        <a href="https://zipasaurus.itch.io/dungeons-with-a-pinch-of-magic">
+          Dungeons with a Pinch of Magic
+        </a>
+      </h3>
+
+      <p class="muted">
+        First-Person • Horror • Shooter
+      </p>
+
+      <p>
+        A first-person horror shooter where you fight your way through
+        a dungeon and take on ghosts. The project was developed in
+        roughly 40 hours during The Soapbox Jam.
+      </p>
+
+      <p class="muted">
+        The game combines assets created by me with assets sourced
+        from other creators.
+      </p>
+
+      <div class="tags">
+        <span class="tag">Unity</span>
+        <span class="tag">Shooter</span>
+        <span class="tag">First-Person</span>
+        <span class="tag">Horror</span>
+      </div>
+
+    </div>
+
+
+    <!-- Pleasant Present -->
+    <div class="grid-item">
+
+      <h3>
+        <a href="https://zipasaurus.itch.io/pleasant-present">
+          Pleasant Present
+        </a>
+      </h3>
+
+      <p class="muted">
+        Rhythm • Collaborative Project
+      </p>
+
+      <p>
+        A rhythm game developed as part of the Solace &amp; Joy project.
+        The game was created collaboratively by Shaun, Shay, James
+        and Jack.
+      </p>
+
+      <div class="tags">
+        <span class="tag">Unity</span>
+        <span class="tag">Rhythm</span>
+        <span class="tag">Collaborative</span>
+      </div>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+<!-- itch.io -->
+
+<br>
+
+<section>
+  <div class="prompt">
+    open https://zipasaurus.itch.io/
+  </div>
+
+  <p>
+    <a href="https://zipasaurus.itch.io/">
+      -&gt; Visit My Full itch.io Page
+    </a>
+  </p>
+</section>
+
+</section>
+
+
+<!-- Footer -->
+<footer>
+
+  <p>
+    Coded with Qwen Studio
+  </p>
+
+  <p>
+    System status:
+    <span class="accent">Online</span>
+    |
+    Last commit: Sept 2026
+  </p>
+
+</footer>
+
+</div>
+
+</body> </html>
