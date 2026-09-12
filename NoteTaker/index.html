@@ -1569,6 +1569,504 @@ body {
 .radio-player.playing .radio-btn.play-btn { background: var(--accent); color: #0f1115; }
 #radio-volume { width: 100%; cursor: pointer; accent-color: var(--accent); height: 3px; }
 </style>
+
+<style id="ui-cleanup">
+/* =========================================================
+   STUDIO UI CLEANUP
+   Keep the existing DOM/JS intact; consolidate the HUD,
+   reduce visual noise, and make floating controls collision-safe.
+   ========================================================= */
+
+:root {
+  --panel: #171a21;
+  --panel-strong: #1d222c;
+  --panel-soft: rgba(23,26,33,.94);
+  --border: #2b313d;
+  --border-strong: #394150;
+  --text: #e2e5eb;
+  --text-secondary: #9299a6;
+  --text-muted: #646c7a;
+  --accent: #7aa2f7;
+  --accent-soft: rgba(122,162,247,.11);
+  --shadow-ui: 0 10px 30px rgba(0,0,0,.28);
+  --radius: 7px;
+  --radius-sm: 5px;
+}
+
+/* ---------- Global sizing / interaction ---------- */
+button, input, select, textarea { font: inherit; }
+button:focus-visible, input:focus-visible, select:focus-visible,
+textarea:focus-visible, .nav-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+button:disabled { cursor: not-allowed; }
+
+.main-content {
+  padding: clamp(16px, 2vw, 28px);
+  scrollbar-gutter: stable;
+}
+
+.main-header {
+  min-height: 56px;
+  height: auto;
+  padding: 0 clamp(16px, 2vw, 28px);
+}
+
+/* ---------- Dashboard ---------- */
+.dash-hero {
+  padding: clamp(20px, 2.4vw, 30px);
+  margin-bottom: 16px;
+}
+.dash-stats {
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.stat-card {
+  padding: 14px 16px;
+}
+.stat-card-value { font-size: 22px; }
+
+.project-grid,
+.ideas-grid,
+.achievements-grid {
+  gap: 10px;
+}
+
+.project-card {
+  padding: 15px;
+  min-width: 0;
+}
+.project-card-header {
+  padding-right: 34px; /* reserve space for hover actions */
+}
+.project-card-actions {
+  top: 9px;
+  right: 9px;
+  z-index: 3;
+}
+.project-card-action {
+  width: 28px;
+  height: 28px;
+}
+
+/* ---------- Generator ---------- */
+.gen-container { max-width: 1100px; }
+.gen-layout {
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+  gap: 16px;
+}
+.gen-panel {
+  padding: 18px;
+  top: 12px;
+}
+.idea-result { padding: 20px; }
+.idea-grid {
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 12px 20px;
+}
+
+/* ---------- Modal cleanup ---------- */
+.modal-overlay {
+  padding: 20px;
+}
+.modal,
+.modal.wide {
+  width: min(640px, 100%);
+  max-height: min(82vh, 760px);
+  padding: 22px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.42);
+}
+.modal-actions {
+  position: sticky;
+  bottom: -22px;
+  margin: 18px -22px -22px;
+  padding: 12px 22px;
+  background: linear-gradient(to bottom, transparent, var(--bg-elevated) 35%);
+}
+
+/* ---------- Filter panel ---------- */
+.filter-sidebar {
+  width: min(320px, 92vw);
+  right: calc(-1 * min(320px, 92vw) - 2px);
+  padding: 18px;
+  box-shadow: -12px 0 32px rgba(0,0,0,.28);
+}
+.filter-sidebar.active { right: 0; }
+
+/* ---------- Whiteboard layering ----------
+   Background effects are strictly behind the canvas content.
+   Floating controls sit above the canvas and never participate
+   in the canvas transform. */
+#whiteboard { isolation: isolate; }
+.bg-canvas,
+.starfall {
+  z-index: 0 !important;
+}
+#canvas-wrapper {
+  z-index: 1;
+}
+.wb-toolbar,
+.wb-toolbar-right,
+.wb-toolbar-bottom,
+.world-widget,
+.stats-bar,
+.save-indicator,
+.pomodoro-widget,
+.minimap,
+.minimap-toggle,
+.project-countdown-widget,
+.idea-banner,
+.pan-hint,
+.connect-mode-hint,
+.context-menu {
+  z-index: 50;
+}
+
+/* ---------- Whiteboard top controls ----------
+   One primary toolbar + one compact utility cluster. */
+.wb-toolbar {
+  top: 14px;
+  max-width: calc(100vw - 340px);
+  padding: 4px;
+  box-shadow: var(--shadow-ui);
+  background: var(--panel-soft);
+  backdrop-filter: blur(12px);
+}
+.wb-toolbar-right {
+  top: 14px;
+  right: 14px;
+  box-shadow: var(--shadow-ui);
+  background: var(--panel-soft);
+  backdrop-filter: blur(12px);
+}
+.wb-toolbar-bottom {
+  bottom: 18px;
+  box-shadow: var(--shadow-ui);
+  background: var(--panel-soft);
+  backdrop-filter: blur(12px);
+}
+
+/* Keep dropdowns within the viewport instead of letting them
+   disappear under other floating UI. */
+.dropdown-menu {
+  max-height: min(70vh, 520px);
+  overflow-y: auto;
+}
+
+/* ---------- Whiteboard bottom HUD ----------
+   Fixed positions were previously colliding: countdown,
+   Pomodoro, radio, minimap, map toggle and pan hint all
+   occupied the same lower-right/lower-left zones. */
+.world-widget {
+  left: 14px;
+  bottom: 14px;
+  min-width: 190px;
+  max-width: 240px;
+  padding: 9px 11px;
+  box-shadow: var(--shadow-ui);
+  background: var(--panel-soft);
+  backdrop-filter: blur(12px);
+}
+
+.project-countdown-widget {
+  left: 220px;
+  bottom: 14px;
+  min-width: 174px;
+  padding: 9px 12px;
+  box-shadow: var(--shadow-ui);
+  background: var(--panel-soft);
+  backdrop-filter: blur(12px);
+}
+
+.radio-player {
+  right: 210px;
+  bottom: 14px;
+  box-shadow: var(--shadow-ui);
+  background: var(--panel-soft);
+  backdrop-filter: blur(12px);
+}
+.radio-player.expanded { width: min(260px, calc(100vw - 28px)); }
+
+.minimap {
+  right: 14px;
+  bottom: 14px;
+  width: 176px;
+  height: 118px;
+  box-shadow: var(--shadow-ui);
+  background: var(--panel-soft);
+}
+.minimap-toggle {
+  right: 14px;
+  bottom: 140px;
+  box-shadow: var(--shadow-ui);
+  background: var(--panel-soft);
+  backdrop-filter: blur(10px);
+}
+
+.pomodoro-widget {
+  right: 14px;
+  bottom: 140px;
+  box-shadow: var(--shadow-ui);
+  background: var(--panel-soft);
+  backdrop-filter: blur(10px);
+}
+
+/* Pan hint no longer competes with the radio/minimap cluster. */
+.pan-hint {
+  left: 50%;
+  right: auto;
+  bottom: 14px;
+  transform: translateX(-50%);
+  opacity: .75;
+  background: rgba(0,0,0,.38);
+}
+
+/* Temporary status overlays are stacked deliberately. */
+.save-indicator {
+  top: 76px;
+  left: 50%;
+}
+.idea-banner {
+  top: 118px;
+  max-width: min(560px, calc(100vw - 32px));
+  box-shadow: var(--shadow-ui);
+  background: var(--panel-soft);
+  backdrop-filter: blur(12px);
+}
+.connect-mode-hint {
+  bottom: 82px;
+  max-width: calc(100vw - 32px);
+  text-align: center;
+  box-shadow: var(--shadow-ui);
+  background: var(--panel-soft);
+}
+
+/* Stats move into the top-right utility area rather than
+   sitting directly beneath it. */
+.stats-bar {
+  top: 68px;
+  right: 14px;
+  padding: 5px 8px;
+  box-shadow: var(--shadow-ui);
+  background: var(--panel-soft);
+  backdrop-filter: blur(10px);
+}
+
+/* ---------- Whiteboard elements ----------
+   Avoid action buttons/handles visually fighting with content. */
+.wb-element {
+  contain: layout paint;
+}
+.wb-element.selected {
+  outline-width: 2px;
+  outline-offset: 2px;
+}
+.delete-el, .pin-el, .lock-el {
+  width: 22px;
+  height: 22px;
+  box-shadow: 0 3px 10px rgba(0,0,0,.2);
+}
+.color-picker {
+  margin-top: 5px;
+}
+.sticky-note {
+  overflow: visible;
+}
+.sticky-note textarea {
+  min-height: 0;
+}
+.group-box {
+  overflow: visible;
+}
+
+/* ---------- Gantt ----------
+   Headers should remain readable without covering elements. */
+.gantt-header {
+  background: var(--panel);
+  box-shadow: 0 2px 10px rgba(0,0,0,.18);
+}
+.gantt-day-header {
+  background: var(--panel-strong);
+}
+.gantt-day-header.today {
+  background: var(--accent-soft);
+}
+
+/* ---------- Empty states ---------- */
+.empty-state {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- Responsive ----------
+   Collapse fixed HUD into predictable edge stacks on smaller screens. */
+@media (max-width: 1050px) {
+  .sidebar { width: 210px; }
+  .wb-toolbar {
+    max-width: calc(100vw - 220px);
+  }
+  .world-widget {
+    min-width: 170px;
+    max-width: 190px;
+  }
+  .project-countdown-widget { left: 195px; }
+  .radio-player { right: 198px; }
+}
+
+@media (max-width: 800px) {
+  body { font-size: 12px; }
+  .sidebar { width: 190px; }
+  .main-header-search { max-width: 220px; }
+
+  .gen-layout {
+    grid-template-columns: 1fr;
+  }
+  .gen-panel {
+    position: static;
+  }
+  .idea-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wb-toolbar {
+    left: 12px;
+    transform: none;
+    max-width: calc(100vw - 24px);
+    overflow-x: auto;
+  }
+  .wb-toolbar-right {
+    top: 66px;
+    right: 12px;
+  }
+
+  .stats-bar { top: 66px; left: 12px; right: auto; }
+
+  .world-widget {
+    left: 12px;
+    bottom: 12px;
+    max-width: 160px;
+    min-width: 0;
+  }
+  .project-countdown-widget {
+    left: 12px;
+    bottom: 116px;
+  }
+  .radio-player {
+    right: 12px;
+    bottom: 12px;
+  }
+  .minimap {
+    right: 12px;
+    bottom: 116px;
+  }
+  .minimap-toggle {
+    right: 12px;
+    bottom: 242px;
+  }
+  .pomodoro-widget {
+    right: 12px;
+    bottom: 242px;
+  }
+  .pan-hint { display: none; }
+}
+
+@media (max-width: 620px) {
+  .sidebar {
+    width: 64px;
+  }
+  .sidebar-brand {
+    justify-content: center;
+    padding: 14px 8px;
+  }
+  .sidebar-brand > div:last-child,
+  .nav-section-label,
+  .nav-item:not(.active) .badge,
+  .nav-item > span:not(.icon),
+  .sidebar-footer-btn:not(:has(span)) {
+    /* Keep the compact rail usable without destroying the existing JS. */
+  }
+  .sidebar-brand h1,
+  .sidebar-brand span,
+  .sidebar-footer-btn {
+    font-size: 0;
+  }
+  .sidebar-footer-btn span,
+  .nav-item .icon {
+    font-size: 14px;
+  }
+  .nav-item {
+    justify-content: center;
+    padding: 9px 6px;
+  }
+  .nav-item .badge { display: none; }
+
+  .main-header {
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .main-header-title { min-width: 0; }
+  .main-header-search {
+    max-width: none;
+    min-width: 0;
+  }
+  .main-header .btn-primary {
+    padding-inline: 9px;
+  }
+  .main-content { padding: 12px; }
+
+  .dash-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dash-section-header {
+    align-items: flex-start;
+  }
+  .dash-controls { width: 100%; }
+
+  .wb-toolbar {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    max-width: none;
+  }
+  .wb-toolbar-right {
+    top: 58px;
+    right: 8px;
+  }
+  .stats-bar {
+    top: 58px;
+    left: 8px;
+  }
+  .save-indicator { top: 108px; }
+  .idea-banner { top: 148px; }
+
+  .world-widget,
+  .project-countdown-widget {
+    max-width: calc(100vw - 24px);
+  }
+  .world-widget { bottom: 12px; }
+  .project-countdown-widget { bottom: 106px; }
+
+  .radio-player { bottom: 12px; }
+  .minimap { bottom: 106px; }
+  .minimap-toggle,
+  .pomodoro-widget { bottom: 232px; }
+}
+
+/* Respect reduced-motion preferences. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="app-shell">
@@ -2971,9 +3469,9 @@ function applySettings() {
   appSettings.background = document.getElementById('setting-bg').value;
   localStorage.setItem('wb_settings', JSON.stringify(appSettings));
   const wb = document.getElementById('whiteboard');
-  wb.className = '';
-  wb.classList.add(appSettings.background);
-  if (wb.classList.contains('active')) wb.classList.add('active');
+  const wasActive = wb.classList.contains('active');
+  wb.className = appSettings.background;
+  if (wasActive) wb.classList.add('active');
   document.querySelectorAll('.starfall').forEach(el => el.remove());
   wb.querySelectorAll('canvas.bg-canvas').forEach(c => c.remove());
   if (appSettings.background === 'bg-falling-stars') {
@@ -3262,6 +3760,16 @@ function applyFilters() {
     const filtered = projects.filter(p => {
       if (tags.length && !tags.every(t => (p.tags || []).includes(t))) return false;
       if (hasDeadline && !p.deadline?.endDate) return false;
+      const overdue = document.getElementById('filter-overdue')?.checked;
+      const urgent = document.getElementById('filter-urgent')?.checked;
+      if (overdue) {
+        if (!p.deadline?.endDate || new Date(p.deadline.endDate).getTime() >= Date.now()) return false;
+      }
+      if (urgent) {
+        if (!p.deadline?.endDate) return false;
+        const remaining = new Date(p.deadline.endDate).getTime() - Date.now();
+        if (remaining < 0 || remaining >= 86400000) return false;
+      }
       return true;
     });
     renderFilteredProjects(filtered);
@@ -4563,5 +5071,87 @@ document.getElementById('gen-deadline-unit').addEventListener('change', updateDi
 document.getElementById('3d-time-value').addEventListener('input', update3DDifficultyDisplay);
 document.getElementById('3d-time-unit').addEventListener('change', update3DDifficultyDisplay);
 </script>
+
+<script id="ui-cleanup-js">
+/* Small compatibility fixes that preserve the existing application logic. */
+(function () {
+  const originalApplySettings = window.applySettings;
+
+  /* Persist theme preset selection. The original changed CSS variables
+     but did not save the selected preset, so reloads silently reverted it. */
+  window.applyThemePreset = function (preset) {
+    const t = window.THEME_PRESETS?.[preset];
+    if (!t) return;
+
+    document.documentElement.style.setProperty('--text', t.text);
+    document.documentElement.style.setProperty('--text-primary', t.text);
+    document.documentElement.style.setProperty('--accent', t.primary);
+    document.documentElement.style.setProperty('--bg-elevated', t.toolbar);
+    document.documentElement.style.setProperty('--card-bg', t.card);
+    document.documentElement.style.setProperty('--canvas-bg', t.canvas);
+
+    document.querySelectorAll('.theme-preset').forEach(p => p.classList.remove('active'));
+    document.querySelector(`.theme-preset.${preset}`)?.classList.add('active');
+
+    try {
+      const settings = JSON.parse(localStorage.getItem('wb_settings') || '{}');
+      settings.theme = preset;
+      localStorage.setItem('wb_settings', JSON.stringify(settings));
+    } catch (_) {}
+
+    if (typeof showToast === 'function') showToast(`${preset} theme`);
+  };
+
+  /* Restore saved theme after the original settings loader runs. */
+  const restoreTheme = () => {
+    try {
+      const settings = JSON.parse(localStorage.getItem('wb_settings') || '{}');
+      if (settings.theme && window.THEME_PRESETS?.[settings.theme]) {
+        window.applyThemePreset(settings.theme);
+      }
+    } catch (_) {}
+  };
+
+  window.addEventListener('load', () => setTimeout(restoreTheme, 0));
+
+  /* Prevent clicks inside a context menu from immediately bubbling to the
+     global close handler. This makes menu actions reliable. */
+  const contextMenu = document.getElementById('context-menu');
+  if (contextMenu) {
+    contextMenu.addEventListener('click', e => e.stopPropagation());
+  }
+
+  /* Close the filter drawer with Escape is already handled globally;
+     add a click-outside close for the more natural drawer behaviour. */
+  document.addEventListener('click', e => {
+    const sidebar = document.getElementById('filter-sidebar');
+    if (!sidebar?.classList.contains('active')) return;
+    if (!e.target.closest('#filter-sidebar') && !e.target.closest('[onclick*="toggleFilterSidebar"]')) {
+      sidebar.classList.remove('active');
+    }
+  });
+
+  /* Keep whiteboard floating UI from intercepting canvas drag/pan gestures. */
+  [
+    '.wb-toolbar', '.wb-toolbar-right', '.wb-toolbar-bottom',
+    '.world-widget', '.stats-bar', '.save-indicator',
+    '.pomodoro-widget', '.minimap', '.minimap-toggle',
+    '.project-countdown-widget', '.idea-banner',
+    '.pan-hint', '.connect-mode-hint', '.context-menu'
+  ].forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      el.addEventListener('mousedown', e => e.stopPropagation());
+    });
+  });
+
+  /* Avoid browser-native middle-click autoscroll outside the whiteboard. */
+  document.addEventListener('auxclick', e => {
+    if (e.button === 1 && document.getElementById('whiteboard')?.classList.contains('active')) {
+      e.preventDefault();
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
