@@ -2,299 +2,725 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Common Room • RHUL</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>RHUL Common Room</title>
+  <meta name="description" content="Suggest weekend meals, vote on ideas, and organise common room wishlist contributions.">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --primary: #6366f1; --primary-hover: #4f46e5; --bg: #f8fafc; --card: #ffffff;
-      --text: #1e293b; --text-muted: #64748b; --border: #e2e8f0; --success: #10b981;
-      --warning: #f59e0b; --shadow: 0 1px 3px rgba(0,0,0,0.1); --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+      color-scheme: light;
+      --primary: #5b5ce2;
+      --primary-hover: #4748c7;
+      --ink: #172033;
+      --muted: #64748b;
+      --surface: #ffffff;
+      --background: #f5f7fb;
+      --border: #dfe5ef;
+      --success: #087f5b;
+      --danger: #b42318;
+      --warning-bg: #fff7df;
+      --shadow: 0 8px 28px rgba(25, 35, 65, .07);
+      --radius: 16px;
     }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
-    .header { background: var(--card); border-bottom: 1px solid var(--border); padding: 1.5rem 2rem; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
-    .header-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
-    .nav { display: flex; gap: 2rem; }
-    .nav a { color: var(--text-muted); text-decoration: none; font-weight: 500; transition: color 0.2s; }
-    .nav a:hover { color: var(--primary); }
-    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-    .hero { text-align: center; padding: 3rem 0; margin-bottom: 2rem; }
-    .hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero p { font-size: 1.125rem; color: var(--text-muted); }
-    .section { margin-bottom: 3rem; }
-    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-    .section-title { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
-    .card, .form-card, .wishlist-card { background: var(--card); border-radius: 12px; padding: 1.5rem; box-shadow: var(--shadow); margin-bottom: 1rem; }
-    .form-card { margin-bottom: 2rem; }
-    .form-card h3, .wishlist-card h4 { font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--background); color: var(--ink); line-height: 1.55;
+    }
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    button:disabled { cursor: not-allowed; opacity: .6; }
+    a { color: var(--primary); }
+    .site-header {
+      position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      max-width: 1120px; margin: auto; padding: 1rem 1.25rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .brand { font-size: 1.1rem; font-weight: 850; color: var(--primary); text-decoration: none; }
+    nav { display: flex; flex-wrap: wrap; gap: 1rem; }
+    nav a { text-decoration: none; color: var(--muted); font-weight: 650; }
+    nav a:hover { color: var(--primary); }
+    main { max-width: 1120px; margin: auto; padding: 1.5rem 1.25rem 4rem; }
+    .hero {
+      padding: clamp(2rem, 6vw, 4.5rem) 1rem; text-align: center;
+      background: linear-gradient(135deg, #eef0ff, #fff 58%, #f3eefe);
+      border: 1px solid #e6e7ff; border-radius: 24px; margin: .75rem 0 2rem;
+    }
+    .eyebrow { text-transform: uppercase; letter-spacing: .13em; font-size: .75rem; font-weight: 800; color: var(--primary); }
+    h1 { font-size: clamp(2rem, 5vw, 3.3rem); line-height: 1.1; letter-spacing: -.04em; margin: .6rem 0 .8rem; }
+    .hero p { color: var(--muted); max-width: 650px; margin: auto; font-size: 1.05rem; }
+    .section { margin-top: 2.5rem; scroll-margin-top: 90px; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+    h2 { margin: 0; font-size: 1.55rem; letter-spacing: -.025em; }
+    h3 { margin: 0 0 1rem; font-size: 1.15rem; }
+    .muted { color: var(--muted); }
+    .layout { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 1.25rem; align-items: start; }
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.25rem; box-shadow: var(--shadow); min-width: 0;
+    }
     .form-group { margin-bottom: 1rem; }
-    label { display: block; font-weight: 500; margin-bottom: 0.5rem; color: var(--text); font-size: 0.875rem; }
-    input[type="text"], input[type="number"], input[type="password"], textarea { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 1rem; }
-    input:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1); }
-    textarea { resize: vertical; min-height: 80px; }
-    .checkbox-group { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.5rem; }
-    .checkbox-label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.875rem; }
-    .checkbox-label input { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
-    button { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-family: inherit; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-    .btn-primary { background: var(--primary); color: white; }
-    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: var(--shadow-lg); }
-    .btn-secondary { background: var(--border); color: var(--text); }
-    .btn-secondary:hover { background: #cbd5e1; }
-    .btn-sm { padding: 0.5rem 1rem; font-size: 0.875rem; }
-    .meal-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; }
-    .meal-card h4 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .meal-card p { color: var(--text-muted); margin-bottom: 1rem; }
-    .ingredients-box { background: #fef3c7; border-left: 4px solid var(--warning); padding: 0.75rem 1rem; border-radius: 6px; margin: 1rem 0; font-size: 0.875rem; }
-    .ingredients-box strong { color: #92400e; }
-    .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
-    .tag { background: #ede9fe; color: var(--primary); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 500; }
-    .meal-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
-    .vote-section { display: flex; align-items: center; gap: 1rem; }
-    .vote-count { font-size: 1.25rem; font-weight: 700; color: var(--primary); }
-    .pin-notice { background: #d1fae5; border: 2px solid var(--success); border-radius: 8px; padding: 1rem; margin-top: 1rem; text-align: center; display: none; }
-    .pin-notice strong { font-size: 1.5rem; color: var(--success); }
-    .wishlist-card a { color: var(--primary); text-decoration: none; }
-    .wishlist-card a:hover { text-decoration: underline; }
-    .progress-info { display: flex; justify-content: space-between; font-size: 0.875rem; color: var(--text-muted); margin: 0.5rem 0; }
-    .progress-bar { width: 100%; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin: 0.5rem 0; }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary) 0%, #8b5cf6 100%); transition: width 0.3s; }
-    .pledge-section { display: flex; gap: 0.5rem; margin-top: 1rem; }
-    .pledge-section input { flex: 1; max-width: 120px; }
-    @media (max-width: 768px) { .header-content { flex-direction: column; gap: 1rem; } .nav { gap: 1rem; } .hero h1 { font-size: 2rem; } .container { padding: 1rem; } }
+    label { display: block; font-weight: 700; font-size: .9rem; margin-bottom: .4rem; }
+    input[type="text"], input[type="url"], input[type="number"], input[type="password"], textarea {
+      display: block; width: 100%; border: 1px solid #cbd5e1; border-radius: 10px; padding: .72rem .8rem;
+      background: white; color: var(--ink); outline: none;
+    }
+    input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(91,92,226,.14); }
+    textarea { resize: vertical; min-height: 95px; }
+    .help { display: block; color: var(--muted); font-size: .8rem; margin-top: .35rem; }
+    .checkbox-group { display: flex; flex-wrap: wrap; gap: .6rem; }
+    .check-pill { display: inline-flex; align-items: center; gap: .4rem; padding: .45rem .65rem; background: #f8f9ff; border: 1px solid var(--border); border-radius: 999px; font-size: .85rem; font-weight: 600; }
+    .check-pill label { margin: 0; font-weight: 600; cursor: pointer; }
+    .check-pill input { accent-color: var(--primary); }
+    .btn {
+      display: inline-flex; justify-content: center; align-items: center; gap: .45rem;
+      border: 1px solid transparent; border-radius: 10px; padding: .7rem 1rem; font-weight: 750;
+      transition: background .15s, transform .15s; text-decoration: none;
+    }
+    .btn:hover:not(:disabled) { transform: translateY(-1px); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+    .btn-secondary { background: #f1f4f9; border-color: var(--border); color: var(--ink); }
+    .btn-danger { color: var(--danger); background: #fff2f0; border-color: #ffd6d1; }
+    .btn-small { padding: .45rem .7rem; font-size: .86rem; }
+    .button-row { display: flex; flex-wrap: wrap; gap: .55rem; }
+    .notice { display: none; padding: .8rem 1rem; margin: 0 0 1rem; border-radius: 10px; border: 1px solid; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .notice.show { display: block; }
+    .notice.error { color: #8d1a13; background: #fff2f0; border-color: #ffc9c2; }
+    .notice.success { color: #075e43; background: #eafaf3; border-color: #b8ecd5; }
+    .notice.info { color: #684b00; background: var(--warning-bg); border-color: #f3df9e; }
+    .list { display: grid; gap: 1rem; }
+    .empty { text-align: center; padding: 2rem 1rem; border: 1px dashed #cbd5e1; border-radius: var(--radius); color: var(--muted); background: rgba(255,255,255,.6); }
+    .meal-card h3 { margin: .1rem 0 .35rem; overflow-wrap: anywhere; }
+    .meal-image { display: block; width: 100%; max-height: 260px; object-fit: cover; border-radius: 11px; margin-bottom: 1rem; background: #eef2f7; }
+    .meal-description { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .ingredients { margin-top: .8rem; padding: .8rem; border-radius: 10px; background: #fff7df; color: #6b4f00; overflow-wrap: anywhere; }
+    .tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .8rem; }
+    .tag { font-size: .75rem; font-weight: 750; color: #4f46a5; background: #eeedff; padding: .25rem .55rem; border-radius: 999px; }
+    .card-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .7rem; border-top: 1px solid var(--border); margin-top: 1rem; padding-top: 1rem; }
+    .vote-count { font-size: 1.05rem; font-weight: 850; min-width: 1.4rem; text-align: center; }
+    .wishlist-item h3 { margin-bottom: .35rem; }
+    .wishlist-item a { overflow-wrap: anywhere; }
+    .progress-meta { display: flex; justify-content: space-between; gap: .5rem; font-size: .86rem; color: var(--muted); margin: .8rem 0 .35rem; }
+    .progress-track { height: 10px; border-radius: 99px; background: #e9edf5; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #6366f1, #a78bfa); border-radius: inherit; }
+    .pledge-row { display: flex; gap: .5rem; margin-top: 1rem; }
+    .pledge-row input { max-width: 150px; }
+    .form-card { margin-bottom: 1.25rem; }
+    .form-card[hidden] { display: none; }
+    .small-print { font-size: .82rem; color: var(--muted); margin-top: 1rem; }
+    footer { text-align: center; padding: 1.5rem; color: var(--muted); font-size: .85rem; }
+    @media (max-width: 800px) { .layout { grid-template-columns: 1fr; } }
+    @media (max-width: 540px) {
+      .header-inner { align-items: flex-start; flex-direction: column; }
+      nav { gap: .8rem; }
+      main { padding-inline: .8rem; }
+      .card { padding: 1rem; }
+      .section-heading { align-items: flex-start; flex-direction: column; }
+      .pledge-row { flex-wrap: wrap; }
+      .pledge-row input { max-width: none; flex: 1; min-width: 100px; }
+    }
   </style>
 </head>
 <body>
-  <header class="header">
-    <div class="header-content">
-      <div class="logo">🍕 RHUL Common Room</div>
-      <nav class="nav">
-        <a href="#meals">Meals</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#">🍕 RHUL Common Room</a>
+      <nav aria-label="Main navigation">
+        <a href="#meals">Meal ideas</a>
         <a href="#wishlist">Wishlist</a>
       </nav>
     </div>
   </header>
 
-  <div class="container">
-    <div class="hero">
-      <h1>Weekend Meals & Group Buys</h1>
-      <p>Suggest meals, vote on what to cook, and chip in for common room items</p>
-    </div>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">Made for the common room</div>
+      <h1>Good food. Shared ideas.<br>Better weekends.</h1>
+      <p>Suggest a meal, vote for what sounds good, and help organise the things everyone wants for the common room.</p>
+    </section>
+
+    <div id="globalNotice" class="notice" role="status" aria-live="polite"></div>
 
     <section class="section" id="meals">
-      <div class="section-header"><h2 class="section-title">🍽️ Meal Ideas</h2></div>
-
-      <div class="form-card">
-        <h3>Suggest a Meal</h3>
-        <div class="form-group"><label>Meal Name</label><input type="text" id="title" placeholder="e.g., Big Pasta Night"></div>
-        <div class="form-group"><label>Description</label><textarea id="description" placeholder="What makes this meal great?"></textarea></div>
-        <div class="form-group"><label>Ingredients</label><input type="text" id="ingredients" placeholder="Pasta, Tomato Sauce, Garlic, Basil"></div>
-        <div class="form-group">
-          <label>Dietary Tags</label>
-          <div class="checkbox-group" id="createFormTags">
-            <label class="checkbox-label"><input type="checkbox" value="Vegetarian"> Vegetarian</label>
-            <label class="checkbox-label"><input type="checkbox" value="Vegan"> Vegan</label>
-            <label class="checkbox-label"><input type="checkbox" value="Halal"> Halal</label>
-            <label class="checkbox-label"><input type="checkbox" value="Gluten-Free"> Gluten-Free</label>
-            <label class="checkbox-label"><input type="checkbox" value="Nut-Free"> Nut-Free</label>
-          </div>
-        </div>
-        <div class="form-group"><label>Image URL</label><input type="text" id="imageUrl" placeholder="https://..."></div>
-        <button class="btn-primary" onclick="createMeal()">Post Meal Idea</button>
-        <div class="pin-notice" id="pinNotice"></div>
+      <div class="section-heading">
+        <div><div class="eyebrow">Plan the next feast</div><h2>🍽️ Meal ideas</h2></div>
+        <button class="btn btn-secondary btn-small" id="refreshMeals" type="button">↻ Refresh</button>
       </div>
+      <div class="layout">
+        <div>
+          <form class="card form-card" id="mealForm">
+            <h3>Suggest a meal</h3>
+            <div class="form-group">
+              <label for="title">Meal name *</label>
+              <input id="title" name="title" type="text" maxlength="100" placeholder="e.g. Big pasta night" required>
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <textarea id="description" name="description" maxlength="1500" placeholder="What makes this meal great?"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="ingredients">Ingredients</label>
+              <input id="ingredients" name="ingredients" type="text" maxlength="1000" placeholder="Pasta, tomato sauce, garlic, basil">
+            </div>
+            <div class="form-group">
+              <label>Dietary tags</label>
+              <div class="checkbox-group" id="createTags">
+                <span class="check-pill"><input id="tag-vegetarian" type="checkbox" value="Vegetarian"><label for="tag-vegetarian">Vegetarian</label></span>
+                <span class="check-pill"><input id="tag-vegan" type="checkbox" value="Vegan"><label for="tag-vegan">Vegan</label></span>
+                <span class="check-pill"><input id="tag-halal" type="checkbox" value="Halal"><label for="tag-halal">Halal</label></span>
+                <span class="check-pill"><input id="tag-gluten" type="checkbox" value="Gluten-Free"><label for="tag-gluten">Gluten-free</label></span>
+                <span class="check-pill"><input id="tag-nut" type="checkbox" value="Nut-Free"><label for="tag-nut">Nut-free</label></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="imageUrl">Image URL (optional)</label>
+              <input id="imageUrl" name="imageUrl" type="url" maxlength="1500" placeholder="https://example.com/meal.jpg">
+              <span class="help">Use a direct image link beginning with https://.</span>
+            </div>
+            <button class="btn btn-primary" id="postMealButton" type="submit">Post meal idea</button>
+            <p class="small-print">A short edit PIN will be generated after posting. Keep it private.</p>
+          </form>
 
-      <div class="form-card" id="editForm" style="display:none;">
-        <h3>Edit Meal</h3>
-        <input type="hidden" id="editId">
-        <div class="form-group"><label>Edit PIN</label><input type="password" id="editPinInput" placeholder="Enter your 4-digit PIN"></div>
-        <div class="form-group"><label>Meal Name</label><input type="text" id="editTitle"></div>
-        <div class="form-group"><label>Description</label><textarea id="editDescription"></textarea></div>
-        <div class="form-group"><label>Ingredients</label><input type="text" id="editIngredients"></div>
-        <div class="form-group">
-          <label>Dietary Tags</label>
-          <div class="checkbox-group" id="editTags">
-            <label class="checkbox-label"><input type="checkbox" value="Vegetarian"> Vegetarian</label>
-            <label class="checkbox-label"><input type="checkbox" value="Vegan"> Vegan</label>
-            <label class="checkbox-label"><input type="checkbox" value="Halal"> Halal</label>
-            <label class="checkbox-label"><input type="checkbox" value="Gluten-Free"> Gluten-Free</label>
-            <label class="checkbox-label"><input type="checkbox" value="Nut-Free"> Nut-Free</label>
-          </div>
+          <form class="card form-card" id="editForm" hidden>
+            <h3>Edit meal</h3>
+            <input type="hidden" id="editId">
+            <div class="form-group">
+              <label for="editPinInput">Edit PIN *</label>
+              <input id="editPinInput" type="password" inputmode="numeric" autocomplete="off" maxlength="4" pattern="[0-9]{4}" placeholder="4-digit PIN" required>
+            </div>
+            <div class="form-group"><label for="editTitle">Meal name *</label><input id="editTitle" type="text" maxlength="100" required></div>
+            <div class="form-group"><label for="editDescription">Description</label><textarea id="editDescription" maxlength="1500"></textarea></div>
+            <div class="form-group"><label for="editIngredients">Ingredients</label><input id="editIngredients" type="text" maxlength="1000"></div>
+            <div class="form-group"><label for="editImageUrl">Image URL</label><input id="editImageUrl" type="url" maxlength="1500"></div>
+            <div class="form-group">
+              <label>Dietary tags</label>
+              <div class="checkbox-group" id="editTags">
+                <span class="check-pill"><input id="edit-tag-vegetarian" type="checkbox" value="Vegetarian"><label for="edit-tag-vegetarian">Vegetarian</label></span>
+                <span class="check-pill"><input id="edit-tag-vegan" type="checkbox" value="Vegan"><label for="edit-tag-vegan">Vegan</label></span>
+                <span class="check-pill"><input id="edit-tag-halal" type="checkbox" value="Halal"><label for="edit-tag-halal">Halal</label></span>
+                <span class="check-pill"><input id="edit-tag-gluten" type="checkbox" value="Gluten-Free"><label for="edit-tag-gluten">Gluten-free</label></span>
+                <span class="check-pill"><input id="edit-tag-nut" type="checkbox" value="Nut-Free"><label for="edit-tag-nut">Nut-free</label></span>
+              </div>
+            </div>
+            <div class="button-row">
+              <button class="btn btn-primary" type="submit">Save changes</button>
+              <button class="btn btn-secondary" id="cancelEdit" type="button">Cancel</button>
+            </div>
+          </form>
         </div>
-        <div class="form-group"><label>Image URL</label><input type="text" id="editImageUrl"></div>
-        <div style="display:flex; gap:0.5rem;">
-          <button class="btn-primary" onclick="saveEdit()">Save Changes</button>
-          <button class="btn-secondary" onclick="cancelEdit()">Cancel</button>
+        <div>
+          <div id="mealsNotice" class="notice" role="status" aria-live="polite"></div>
+          <div id="mealsList" class="list"><div class="empty">Loading meal ideas…</div></div>
         </div>
       </div>
-
-      <div id="mealsList"></div>
     </section>
 
     <section class="section" id="wishlist">
-      <div class="section-header"><h2 class="section-title">🛒 Common Room Wishlist</h2></div>
-      <div class="form-card">
-        <h3>Add Item</h3>
-        <div class="form-group"><label>Item Name</label><input type="text" id="wishName" placeholder="e.g., Air Fryer"></div>
-        <div class="form-group"><label>Link</label><input type="text" id="wishLink" placeholder="https://amazon.co.uk/..."></div>
-        <div class="form-group"><label>Target Cost (£)</label><input type="number" id="wishCost" placeholder="50.00" step="0.01"></div>
-        <button class="btn-primary" onclick="addWishlistItem()">Add to Wishlist</button>
+      <div class="section-heading">
+        <div><div class="eyebrow">Make shared spaces better</div><h2>🛒 Common room wishlist</h2></div>
+        <button class="btn btn-secondary btn-small" id="refreshWishlist" type="button">↻ Refresh</button>
       </div>
-      <div id="wishlistContainer"></div>
+      <div class="layout">
+        <form class="card form-card" id="wishlistForm">
+          <h3>Add an item</h3>
+          <div class="form-group"><label for="wishName">Item name *</label><input id="wishName" type="text" maxlength="120" placeholder="e.g. Air fryer" required></div>
+          <div class="form-group"><label for="wishLink">Product link *</label><input id="wishLink" type="url" maxlength="1500" placeholder="https://…" required></div>
+          <div class="form-group"><label for="wishCost">Target cost (£) *</label><input id="wishCost" type="number" min="0.01" max="100000" step="0.01" placeholder="50.00" required></div>
+          <button class="btn btn-primary" id="addWishButton" type="submit">Add to wishlist</button>
+          <p class="small-print">This page tracks pledged amounts only. It does not collect payments.</p>
+        </form>
+        <div>
+          <div id="wishlistNotice" class="notice" role="status" aria-live="polite"></div>
+          <div id="wishlistContainer" class="list"><div class="empty">Loading wishlist…</div></div>
+        </div>
+      </div>
     </section>
-  </div>
+  </main>
+
+  <footer>RHUL Common Room · Built for sharing, not spending a fortune.</footer>
 
   <script>
-    const SUPABASE_URL = 'https://otajrbnsmqczxcqaagjc.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_i4194PhU3F_FbV4hwDzd_g_jlFNVho0';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    "use strict";
 
-    window.onload = () => { loadMeals(); loadWishlist(); };
+    // IMPORTANT: Use the current Project URL and publishable key from
+    // Supabase Dashboard → Project Settings → API Keys.
+    // A publishable key is intended for browser use; NEVER put a service_role/secret key here.
+    const SUPABASE_URL = "https://otajrbnsmqczxcqaagjc.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_i4194PhU3F_FbV4hwDzd_g_jlFNVho0";
 
-    function generatePin() { return Math.floor(1000 + Math.random() * 9000).toString(); }
+    let supabaseClient = null;
+    let mealsCache = [];
+    let wishlistCache = [];
 
-    async function createMeal() {
-      const title = document.getElementById('title').value.trim();
-      const description = document.getElementById('description').value.trim();
-      const ingredients = document.getElementById('ingredients').value.trim();
-      const imageUrl = document.getElementById('imageUrl').value.trim();
-      const tags = Array.from(document.querySelectorAll('#createFormTags input[type="checkbox"]:checked')).map(cb => cb.value).join(', ');
-      const editPin = generatePin();
+    const $ = (id) => document.getElementById(id);
 
-      if (!title) { alert('Please enter a meal name'); return; }
+    function showNotice(id, message, type = "info") {
+      const el = $(id);
+      if (!el) return;
+      el.textContent = message;
+      el.className = `notice show ${type}`;
+    }
+    function clearNotice(id) {
+      const el = $(id);
+      if (el) { el.textContent = ""; el.className = "notice"; }
+    }
+    function errorText(error) {
+      if (!error) return "Unknown error";
+      const code = error.code ? ` [${error.code}]` : "";
+      return `${error.message || "Request failed"}${code}`;
+    }
+    function explainSupabaseError(error, table) {
+      const message = errorText(error);
+      if (error?.code === "42P01" || /relation .* does not exist|table .* not found/i.test(message)) {
+        return `The "${table}" table could not be found. Check its name and schema in Supabase.`;
+      }
+      if (error?.code === "42501" || /row-level security|permission denied|not allowed/i.test(message)) {
+        return `Supabase denied access to "${table}". Check the table's RLS policies and grants.`;
+      }
+      if (error?.status === 401 || /invalid api key|jwt|unauthorized/i.test(message)) {
+        return "Supabase rejected the API key (HTTP 401). Verify the project URL and current publishable key in Project Settings → API Keys.";
+      }
+      return message;
+    }
+    function setBusy(button, busy, busyText = "Working…") {
+      if (!button) return;
+      if (busy) {
+        button.dataset.originalText = button.textContent;
+        button.textContent = busyText;
+        button.disabled = true;
+      } else {
+        button.textContent = button.dataset.originalText || button.textContent;
+        button.disabled = false;
+      }
+    }
+    function checkedTags(containerId) {
+      return Array.from($(containerId).querySelectorAll('input[type="checkbox"]:checked')).map((box) => box.value);
+    }
+    function setTags(containerId, tags) {
+      const set = new Set(Array.isArray(tags) ? tags : String(tags || "").split(",").map(x => x.trim()).filter(Boolean));
+      $(containerId).querySelectorAll('input[type="checkbox"]').forEach(box => { box.checked = set.has(box.value); });
+    }
+    function makeElement(tag, className, text) {
+      const el = document.createElement(tag);
+      if (className) el.className = className;
+      if (text !== undefined && text !== null) el.textContent = String(text);
+      return el;
+    }
+    function safeHttpUrl(value) {
+      try {
+        const url = new URL(value);
+        return url.protocol === "https:" || url.protocol === "http:" ? url.href : null;
+      } catch {
+        return null;
+      }
+    }
+    function formatMoney(value) {
+      const amount = Number(value);
+      return `£${(Number.isFinite(amount) ? amount : 0).toFixed(2)}`;
+    }
+    function resetMealForm() {
+      $("mealForm").reset();
+      clearNotice("globalNotice");
+    }
 
-      const { error } = await supabase.from('meals').insert([{
-        title, description, ingredients, image_url: imageUrl, dietary_tags: tags, edit_pin: editPin, upvotes: 0
-      }]);
+    async function init() {
+      if (!window.supabase || typeof window.supabase.createClient !== "function") {
+        showNotice("globalNotice", "Supabase's JavaScript library did not load. Check your internet connection or the CDN script.", "error");
+        $("mealsList").replaceChildren(makeElement("div", "empty", "Could not connect to the Supabase client library."));
+        $("wishlistContainer").replaceChildren(makeElement("div", "empty", "Could not connect to the Supabase client library."));
+        return;
+      }
+      if (!SUPABASE_URL.startsWith("https://") || !SUPABASE_KEY || SUPABASE_KEY.includes("YOUR_")) {
+        showNotice("globalNotice", "Set the correct Supabase project URL and publishable key in the configuration at the top of the script.", "error");
+        return;
+      }
 
-      if (error) { alert('Error: ' + error.message); return; }
+      try {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      } catch (error) {
+        showNotice("globalNotice", `Could not initialise Supabase: ${error.message}`, "error");
+        return;
+      }
 
-      const notice = document.getElementById('pinNotice');
-      notice.innerHTML = `✅ Posted! Your Edit PIN is: <strong>${editPin}</strong><br><small>Save this to edit your post later</small>`;
-      notice.style.display = 'block';
+      $("mealForm").addEventListener("submit", createMeal);
+      $("editForm").addEventListener("submit", saveEdit);
+      $("wishlistForm").addEventListener("submit", addWishlistItem);
+      $("cancelEdit").addEventListener("click", cancelEdit);
+      $("refreshMeals").addEventListener("click", loadMeals);
+      $("refreshWishlist").addEventListener("click", loadWishlist);
 
-      ['title', 'description', 'ingredients', 'imageUrl'].forEach(id => document.getElementById(id).value = '');
-      document.querySelectorAll('#createFormTags input[type="checkbox"]').forEach(cb => cb.checked = false);
-      loadMeals();
+      await Promise.all([loadMeals(), loadWishlist()]);
     }
 
     async function loadMeals() {
-      const { data, error } = await supabase.from('meals').order('created_at', { ascending: false });
-      if (error) { console.error(error); return; }
-      const container = document.getElementById('mealsList');
-      container.innerHTML = '';
+      if (!supabaseClient) return;
+      clearNotice("mealsNotice");
+      const list = $("mealsList");
+      list.replaceChildren(makeElement("div", "empty", "Loading meal ideas…"));
 
-      data.forEach(meal => {
-        const tagsArray = meal.dietary_tags ? meal.dietary_tags.split(', ') : [];
-        const tagsHtml = tagsArray.map(t => `<span class="tag">${t}</span>`).join('');
-        
-        const card = document.createElement('div');
-        card.className = 'card meal-card';
-        card.innerHTML = `
-          ${meal.image_url ? `<img src="${meal.image_url}" alt="${meal.title}">` : ''}
-          <h4>${meal.title}</h4>
-          <p>${meal.description || ''}</p>
-          ${meal.ingredients ? `<div class="ingredients-box"><strong>🛒 Ingredients:</strong> ${meal.ingredients}</div>` : ''}
-          ${tagsHtml ? `<div class="tags">${tagsHtml}</div>` : ''}
-          <div class="meal-actions">
-            <div class="vote-section">
-              <button class="btn-primary btn-sm" onclick="upvoteMeal('${meal.id}', ${meal.upvotes})">▲ Upvote</button>
-              <span class="vote-count">${meal.upvotes}</span>
-            </div>
-            <button class="btn-secondary btn-sm" onclick="openEdit('${meal.id}')">✏️ Edit</button>
-          </div>
-        `;
-        container.appendChild(card);
-      });
+      const { data, erro'''
+
+path = Path("/mnt/data/uni_fixed.html")
+path.write_text(html, encoding="utf-8")
+print(f"Created {path} ({len(html):,} characters, {len(html.splitlines())} lines)")r } = await supabaseClient
+        .from("meals")
+        .select("id,title,description,ingredients,image_url,dietary_tags,upvotes,created_at,edit_pin")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        list.replaceChildren(makeElement("div", "empty", "Meal ideas could not be loaded."));
+        showNotice("mealsNotice", explainSupabaseError(error, "meals"), "error");
+        console.error("Supabase meals read failed:", error);
+        return;
+      }
+
+      mealsCache = data || [];
+      list.replaceChildren();
+      if (!mealsCache.length) {
+        list.append(makeElement("div", "empty", "No meal ideas yet. Be the first to suggest one!"));
+        return;
+      }
+
+      for (const meal of mealsCache) list.append(buildMealCard(meal));
     }
 
-    async function upvoteMeal(id, current) {
-      const { error } = await supabase.from('meals').update({ upvotes: current + 1 }).eq('id', id);
-      if (error) alert(error.message);
-      else loadMeals();
+    function buildMealCard(meal) {
+      const card = makeElement("article", "card meal-card");
+      if (meal.image_url) {
+        const imageUrl = safeHttpUrl(meal.image_url);
+        if (imageUrl) {
+          const image = makeElement("img", "meal-image");
+          image.src = imageUrl;
+          image.alt = meal.title ? `Photo of ${meal.title}` : "Meal photo";
+          image.loading = "lazy";
+          image.referrerPolicy = "no-referrer";
+          image.addEventListener("error", () => image.remove(), { once: true });
+          card.append(image);
+        }
+      }
+
+      card.append(makeElement("h3", "", meal.title || "Untitled meal"));
+      if (meal.description) card.append(makeElement("p", "meal-description muted", meal.description));
+      if (meal.ingredients) {
+        const ingredients = makeElement("div", "ingredients");
+        ingredients.append(makeElement("strong", "", "🛒 Ingredients: "));
+        ingredients.append(document.createTextNode(meal.ingredients));
+        card.append(ingredients);
+      }
+
+      const tags = Array.isArray(meal.dietary_tags)
+        ? meal.dietary_tags
+        : String(meal.dietary_tags || "").split(",").map(x => x.trim()).filter(Boolean);
+      if (tags.length) {
+        const tagRow = makeElement("div", "tags");
+        for (const tag of tags) tagRow.append(makeElement("span", "tag", tag));
+        card.append(tagRow);
+      }
+
+      const footer = makeElement("div", "card-footer");
+      const voteArea = makeElement("div", "button-row");
+      const voteButton = makeElement("button", "btn btn-primary btn-small", "▲ Upvote");
+      voteButton.type = "button";
+      voteButton.addEventListener("click", () => upvoteMeal(meal.id, voteButton));
+      voteArea.append(voteButton, makeElement("span", "vote-count", Number(meal.upvotes) || 0));
+      const editButton = makeElement("button", "btn btn-secondary btn-small", "✎ Edit");
+      editButton.type = "button";
+      editButton.addEventListener("click", () => openEdit(meal.id));
+      footer.append(voteArea, editButton);
+      card.append(footer);
+      return card;
+    }
+
+    async function createMeal(event) {
+      event.preventDefault();
+      clearNotice("globalNotice");
+      const button = $("postMealButton");
+      const title = $("title").value.trim();
+      const description = $("description").value.trim();
+      const ingredients = $("ingredients").value.trim();
+      const imageUrl = $("imageUrl").value.trim();
+      const tags = checkedTags("createTags");
+      if (!title) return showNotice("globalNotice", "Please enter a meal name.", "error");
+      if (imageUrl && !safeHttpUrl(imageUrl)) return showNotice("globalNotice", "Please enter a valid HTTP or HTTPS image URL.", "error");
+
+      const editPin = String(Math.floor(1000 + Math.random() * 9000));
+      setBusy(button, true, "Posting…");
+      const { error } = await supabaseClient.from("meals").insert([{
+        title, description, ingredients, image_url: imageUrl || null,
+        dietary_tags: tags.join(", "), edit_pin: editPin, upvotes: 0
+      }]);
+      setBusy(button, false);
+'''
+
+path = Path("/mnt/data/uni_fixed.html")
+path.write_text(html, encoding="utf-8")
+print(f"Created {path} ({len(html):,} characters, {len(html.splitlines())} lines)")
+      if (error) {
+        showNotice("globalNotice", `Meal could not be posted: ${explainSupabaseError(error, "meals")}`, "error");
+        console.error("Supabase meal insert failed:", error);
+        return;
+      }
+
+      showNotice("globalNotice", `Meal posted! Your edit PIN is ${editPin}. Save it somewhere private; it will not be shown again.`, "success");
+      resetMealForm();
+      await loadMeals();
+    }
+
+    async function upvoteMeal(id, button) {
+      const meal = mealsCache.find(item => String(item.id) === String(id));
+      if (!meal) return;
+      const current = Number(meal.upvotes) || 0;
+      setBusy(button, true, "Voting…");
+
+      // Compare-and-set reduces lost votes when two people vote at nearly the same time.
+      // For guaranteed atomic increments, use a PostgreSQL RPC function instead.
+      const { data, error } = await supabaseClient
+        .from("meals")
+        .update({ upvotes: current + 1 })
+        .eq("id", id)
+        .eq("upvotes", current)
+        .select("id");
+
+      setBusy(button, false);
+      if (error) {
+        showNotice("mealsNotice", `Could not record vote: ${explainSupabaseError(error, "meals")}`, "error");
+        console.error("Supabase upvote failed:", error);
+        return;
+      }
+      if (!data || data.length === 0) {
+        showNotice("mealsNotice", "Someone voted at the same time. Refreshing the latest count—please try again.", "info");
+      }
+      await loadMeals();
     }
 
     async function openEdit(id) {
-      document.getElementById('editId').value = id;
-      document.getElementById('editForm').style.display = 'block';
-      document.getElementById('editPinInput').value = '';
-      document.getElementById('editForm').scrollIntoView({ behavior: 'smooth' });
+      const meal = mealsCache.find(item => String(item.id) === String(id));
+      if (!meal) {
+        showNotice("mealsNotice", "That meal is no longer in the current list. Refresh and try again.", "error");
+        return;
+      }
+      $("editId").value = meal.id;
+      $("editPinInput").value = "";
+      $("editTitle").value = meal.title || "";
+      $("editDescription").value = meal.description || "";
+      $("editIngredients").value = meal.ingredients || "";
+      $("editImageUrl").value = meal.image_url || "";
+      setTags("editTags", meal.dietary_tags);
+      $("editForm").hidden = false;
+      $("editForm").scrollIntoView({ behavior: "smooth", block: "start" });
+      $("editPinInput").focus();
     }
 
-    async function saveEdit() {
-      const id = document.getElementById('editId').value;
-      const pin = document.getElementById('editPinInput').value;
+    async function saveEdit(event) {
+      event.preventDefault();
+      const id = $("editId").value;
+      const pin = $("editPinInput").value.trim();
+      const title = $("editTitle").value.trim();
+      const description = $("editDescription").value.trim();
+      const ingredients = $("editIngredients").value.trim();
+      const imageUrl = $("editImageUrl").value.trim();
+      const tags = checkedTags("editTags");
 
-      const { data: meal, error: fetchErr } = await supabase.from('meals').select('edit_pin').eq('id', id).single();
-      if (fetchErr || !meal) { alert('Meal not found'); return; }
-      if (meal.edit_pin !== pin) { alert('❌ Wrong Edit PIN'); return; }
+      if (!/^\d{4}$/.test(pin)) return showNotice("mealsNotice", "Enter the 4-digit edit PIN.", "error");
+      if (!title) return showNotice("mealsNotice", "Meal name is required.", "error");
+      if (imageUrl && !safeHttpUrl(imageUrl)) return showNotice("mealsNotice", "Please enter a valid HTTP or HTTPS image URL.", "error");
 
-      const title = document.getElementById('editTitle').value.trim();
-      const description = document.getElementById('editDescription').value.trim();
-      const ingredients = document.getElementById('editIngredients').value.trim();
-      const imageUrl = document.getElementById('editImageUrl').value.trim();
-      const tags = Array.from(document.querySelectorAll('#editTags input[type="checkbox"]:checked')).map(cb => cb.value).join(', ');
+      const button = $("editForm").querySelector('button[type="submit"]');
+      setBusy(button, true, "Saving…");
 
-      const { error } = await supabase.from('meals').update({
-        title, description, ingredients, image_url: imageUrl, dietary_tags: tags
-      }).eq('id', id);
+      // This client-side PIN check is only a convenience, NOT secure authorization.
+      // Production use should move PIN verification and updates into a trusted server/RPC function.
+      const { data: meal, error: fetchError } = await supabaseClient
+        .from("meals").select("id,edit_pin").eq("id", id).maybeSingle();
 
-      if (error) { alert(error.message); return; }
-      alert('✅ Saved!');
+      if (fetchError || !meal) {
+        setBusy(button, false);
+        showNotice("mealsNotice", fetchError ? explainSupabaseError(fetchError, "meals") : "Meal not found.", "error");
+        return;
+      }
+      if (String(meal.edit_pin || "") !== pin) {
+        setBusy(button, false);
+        showNotice("mealsNotice", "Incorrect edit PIN.", "error");
+        return;
+      }
+
+      const { error } = await supabaseClient.from("meals").update({
+        title, description, ingredients, image_url: imageUrl || null, dietary_tags: tags.join(", ")
+      }).eq("id", id);
+
+      setBusy(button, false);
+      if (error) {
+        showNotice("mealsNotice", `Changes could not be saved: ${explainSupabaseError(error, "meals")}`, "error");
+        console.error("Supabase meal update failed:", error);
+        return;
+      }
       cancelEdit();
-      loadMeals();
+      showNotice("mealsNotice", "Meal updated.", "success");
+      await loadMeals();
     }
 
-    function cancelEdit() { document.getElementById('editForm').style.display = 'none'; }
+    function cancelEdit() {
+      $("editForm").hidden = true;
+      $("editForm").reset();
+      clearNotice("mealsNotice");
+    }
 
-    async function addWishlistItem() {
-      const name = document.getElementById('wishName').value.trim();
-      const link = document.getElementById('wishLink').value.trim();
-      const cost = parseFloat(document.getElementById('wishCost').value) || 0;
+    async function addWishlistItem(event) {
+      event.preventDefault();
+      const button = $("addWishButton");
+      const name = $("wishName").value.trim();
+      const link = $("wishLink").value.trim();
+      const cost = Number.parseFloat($("wishCost").value);
+      const safeLink = safeHttpUrl(link);
 
-      if (!name || !link || cost <= 0) { alert('Fill in all fields'); return; }
+      if (!name || !safeLink || !Number.isFinite(cost) || cost <= 0) {
+        showNotice("wishlistNotice", "Enter an item name, a valid HTTP/HTTPS link, and a target cost greater than £0.", "error");
+        return;
+      }
 
-      const { error } = await supabase.from('wishlist').insert([{ item_name: name, link: link, cost: cost, pledged: 0 }]);
-      if (error) { alert(error.message); return; }
+      setBusy(button, true, "Adding…");
+      const { error } = await supabaseClient.from("wishlist").insert([{
+        item_name: name, link: safeLink, cost: Math.round(cost * 100) / 100, pledged: 0
+      }]);
+      setBusy(button, false);
 
-      ['wishName', 'wishLink', 'wishCost'].forEach(id => document.getElementById(id).value = '');
-      loadWishlist();
+      if (error) {
+        showNotice("wishlistNotice", `Item could not be added: ${explainSupabaseError(error, "wishlist")}`, "error");
+        console.error("Supabase wishlist insert failed:", error);
+        return;
+      }
+      $("wishlistForm").reset();
+      showNotice("wishlistNotice", "Item added to the wishlist.", "success");
+      await loadWishlist();
     }
 
     async function loadWishlist() {
-      const { data, error } = await supabase.from('wishlist').order('created_at', { ascending: false });
-      if (error) { console.error(error); return; }
-      const container = document.getElementById('wishlistContainer');
-      container.innerHTML = '';
+      if (!supabaseClient) return;
+      clearNotice("wishlistNotice");
+      const container = $("wishlistContainer");
+      container.replaceChildren(makeElement("div", "empty", "Loading wishlist…"));
 
-      data.forEach(item => {
-        const pct = Math.min(100, (item.pledged / item.cost) * 100);
-        const div = document.createElement('div');
-        div.className = 'wishlist-card';
-        div.innerHTML = `
-          <h4><a href="${item.link}" target="_blank">${item.item_name}</a></h4>
-          <div class="progress-info">
-            <span>Target: £${item.cost.toFixed(2)}</span>
-            <span>Pledged: £${item.pledged.toFixed(2)}</span>
-          </div>
-          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-          <div class="pledge-section">
-            <input type="number" id="pledge-${item.id}" placeholder="£" step="0.01">
-            <button class="btn-primary btn-sm" onclick="addPledge('${item.id}', ${item.pledged})">Chip In</button>
-          </div>
-        `;
-        container.appendChild(div);
+      const { data, error } = await supabaseClient
+        .from("wishlist")
+        .select("id,item_name,link,cost,pledged,created_at")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        container.replaceChildren(makeElement("div", "empty", "The wishlist could not be loaded."));
+        showNotice("wishlistNotice", explainSupabaseError(error, "wishlist"), "error");
+        console.error("Supabase wishlist read failed:", error);
+        return;
+      }
+
+      wishlistCache = data || [];
+      container.replaceChildren();
+      if (!wishlistCache.length) {
+        container.append(makeElement("div", "empty", "The wishlist is empty. Add the first item!"));
+        return;
+      }
+      for (const item of wishlistCache) container.append(buildWishlistCard(item));
+    }
+
+    function buildWishlistCard(item) {
+      const card = makeElement("article", "card wishlist-item");
+      const link = safeHttpUrl(item.link);
+      const title = makeElement("h3");
+      if (link) {
+        const anchor = makeElement("a", "", item.item_name || "Wishlist item");
+        anchor.href = link;
+        anchor.target = "_blank";
+        anchor.rel = "noopener noreferrer";
+        title.append(anchor);
+      } else {
+        title.textContent = item.item_name || "Wishlist item";
+      }
+      card.append(title);
+
+      const cost = Math.max(0, Number(item.cost) || 0);
+      const pledged = Math.max(0, Number(item.pledged) || 0);
+      const percent = cost > 0 ? Math.min(100, (pledged / cost) * 100) : 0;
+      const meta = makeElement("div", "progress-meta");
+      meta.append(makeElement("span", "", `Target: ${formatMoney(cost)}`));
+      meta.append(makeElement("span", "", `Pledged: ${formatMoney(pledged)}`));
+      card.append(meta);
+
+      const track = makeElement("div", "progress-track");
+      track.setAttribute("role", "progressbar");
+      track.setAttribute("aria-label", `Pledged toward ${item.item_name || "wishlist item"}`);
+      track.setAttribute("aria-valuemin", "0");
+      track.setAttribute("aria-valuemax", "100");
+      track.setAttribute("aria-valuenow", String(Math.round(percent)));
+      const fill = makeElement("div", "progress-fill");
+      fill.style.width = `${percent}%`;
+      track.append(fill);
+      card.append(track);
+
+      const pledgeRow = makeElement("form", "pledge-row");
+      const input = makeElement("input");
+      input.type = "number";
+      input.min = "0.01";
+      input.max = "100000";
+      input.step = "0.01";
+      input.required = true;
+      input.placeholder = "Amount (£)";
+      input.setAttribute("aria-label", `Amount to pledge toward ${item.item_name || "wishlist item"}`);
+      const button = makeElement("button", "btn btn-primary btn-small", "Chip in");
+      button.type = "submit";
+      pledgeRow.append(input, button);
+      pledgeRow.addEventListener("submit", event => {
+        event.preventDefault();
+        addPledge(item.id, input.value, button);
       });
+      card.append(pledgeRow);
+      return card;
     }
 
-    async function addPledge(id, current) {
-      const amount = parseFloat(document.getElementById('pledge-' + id).value) || 0;
-      if (amount <= 0) return;
-      const { error } = await supabase.from('wishlist').update({ pledged: current + amount }).eq('id', id);
-      if (error) alert(error.message);
-      else loadWishlist();
+    async function addPledge(id, rawAmount, button) {
+      const amount = Number.parseFloat(rawAmount);
+      if (!Number.isFinite(amount) || amount <= 0) {
+        showNotice("wishlistNotice", "Enter an amount greater than £0.", "error");
+        return;
+      }
+      const item = wishlistCache.find(entry => String(entry.id) === String(id));
+      if (!item) {
+        showNotice("wishlistNotice", "That wishlist item is no longer in the current list. Refresh and try again.", "error");
+        return;
+      }
+
+      const current = Number(item.pledged) || 0;
+      const next = Math.round((current + amount) * 100) / 100;
+      setBusy(button, true, "Saving…");
+
+      // Compare-and-set reduces lost updates; use an atomic server-side RPC for strict concurrency guarantees.
+      const { data, error } = await supabaseClient
+        .from("wishlist")
+        .update({ pledged: next })
+        .eq("id", id)
+        .eq("pledged", current)
+        .select("id");
+
+      setBusy(button, false);
+      if (error) {
+        showNotice("wishlistNotice", `Pledge could not be recorded: ${explainSupabaseError(error, "wishlist")}`, "error");
+        console.error("Supabase pledge update failed:", error);
+        return;
+      }
+      if (!data || data.length === 0) {
+        showNotice("wishlistNotice", "Another contribution may have been recorded at the same time. Refreshing; please try again.", "info");
+      } else {
+        showNotice("wishlistNotice", "Contribution recorded in the tracker. No payment was taken.", "success");
+      }
+      await loadWishlist();
     }
+
+    // The CDN script is marked defer, so this listener runs after it has loaded and the DOM is ready.
+    window.addEventListener("DOMContentLoaded", init, { once: true });
   </script>
 </body>
 </html>
