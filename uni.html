@@ -146,18 +146,12 @@
   </div>
 
   <script>
-    // ============================================
-    // SUPABASE SETUP
-    // ============================================
     const SUPABASE_URL = 'https://otajrbnsmqczxcqaagjc.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_i4194PhU3F_FbV4hwDzd_g_jlFNVho0';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     window.onload = () => { loadMeals(); loadWishlist(); };
 
-    // ============================================
-    // MEALS LOGIC
-    // ============================================
     function generatePin() { return Math.floor(1000 + Math.random() * 9000).toString(); }
 
     async function createMeal() {
@@ -165,7 +159,6 @@
       const description = document.getElementById('description').value.trim();
       const ingredients = document.getElementById('ingredients').value.trim();
       const imageUrl = document.getElementById('imageUrl').value.trim();
-      // Join with comma so it works perfectly with a standard 'text' column in Supabase
       const tags = Array.from(document.querySelectorAll('#createFormTags input[type="checkbox"]:checked')).map(cb => cb.value).join(', ');
       const editPin = generatePin();
 
@@ -193,7 +186,6 @@
       container.innerHTML = '';
 
       data.forEach(meal => {
-        // Split the comma-separated string back into an array for display
         const tagsArray = meal.dietary_tags ? meal.dietary_tags.split(', ') : [];
         const tagsHtml = tagsArray.map(t => `<span class="tag">${t}</span>`).join('');
         
@@ -256,9 +248,6 @@
 
     function cancelEdit() { document.getElementById('editForm').style.display = 'none'; }
 
-    // ============================================
-    // WISHLIST LOGIC
-    // ============================================
     async function addWishlistItem() {
       const name = document.getElementById('wishName').value.trim();
       const link = document.getElementById('wishLink').value.trim();
