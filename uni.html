@@ -149,7 +149,7 @@
 
     <section class="section" id="meals">
       <div class="section-heading">
-        <div><div class="eyebrow">Plan the next feast</div><h2>🍽️ Meal ideas</h2></div>
+        <div><div class="eyebrow">Plan the next feast</div><h2>🍽 Meal ideas</h2></div>
         <button class="btn btn-secondary btn-small" id="refreshMeals" type="button">↻ Refresh</button>
       </div>
       <div class="layout">
@@ -364,13 +364,9 @@
       const list = $("mealsList");
       list.replaceChildren(makeElement("div", "empty", "Loading meal ideas…"));
 
-      const { data, erro'''
-
-path = Path("/mnt/data/uni_fixed.html")
-path.write_text(html, encoding="utf-8")
-print(f"Created {path} ({len(html):,} characters, {len(html.splitlines())} lines)")r } = await supabaseClient
+      const { data, error } = await supabaseClient
         .from("meals")
-        .select("id,title,description,ingredients,image_url,dietary_tags,upvotes,created_at,edit_pin")
+        .select("id,title,description,ingredients,image_url,dietary_tags,upvotes,created_at")
         .order("created_at", { ascending: false });
 
       if (error) {
@@ -456,11 +452,7 @@ print(f"Created {path} ({len(html):,} characters, {len(html.splitlines())} lines
         dietary_tags: tags.join(", "), edit_pin: editPin, upvotes: 0
       }]);
       setBusy(button, false);
-'''
 
-path = Path("/mnt/data/uni_fixed.html")
-path.write_text(html, encoding="utf-8")
-print(f"Created {path} ({len(html):,} characters, {len(html.splitlines())} lines)")
       if (error) {
         showNotice("globalNotice", `Meal could not be posted: ${explainSupabaseError(error, "meals")}`, "error");
         console.error("Supabase meal insert failed:", error);
